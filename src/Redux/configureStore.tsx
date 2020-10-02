@@ -10,7 +10,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 const persistConfig = {
   key: 'artisana',
   storage: AsyncStorage,
-  whitelist: ['auth', 'user', 'onboarding']
+  whitelist: ['auth', 'user', 'onboarding', 'theme', 'tokens']
 };
 
 export default () => {

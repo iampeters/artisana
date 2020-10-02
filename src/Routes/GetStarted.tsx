@@ -10,7 +10,7 @@ import CustomButtons from '../Components/Buttons';
 import { useSelector } from 'react-redux';
 import { Reducers } from '../interfaces/interface';
 
-let img = require('../../assets/Silas-Adekunle.jpg');
+let img = require('../../assets/tailor.jpg');
 
 let { width } = Dimensions.get("window");
 
@@ -62,7 +62,7 @@ export default function GetStarted({ navigation }: any) {
           type="solid"
           backgroundColor={colors.white}
           fontFamily={fonts?.RubikMedium}
-          color={colors.primary}
+          color={colors.black}
           onPress={() => navigation.navigate('Login')}
         />
 
@@ -71,7 +71,7 @@ export default function GetStarted({ navigation }: any) {
           type="solid"
           backgroundColor={colors.primary}
           fontFamily={fonts?.RubikMedium}
-          color={colors.white}
+          color={colors.black}
           marginTop={15}
           onPress={() => navigation.navigate('Register')}
         />

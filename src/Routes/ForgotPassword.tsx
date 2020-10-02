@@ -14,7 +14,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Reducers } from '../interfaces/interface';
 import { forgotPassword } from '../Redux/Actions/userActions';
 
-let img = require('../../assets/Silas-Adekunle.jpg');
+let img = require('../../assets/user.jpg');
 let { width, height } = Dimensions.get("window");
 
 
@@ -64,7 +64,7 @@ export default function ForgotPassword(props: any) {
           payload: {}
         })
 
-        // props.navigation.navigate('Auth');
+        // props.navigation.navigate('Home');
       }
     }
   }, [dispatch, alert]);
@@ -156,7 +156,7 @@ export default function ForgotPassword(props: any) {
               type="solid"
               backgroundColor={colors.primary}
               fontFamily={fonts?.RubikMedium}
-              color={colors.white}
+              color={colors.black}
               marginTop={15}
               onPress={handleSubmit}
               loading={submitted}

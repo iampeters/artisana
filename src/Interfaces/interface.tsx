@@ -46,7 +46,7 @@ export interface Reviews {
 
 export interface Reducers {
   auth: any;
-  theme: string
+  theme: string;
   loading: boolean;
   menu: string;
   navBar: boolean;
@@ -66,9 +66,10 @@ interface AlertProps {
   type?: "danger" | "success";
 }
 
-// export interface ThemeReducer {
-  
-// }
+export interface ThemeReducer {
+  dark?: boolean;
+  light?: boolean;
+}
 
 export interface Tokens {
   auth_token: string;
@@ -125,6 +126,8 @@ export interface CustomThemeInterface {
     background?: string;
     card?: string;
     text?: string;
+    gray?: string;
+    navy?: string;
     border?: string;
     light?: string;
     danger?: string;
@@ -151,6 +154,7 @@ export interface CustomThemeInterface {
     heading: number;
     title: number;
     small: number;
+    cardTitle: number;
     iconSize: number;
   };
   fonts?: {
@@ -169,6 +173,11 @@ export interface CustomThemeInterface {
     LemonadaMedium?: string;
     LemonadaLight?: string;
     LemonadaSemiBold?: string;
+    FuturaRegular?: string;
+    FuturaMedium?: string;
+    FuturaLight?: string;
+    FuturaItalic?: string;
+    FuturaBold?: string;
   };
 }
 

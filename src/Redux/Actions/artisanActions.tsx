@@ -1,10 +1,10 @@
 import ArtisanService from '../../Services/ArtisanService';
-import { Pagination, Artisans, ResponseDetails } from '../../interfaces/interface';
+import { Pagination, Artisans, ResponseDetails, Tokens } from '../../interfaces/interface';
 import { Dispatch } from 'redux';
 
 
-export const createArtisan = (state: Artisans) => {
-  const api = new ArtisanService().createArtisan(state);
+export const createArtisan = (state: Artisans, token: Tokens) => {
+  const api = new ArtisanService().createArtisan(state, token);
 
   return (dispatch: Dispatch) => {
     api
@@ -44,8 +44,8 @@ export const createArtisan = (state: Artisans) => {
   };
 };
 
-export const getArtisans = (state: Pagination) => {
-  const api = new ArtisanService().getArtisans(state);
+export const getArtisans = (state: Pagination, tokens: Tokens) => {
+  const api = new ArtisanService().getArtisans(state, tokens);
 
   return (dispatch: Dispatch) => {
     api
@@ -81,8 +81,8 @@ export const getArtisans = (state: Pagination) => {
   };
 };
 
-export const getArtisanDetails = (id: string) => {
-  const api = new ArtisanService().getArtisanDetails(id);
+export const getArtisanDetails = (id: string, tokens: Tokens) => {
+  const api = new ArtisanService().getArtisanDetails(id, tokens);
 
   return (dispatch: Dispatch) => {
     api

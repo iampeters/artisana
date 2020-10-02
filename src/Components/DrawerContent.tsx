@@ -16,7 +16,7 @@ import { logout } from '../Redux/Actions/userActions';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { Reducers } from '../interfaces/interface';
 import { CustomThemeInterface } from '../Interfaces/interface';
-import { Octicons as Icon, Ionicons, Fontisto, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Octicons as Icon, Ionicons, Fontisto, MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
 
 export default function DrawerContent(props: any) {
   const dispatch = useDispatch();
@@ -39,7 +39,7 @@ export default function DrawerContent(props: any) {
   useEffect(() => {
     if (!auth.isLoggedIn) {
       setSpinner(false);
-      props.navigation.dispatch(StackActions.replace('Login'));
+      props.navigation.dispatch(StackActions.replace('GetStarted'));
     }
   }, [auth]);
 
@@ -211,45 +211,70 @@ export default function DrawerContent(props: any) {
               icon={() => (
                 <MaterialCommunityIcons
                   name='view-dashboard'
-                  style={{ color: colors.primary, fontSize: 25 }}
+                  style={{ color: colors.text, fontSize: 22 }}
                 />
               )}
               label='Home'
               onPress={() => {
-                props.navigation.navigate('Dashboard');
+                props.navigation.navigate('Home');
               }}
               activeTintColor={colors.active}
-              labelStyle={{ color: colors.text, fontSize: fontSizes?.body }}
+              labelStyle={{ color: colors.text, fontSize: fontSizes?.body, fontFamily: fonts?.RubikRegular }}
+            // style={{
+            //   justifyContent: 'space-evenly',
+            //   alignItems: 'flex-start'
+            // }}
             />
 
             <DrawerItem
               icon={() => (
                 <Fontisto
                   name='persons'
-                  style={{ color: colors.primary, fontSize: 20 }}
+                  style={{ color: colors.text, fontSize: 20 }}
                 />
               )}
-              label='My Artisans'
+              label='Artisans'
               onPress={() => {
-                props.navigation.navigate('MyArtisans');
+                props.navigation.navigate('Artisans');
               }}
               activeTintColor={colors.active}
-              labelStyle={{ color: colors.text, fontSize: fontSizes?.body }}
+              labelStyle={{ color: colors.text, fontSize: fontSizes?.body, fontFamily: fonts?.RubikRegular }}
+            />
+
+            <DrawerItem
+              icon={() => (
+                <Fontisto
+                  name='star'
+                  style={{ color: colors.text, fontSize: 20 }}
+                />
+              )}
+              label='My Reviews'
+              onPress={() => {
+                props.navigation.navigate('Reviews');
+              }}
+              activeTintColor={colors.active}
+              labelStyle={{ color: colors.text, fontSize: fontSizes?.body, fontFamily: fonts?.RubikRegular }}
             />
 
             <DrawerItem
               icon={() => (
                 <Fontisto
                   name='person'
-                  style={{ color: colors.primary, fontSize: 20 }}
+                  style={{ color: colors.text, fontSize: 22, }}
                 />
               )}
               label='Account'
               onPress={() => {
-                props.navigation.navigate('Account');
+                props.navigation.navigate('Account', {
+                  data: user
+                });
               }}
               activeTintColor={colors.active}
-              labelStyle={{ color: colors.text, fontSize: fontSizes?.body }}
+              labelStyle={{ color: colors.text, fontSize: fontSizes?.body, fontFamily: fonts?.RubikRegular, }}
+            // style={{
+            //   justifyContent: 'space-around',
+            //   alignItems: 'flex-start',
+            // }}
             />
 
           </Drawer.Section>
@@ -257,7 +282,7 @@ export default function DrawerContent(props: any) {
           {/* preference */}
           <Drawer.Section theme={theme}>
             <List style={[styles.spacing]}>
-              <Text style={[styles.spacingText, { color: colors.primary, fontSize: fontSizes?.body }]}>
+              <Text style={[styles.spacingText, { color: colors.text, fontSize: fontSizes?.body, fontFamily: fonts?.RubikRegular }]}>
                 Themes
               </Text>
             </List>
@@ -308,17 +333,16 @@ export default function DrawerContent(props: any) {
       <Drawer.Section style={styles.bottomDrawerSection}>
         <DrawerItem
           icon={({ size }) => (
-            <Icon
-              name='sign-out'
-              style={{ color: colors.danger, fontSize: fontSizes?.iconSize }}
-            // fontSize={size}
+            <FontAwesome5
+              name='sign-out-alt'
+              style={{ color: colors.danger, fontSize: fontSizes?.iconSize, fontFamily: fonts?.ProductSansBold }}
             />
           )}
-          label='Log Out'
+          label='Logout'
           onPress={() => confirmExit()}
           labelStyle={{
             color: colors.danger,
-            fontFamily: fonts?.ProductSansRegular,
+            fontFamily: fonts?.RubikBold,
           }}
         />
       </Drawer.Section>
@@ -360,7 +384,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   bottomDrawerSection: {
-    marginBottom: Platform.OS === "ios"? 20: 0,
+    marginBottom: Platform.OS === "ios" ? 20 : 0,
     borderTopColor: '#f4f4f4',
     borderTopWidth: 1,
   },

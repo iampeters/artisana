@@ -1,12 +1,11 @@
-import React, { ReactChildren } from 'react'
-import { View, Text, StyleSheet, ImageBackground, ImageProps } from 'react-native'
+import React from 'react'
+import { View, StyleSheet, ImageBackground, ImageProps } from 'react-native'
 import { CustomThemeInterface } from '../Interfaces/interface';
 import { useTheme } from '@react-navigation/native';
 import { StatusBar } from 'expo-status-bar';
-import { Container } from 'native-base';
 
 export default function BackgroundImage(props: BackgroundImageProps) {
-  const { colors, fonts }: CustomThemeInterface = useTheme();
+  const { colors }: CustomThemeInterface = useTheme();
 
   return (
     <View style={{ ...styles.container, backgroundColor: colors.background }}>

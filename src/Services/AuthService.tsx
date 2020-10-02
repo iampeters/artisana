@@ -1,6 +1,7 @@
 import API from '../API/Apis';
 import { TokenValidator } from './TokenValidator';
 import { Tokens, User } from '../interfaces/interface';
+import AsyncStorage from '@react-native-community/async-storage';
 
 export default class AuthService {
 
@@ -13,6 +14,7 @@ export default class AuthService {
 
   constructor() {
     // this.authToken = TokenValidator();
+    // this.authToken = AsyncStorage.getItem('token');
   }
 
   async login(data: any) {
@@ -80,13 +82,13 @@ export default class AuthService {
     }
   }
 
-  async updateUser(data: User) {
+  async updateUser(data: User, tokens: Tokens) {
     try {
       let response = await fetch(this.users + `update/${data._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.authToken.auth_token}`
+          'Authorization': `Bearer ${tokens.auth_token}`
         },
         body: JSON.stringify(data),
       });
@@ -130,13 +132,13 @@ export default class AuthService {
     }
   }
 
-  async changePassword(data: any) {
+  async changePassword(data: any, token: Tokens) {
     try {
       let response = await fetch(this.identity + 'changePassword', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.authToken.aut_token}`
+          'Authorization': `Bearer ${token.auth_token}`
         },
         body: JSON.stringify(data),
       });

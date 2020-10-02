@@ -8,6 +8,8 @@ const API_URL = {
 	reviews: `${host}api/reviews/`,
 	users: `${host}api/users/`,
 	social: `${host}api/social/`,
+	requests: `${host}api/requests/`,
+	category: `${host}api/category/`,
 };
 
 export default API_URL;

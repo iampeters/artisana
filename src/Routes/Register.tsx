@@ -333,7 +333,7 @@ export default function Register(props: any) {
               type="solid"
               backgroundColor={colors.primary}
               fontFamily={fonts?.RubikMedium}
-              color={colors.white}
+              color={colors.black}
               marginTop={15}
               onPress={handleSubmit}
               loading={submitted}

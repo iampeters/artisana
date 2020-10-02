@@ -4,21 +4,21 @@ import { TokenValidator } from './TokenValidator';
 
 export default class AuthService {
 
-  tokens: any | Tokens;
+  // tokens: any | Tokens;
   constructor() {
-    this.tokens = TokenValidator();
+    // this.tokens = TokenValidator();
 
   }
 
   reviews = API.reviews;
 
-  async createReviews(data: Reviews) {
+  async createReviews(data: Reviews, tokens: Tokens) {
     try {
       let response = await fetch(this.reviews + 'create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.tokens.auth_token}`
+          'Authorization': `Bearer ${tokens.auth_token}`
         },
         body: JSON.stringify(data),
       });
@@ -29,7 +29,7 @@ export default class AuthService {
     }
   }
 
-  async getReviews(data: Pagination) {
+  async getReviews(data: Pagination, tokens: Tokens) {
     try {
       let response = await fetch(
         this.reviews + `all/?page=${data.page}&&pageSize=${data.pageSize}&&whereCondition=${data.whereCondition}`,
@@ -37,7 +37,7 @@ export default class AuthService {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${this.tokens.auth_token}`
+            'Authorization': `Bearer ${tokens.auth_token}`
           }
         });
 
@@ -47,7 +47,7 @@ export default class AuthService {
     }
   }
 
-  async getReviewDetails(id: string) {
+  async getReviewDetails(id: string, tokens: Tokens) {
     try {
       let response = await fetch(
         this.reviews + `${id}`,
@@ -55,7 +55,7 @@ export default class AuthService {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${this.tokens.auth_token}`
+            'Authorization': `Bearer ${tokens.auth_token}`
           }
         });
       return await response.json();
@@ -64,7 +64,7 @@ export default class AuthService {
     }
   }
 
-  async updateReview(data: Reviews) {
+  async updateReview(data: Reviews, tokens: Tokens) {
     try {
       let response = await fetch(
         this.reviews + `${data.reviewId}`,
@@ -72,7 +72,7 @@ export default class AuthService {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${this.tokens.auth_token}`
+            'Authorization': `Bearer ${tokens.auth_token}`
           },
           body: JSON.stringify(data),
         });
@@ -82,7 +82,7 @@ export default class AuthService {
     }
   }
 
-  async deleteReview(id: string) {
+  async deleteReview(id: string, tokens: Tokens) {
     try {
       let response = await fetch(
         this.reviews + `${id}`,
@@ -90,7 +90,7 @@ export default class AuthService {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${this.tokens.auth_token}`
+            'Authorization': `Bearer ${tokens.auth_token}`
           },
         });
       return await response.json();

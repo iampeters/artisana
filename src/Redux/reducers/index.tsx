@@ -15,7 +15,7 @@ const rootReducer = combineReducers({
   tokens: tokenReducer,
   onboarding: onboardingReducer,
   // login: loginReducer,
-  // artisan: artisanReducer,
+  artisan: artisanReducer,
   alert: alertReducer,
   // file: fileReducer,
   // reviews: reviewReducer,

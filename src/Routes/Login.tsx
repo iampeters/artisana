@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Reducers } from '../interfaces/interface';
 import { login } from '../Redux/Actions/userActions';
 
-let img = require('../../assets/Silas-Adekunle.jpg');
+let img = require('../../assets/carpenter.jpg');
 let { width, height } = Dimensions.get("window");
 
 
@@ -105,7 +105,7 @@ export default function Login(props: any) {
             onPress={() => props.navigation.goBack()} />
         </View>
 
-        <ScrollView contentContainerStyle={{
+        <ScrollView scrollEnabled={false} showsVerticalScrollIndicator={false} contentContainerStyle={{
           justifyContent: 'flex-end',
           // flex: 1
         }}
@@ -190,7 +190,7 @@ export default function Login(props: any) {
               type="solid"
               backgroundColor={colors.primary}
               fontFamily={fonts?.RubikMedium}
-              color={colors.white}
+              color={colors.black}
               marginTop={15}
               onPress={handleSubmit}
               loading={submitted}

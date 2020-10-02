@@ -10,7 +10,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { NavigationContainer, useTheme } from '@react-navigation/native';
 import { AppearanceProvider } from 'react-native-appearance';
 import RootTheme from './src/Themes';
-import { CustomThemeInterface } from './src/Utils/Interfaces/interfaces';
+import { CustomThemeInterface } from './src/Interfaces/interface';
 import StackNavigator from './src/Navigators/StackNavigator';
 import { Reducers } from './src/interfaces/interface';
 const { store, persistor } = configureStore();
@@ -37,6 +37,13 @@ export default () => {
     // Roboto
     Roboto_medium: require('./assets/Fonts/Roboto_medium.ttf'),
     Roboto: require('./assets/Fonts/Roboto.ttf'),
+    // Rubik
+    FuturaRegular: require('./assets/Fonts/futura/FuturaBook.ttf'),
+    FuturaMedium: require('./assets/Fonts/futura/FuturaMedium.ttf'),
+    FuturaLight: require('./assets/Fonts/futura/FuturaBook.ttf'),
+    FuturaItalic: require('./assets/Fonts/futura/FuturaBookItalic.ttf'),
+    FuturaBold: require('./assets/Fonts/futura/FuturaHeavy.ttf'),
+
   });
   if (!fontsLoaded) {
     return <AppLoading />;
@@ -57,7 +64,7 @@ export default () => {
 const App = () => {
   const theme = useSelector((state: any) => state.theme);
   const { colors, fonts }: CustomThemeInterface = useTheme();
-  
+
   const alert = useSelector((state: Reducers) => state.alert);
 
   const dispatch = useDispatch();

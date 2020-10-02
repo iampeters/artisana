@@ -6,19 +6,19 @@ export default class AuthService {
 
   tokens: any | Tokens;
   constructor() {
-    this.tokens = TokenValidator();
+    // this.tokens = TokenValidator();
 
   }
 
   artisans = API.artisans;
 
-  async createArtisan(data: Artisans) {
+  async createArtisan(data: Artisans, tokens: Tokens) {
     try {
       let response = await fetch(this.artisans + 'create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.tokens.auth_token}`
+          'Authorization': `Bearer ${tokens.auth_token}`
         },
         body: JSON.stringify(data),
       });
@@ -29,7 +29,7 @@ export default class AuthService {
     }
   }
 
-  async getArtisans(data: Pagination) {
+  async getArtisans(data: Pagination, tokens: Tokens) {
     try {
       let response = await fetch(
         this.artisans + `all/?page=${data.page}&&pageSize=${data.pageSize}&&whereCondition=${data.whereCondition}`,
@@ -37,7 +37,7 @@ export default class AuthService {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${this.tokens.auth_token}`
+            'Authorization': `Bearer ${tokens.auth_token}`
           }
         });
 
@@ -47,7 +47,7 @@ export default class AuthService {
     }
   }
 
-  async getArtisanDetails(data: string) {
+  async getArtisanDetails(data: string, tokens: Tokens) {
     try {
       let response = await fetch(
         this.artisans + `${data}`,
@@ -55,7 +55,7 @@ export default class AuthService {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${this.tokens.auth_token}`
+            'Authorization': `Bearer ${tokens.auth_token}`
           }
         });
 

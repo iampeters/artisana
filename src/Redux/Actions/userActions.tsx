@@ -1,5 +1,5 @@
 import AuthService from '../../Services/AuthService';
-import { ResponseDetails } from '../../interfaces/interface';
+import { ResponseDetails, Tokens } from '../../interfaces/interface';
 import AsyncStorage from '@react-native-community/async-storage';
 
 export const userAction = (state: any) => {
@@ -285,8 +285,8 @@ export const forgotPassword = (data: any) => {
   };
 };
 
-export const changePassword = (data: any) => {
-  const api = new AuthService().changePassword(data);
+export const changePassword = (data: any, tokens: Tokens) => {
+  const api = new AuthService().changePassword(data, tokens);
 
   return (dispatch: any) => {
     api
@@ -367,8 +367,8 @@ export const resetPassword = (data: any) => {
   };
 };
 
-export const updateAccount = (data: any) => {
-  const api = new AuthService().updateUser(data);
+export const updateAccount = (data: any, tokens: Tokens) => {
+  const api = new AuthService().updateUser(data, tokens);
 
   return (dispatch: any) => {
     api

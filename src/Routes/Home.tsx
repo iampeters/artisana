@@ -67,7 +67,7 @@ export default function Home(props: any) {
           onPress={() => props.navigation.openDrawer()} />
 
         <Text style={{
-          fontFamily: fonts?.RubikBold,
+          fontFamily: fonts?.FuturaBold,
           color: colors.text,
           fontSize: fontSizes?.cardTitle
         }}>Artisana</Text>
@@ -118,13 +118,13 @@ export default function Home(props: any) {
 
           <View>
             <Text style={{
-              fontFamily: fonts?.RubikBold,
+              fontFamily: fonts?.FuturaBold,
               color: colors.text,
               fontSize: fontSizes?.heading
-            }}>Welcome {user.firstname}</Text>
+            }}>Hi {user.firstname}</Text>
 
             {/* <Text style={{
-              fontFamily: fonts?.ProductSansMedium,
+              fontFamily: fonts?.FuturaMedium,
               color: colors.gray,
               fontSize: 14
             }}>Good morning</Text> */}
@@ -143,16 +143,16 @@ export default function Home(props: any) {
         }}>
 
           <Card
-            backgroundColor={colors.appBar}
+            backgroundColor={colors.dark}
             elevation={6}
-            title="Artisans"
+            title="My Artisans"
             cardValue={120}
             iconName="persons"
-            onPress={() => props.navigation.navigate('MyArtisans')}
+            // onPress={() => props.navigation.navigate('MyArtisans')}
           />
 
           <Card
-            backgroundColor={colors.purple}
+            backgroundColor={colors.dark}
             elevation={6}
             title="My Reviews"
             cardValue={12}
@@ -166,7 +166,7 @@ export default function Home(props: any) {
           marginBottom: 15,
         }}>
           <Text style={{
-            fontFamily: fonts?.RubikBold,
+            fontFamily: fonts?.FuturaBold,
             // fontSize: fontSizes?.body,
             textTransform: 'uppercase',
             color: colors.text
@@ -174,26 +174,26 @@ export default function Home(props: any) {
         </View>
 
         <CardFullWith
-          backgroundColor={colors.light}
+          backgroundColor={colors.dark}
           elevation={2}
           title="Become a premium user for free now"
           iconName="medal"
           textTwo="Enjoy ₦50,000 worth of work tools."
           text="Register up to 15 artisans"
           buttonText="Get Started"
-          buttonColor={colors.dark}
-          buttonTextColor="#fff"
-          textColor={colors.dark}
-          textTwoColor={colors.dark}
-          titleColor={colors.dark}
-          titleTwoColor={colors.dark}
-          iconColor={colors.dark}
-          borderColor={colors.dark}
+          buttonColor={colors.primary}
+          buttonTextColor={colors.dark}
+          textColor={colors.white}
+          textTwoColor={colors.white}
+          titleColor={colors.light}
+          titleTwoColor={colors.light}
+          iconColor={colors.primary}
+          borderColor={colors.light}
           onPress={() => props.navigation.navigate('Profile')}
         />
 
         <CardFullWith
-          backgroundColor={colors.light}
+          backgroundColor={colors.dark}
           elevation={2}
           title="Before giving out that job"
           iconName="id-badge"
@@ -201,16 +201,16 @@ export default function Home(props: any) {
           textTwo="Let’s collaborate to separate the wheat from the chaff"
           buttonText="Get Started"
           buttonColor={colors.primary} // '#dcffeb'
-          buttonTextColor="#fff"
-          textColor={colors.dark}
-          textTwoColor={colors.dark}
-          titleColor={colors.primary}
+          buttonTextColor={colors.dark}
+          textColor={colors.white}
+          textTwoColor={colors.white}
+          titleColor={colors.light}
           iconColor={colors.primary}
-          borderColor={colors.primary}
+          borderColor={colors.light}
         />
 
       </ScrollView>
-      <Fab onPress={() => props.navigation.navigate('AddArtisan')} iconName="plus" size={20} color={colors.white} backgroundColor={colors.purple} label={minify ? "add Artisan" : ""} />
+      <Fab onPress={() => props.navigation.navigate('AddArtisan')} iconName="plus" size={20} color={colors.dark} backgroundColor={colors.primary} label={minify ? "add Artisan" : ""} />
     </Container>
   )
 }

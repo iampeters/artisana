@@ -9,7 +9,7 @@ export default function ReviewDetails() {
   return (
     <View style={{ ...style.container }}>
       <Text style={{
-        fontFamily: fonts?.RubikBold
+        fontFamily: fonts?.FuturaBold
       }}>ReviewDetails</Text>
     </View>
   )

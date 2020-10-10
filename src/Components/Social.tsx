@@ -6,14 +6,14 @@ import * as Animatable from 'react-native-animatable';
 import { CustomThemeInterface } from '../Interfaces/interface';
 import { useTheme } from '@react-navigation/native';
 
-export default function Social() {
+export default function Social(props: SocialAuth) {
   const { colors, fontSizes, fonts }: CustomThemeInterface = useTheme();
 
   return (
     <React.Fragment>
       <Animatable.Text animation='fadeIn' style={{
         color: colors.light,
-        fontFamily: fonts?.ProductSansRegular,
+        fontFamily: fonts?.FuturaRegular,
         fontSize: fontSizes?.small,
         marginTop: 30,
 
@@ -24,7 +24,7 @@ export default function Social() {
         flexDirection: "row",
         marginTop: 20,
       }}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={props.googleAuth}>
           <SocialIcon
             // title='Sign In With Facebook'
             // button
@@ -39,7 +39,7 @@ export default function Social() {
           />
         </TouchableOpacity>
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={props.facebookAuth}>
           <SocialIcon
             // title='Sign In With Facebook'
             // button
@@ -55,4 +55,9 @@ export default function Social() {
       </View>
     </React.Fragment>
   )
+}
+
+interface SocialAuth {
+  facebookAuth?: any;
+  googleAuth?: any;
 }

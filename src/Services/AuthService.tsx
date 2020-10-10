@@ -49,7 +49,6 @@ export default class AuthService {
     }
   }
 
-
   async socialAuth(data: any) {
     try {
       let response = await fetch(this.socialAuthentication, {
@@ -66,13 +65,13 @@ export default class AuthService {
     }
   }
 
-  async getUser(id: string) {
+  async getUser(id: string, tokens: Tokens) {
     try {
       let response = await fetch(this.users + `${id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${this.authToken.auth_token}`
+          'Authorization': `Bearer ${tokens.auth_token}`
         },
       });
 

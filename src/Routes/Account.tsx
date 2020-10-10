@@ -158,14 +158,14 @@ export default function Account(props: any) {
             alignItems: 'center',
           }}>
             <Text style={{
-              fontFamily: fonts?.RubikBold,
+              fontFamily: fonts?.FuturaBold,
               color: colors.text,
               fontSize: fontSizes?.heading,
               marginTop: 10,
             }}>{user.firstname} {user.lastname}</Text>
 
             <Text style={{
-              fontFamily: fonts?.ProductSansMedium,
+              fontFamily: fonts?.FuturaMedium,
               color: colors.gray,
               fontSize: 14
             }}>{user.email}</Text>
@@ -195,7 +195,7 @@ export default function Account(props: any) {
             subTitle={Functions.getDate(user.createdOn)} />
         </View>
 
-        <View style={{
+        {/* <View style={{
           flexDirection: 'row',
           justifyContent: 'space-between',
           alignItems: 'center',
@@ -208,7 +208,7 @@ export default function Account(props: any) {
           <Switch value={isSwitchOn}
             onValueChange={onToggleSwitch}
             color={colors.primary} />
-        </View>
+        </View> */}
 
         <TouchableOpacity onPress={() => props.navigation.navigate('Profile')}>
           <View style={{
@@ -224,7 +224,7 @@ export default function Account(props: any) {
           }}>
             <Fontisto name="person" color={colors.text} size={22} />
             <Text style={{
-              fontFamily: fonts?.ProductSansRegular,
+              fontFamily: fonts?.FuturaRegular,
               fontSize: 16,
               color: colors.text,
               marginLeft: 50
@@ -246,7 +246,7 @@ export default function Account(props: any) {
           }}>
             <FontAwesome5 name="key" color={colors.text} size={22} />
             <Text style={{
-              fontFamily: fonts?.ProductSansRegular,
+              fontFamily: fonts?.FuturaRegular,
               fontSize: 16,
               color: colors.text,
               marginLeft: 50

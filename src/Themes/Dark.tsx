@@ -42,7 +42,7 @@ const Dark = {
     purple: '#4841cb',
     success: '#00a361',
     white: '#ffffff',
-    warn: '#c79100',
+    warn: '#e9b21c',
     text: '#fff',
     dark: '#24292e',
     black: '#000000',

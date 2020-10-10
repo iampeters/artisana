@@ -7,8 +7,10 @@ import * as Animatable from 'react-native-animatable';
 import BackgroundImage from '../Components/ImageBackground';
 import Social from '../Components/Social';
 import CustomButtons from '../Components/Buttons';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Reducers } from '../interfaces/interface';
+import firebase, { FacebookAuth, GoogleAuth } from '../Firebase/FirebaseConfig';
+import { socialAuth } from '../Redux/Actions/userActions';
 
 let img = require('../../assets/tailor.jpg');
 
@@ -18,6 +20,99 @@ export default function GetStarted({ navigation }: any) {
   const { colors, fontSizes, fonts }: CustomThemeInterface = useTheme();
   const auth = useSelector((state: Reducers) => state.auth);
 
+  const dispatch = useDispatch();
+
+
+  const handleGoogleAuth = () => {
+    // open spinner
+    // dispatch({
+    //   type: 'LOADING',
+    //   payload: true
+    // });
+    firebase.auth().signInWithPopup(GoogleAuth)
+      .then(function (result: any) {
+        const name = result.user.displayName.split(' ');
+        const user = {
+          firstname: name[0],
+          lastname: name[1],
+          email: result.user.email,
+          phoneNumber: result.user.phoneNumber,
+          imageUrl: result.user.photoURL
+        }
+
+        dispatch(socialAuth(user));
+
+      }).catch(function (error) {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.email;
+        // The firebase.auth.AuthCredential type that was used.
+        const credential = error.credential;
+
+        console.log(errorCode, errorMessage);
+
+        dispatch({
+          type: 'ALERT',
+          payload: {
+            message: 'Network request failed',
+            successful: false,
+          },
+        });
+
+        // dispatch({
+        //   type: 'LOADING',
+        //   payload: false
+        // });
+      });
+  };
+
+  const handleFacebookAuth = () => {
+    // open spinner
+    dispatch({
+      type: 'LOADING',
+      payload: true
+    });
+    firebase.auth().signInWithPopup(FacebookAuth)
+      .then(function (result: any) {
+        const name = result.user.displayName.split(' ');
+        const user = {
+          firstname: name[0],
+          lastname: name[1],
+          email: result.user.email,
+          phoneNumber: result.user.phoneNumber,
+          imageUrl: result.user.photoURL
+        }
+
+        dispatch(socialAuth(user));
+
+      }).catch(function (error) {
+        // close spinner
+
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.email;
+        // The firebase.auth.AuthCredential type that was used.
+        const credential = error.credential;
+
+        console.log(errorCode, errorMessage);
+        dispatch({
+          type: 'ALERT',
+          payload: {
+            message: 'Network request failed',
+            successful: false,
+          },
+        });
+
+        dispatch({
+          type: 'LOADING',
+          payload: false
+        });
+      });
+  };
 
   React.useEffect(() => {
     if (Object.entries(auth).length !== 0) {
@@ -32,7 +127,7 @@ export default function GetStarted({ navigation }: any) {
 
       <Animatable.Text animation='fadeIn' style={{
         color: colors.white,
-        fontFamily: fonts?.RubikBold,
+        fontFamily: fonts?.FuturaBold,
         textTransform: 'uppercase',
         fontSize: fontSizes?.title,
         marginBottom: 15,
@@ -41,7 +136,7 @@ export default function GetStarted({ navigation }: any) {
       >Get Started</Animatable.Text>
       <Animatable.Text animation='fadeIn' style={{
         color: colors.white,
-        fontFamily: fonts?.ProductSansRegular,
+        fontFamily: fonts?.FuturaRegular,
         fontSize: fontSizes?.body,
         marginBottom: 4,
 
@@ -49,7 +144,7 @@ export default function GetStarted({ navigation }: any) {
       >Artisana is free and easily accessible</Animatable.Text>
       <Animatable.Text animation='fadeIn' style={{
         color: colors.white,
-        fontFamily: fonts?.ProductSansRegular,
+        fontFamily: fonts?.FuturaRegular,
         fontSize: fontSizes?.body,
         marginBottom: 4,
 
@@ -75,7 +170,9 @@ export default function GetStarted({ navigation }: any) {
           marginTop={15}
           onPress={() => navigation.navigate('Register')}
         />
-        <Social />
+        <Social
+          googleAuth={handleGoogleAuth}
+          facebookAuth={handleFacebookAuth} />
       </View>
     </BackgroundImage>
   )

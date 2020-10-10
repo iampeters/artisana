@@ -292,9 +292,9 @@ export default function Profile(props: any) {
             marginTop={15}
             onPress={handleSubmit}
             loading={submitted}
-            // disabled={
-            //   !isEmailValid || !isPhoneNumberValid || submitted ? true : false
-            // }
+            disabled={
+              !isEmailValid || !isPhoneNumberValid || submitted ? true : false
+            }
           />
         </View>
 

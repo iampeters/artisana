@@ -170,7 +170,7 @@ export default function DrawerContent(props: any) {
                     styles.caption,
                     {
                       color: colors.text,
-                      fontFamily: fonts?.ProductSansRegular,
+                      fontFamily: fonts?.FuturaRegular
                     },
                   ]}
                 >
@@ -195,7 +195,7 @@ export default function DrawerContent(props: any) {
                     styles.caption,
                     {
                       color: colors.text,
-                      fontFamily: fonts?.ProductSansRegular,
+                      fontFamily: fonts?.FuturaRegular
                     },
                   ]}
                 >
@@ -219,7 +219,7 @@ export default function DrawerContent(props: any) {
                 props.navigation.navigate('Home');
               }}
               activeTintColor={colors.active}
-              labelStyle={{ color: colors.text, fontSize: fontSizes?.body, fontFamily: fonts?.RubikRegular }}
+              labelStyle={{ color: colors.text, fontSize: fontSizes?.body, fontFamily: fonts?.FuturaRegular}}
             // style={{
             //   justifyContent: 'space-evenly',
             //   alignItems: 'flex-start'
@@ -238,7 +238,7 @@ export default function DrawerContent(props: any) {
                 props.navigation.navigate('Artisans');
               }}
               activeTintColor={colors.active}
-              labelStyle={{ color: colors.text, fontSize: fontSizes?.body, fontFamily: fonts?.RubikRegular }}
+              labelStyle={{ color: colors.text, fontSize: fontSizes?.body, fontFamily: fonts?.FuturaRegular}}
             />
 
             <DrawerItem
@@ -253,7 +253,7 @@ export default function DrawerContent(props: any) {
                 props.navigation.navigate('Reviews');
               }}
               activeTintColor={colors.active}
-              labelStyle={{ color: colors.text, fontSize: fontSizes?.body, fontFamily: fonts?.RubikRegular }}
+              labelStyle={{ color: colors.text, fontSize: fontSizes?.body, fontFamily: fonts?.FuturaRegular}}
             />
 
             <DrawerItem
@@ -270,7 +270,7 @@ export default function DrawerContent(props: any) {
                 });
               }}
               activeTintColor={colors.active}
-              labelStyle={{ color: colors.text, fontSize: fontSizes?.body, fontFamily: fonts?.RubikRegular, }}
+              labelStyle={{ color: colors.text, fontSize: fontSizes?.body, fontFamily: fonts?.FuturaRegular }}
             // style={{
             //   justifyContent: 'space-around',
             //   alignItems: 'flex-start',
@@ -280,9 +280,9 @@ export default function DrawerContent(props: any) {
           </Drawer.Section>
 
           {/* preference */}
-          <Drawer.Section theme={theme}>
+          {/* <Drawer.Section theme={theme}>
             <List style={[styles.spacing]}>
-              <Text style={[styles.spacingText, { color: colors.text, fontSize: fontSizes?.body, fontFamily: fonts?.RubikRegular }]}>
+              <Text style={[styles.spacingText, { color: colors.text, fontSize: fontSizes?.body, fontFamily: fonts?.FuturaRegular}]}>
                 Themes
               </Text>
             </List>
@@ -290,7 +290,7 @@ export default function DrawerContent(props: any) {
               <Content contentContainerStyle={{
                 flexDirection: 'row',
               }}>
-                {/* light theme */}
+
                 <TouchableRipple onPress={() => _setTheme('light')}>
                   <View
                     style={[
@@ -308,7 +308,7 @@ export default function DrawerContent(props: any) {
                   </View>
                 </TouchableRipple>
 
-                {/* dark theme */}
+
                 <TouchableRipple onPress={() => _setTheme('dark')}>
                   <View
                     style={[
@@ -327,7 +327,7 @@ export default function DrawerContent(props: any) {
                 </TouchableRipple>
               </Content>
             </View>
-          </Drawer.Section>
+          </Drawer.Section> */}
         </View>
       </DrawerContentScrollView>
       <Drawer.Section style={styles.bottomDrawerSection}>
@@ -342,7 +342,7 @@ export default function DrawerContent(props: any) {
           onPress={() => confirmExit()}
           labelStyle={{
             color: colors.danger,
-            fontFamily: fonts?.RubikBold,
+            fontFamily: fonts?.FuturaBold,
           }}
         />
       </Drawer.Section>

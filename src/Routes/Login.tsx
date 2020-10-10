@@ -12,7 +12,9 @@ import CustomButtons from '../Components/Buttons';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 import { Reducers } from '../interfaces/interface';
-import { login } from '../Redux/Actions/userActions';
+import { login, socialAuth } from '../Redux/Actions/userActions';
+import firebase, { FacebookAuth, GoogleAuth } from '../Firebase/FirebaseConfig';
+
 
 let img = require('../../assets/carpenter.jpg');
 let { width, height } = Dimensions.get("window");
@@ -46,6 +48,97 @@ export default function Login(props: any) {
 
   const handleVisibility = () => {
     setHidden(hidden ? false : true);
+  };
+
+  const handleGoogleAuth = () => {
+    // open spinner
+    // dispatch({
+    //   type: 'LOADING',
+    //   payload: true
+    // });
+    firebase.auth().signInWithPopup(GoogleAuth)
+      .then(function (result: any) {
+        const name = result.user.displayName.split(' ');
+        const user = {
+          firstname: name[0],
+          lastname: name[1],
+          email: result.user.email,
+          phoneNumber: result.user.phoneNumber,
+          imageUrl: result.user.photoURL
+        }
+
+        dispatch(socialAuth(user));
+
+      }).catch(function (error) {
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.email;
+        // The firebase.auth.AuthCredential type that was used.
+        const credential = error.credential;
+
+        console.log(errorCode, errorMessage);
+
+        dispatch({
+          type: 'ALERT',
+          payload: {
+            message: 'Network request failed',
+            successful: false,
+          },
+        });
+
+        // dispatch({
+        //   type: 'LOADING',
+        //   payload: false
+        // });
+      });
+  };
+
+  const handleFacebookAuth = () => {
+    // open spinner
+    dispatch({
+      type: 'LOADING',
+      payload: true
+    });
+    firebase.auth().signInWithPopup(FacebookAuth)
+      .then(function (result: any) {
+        const name = result.user.displayName.split(' ');
+        const user = {
+          firstname: name[0],
+          lastname: name[1],
+          email: result.user.email,
+          phoneNumber: result.user.phoneNumber,
+          imageUrl: result.user.photoURL
+        }
+
+        dispatch(socialAuth(user));
+
+      }).catch(function (error) {
+        // close spinner
+
+        // Handle Errors here.
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // The email of the user's account used.
+        const email = error.email;
+        // The firebase.auth.AuthCredential type that was used.
+        const credential = error.credential;
+
+        console.log(errorCode, errorMessage);
+        dispatch({
+          type: 'ALERT',
+          payload: {
+            message: 'Network request failed',
+            successful: false,
+          },
+        });
+
+        dispatch({
+          type: 'LOADING',
+          payload: false
+        });
+      });
   };
 
   const handleSubmit = async () => {
@@ -83,7 +176,7 @@ export default function Login(props: any) {
     if (Object.entries(auth).length !== 0) {
       props.navigation.dispatch(StackActions.replace('Auth'));
     }
-    
+
   }, [auth]);
 
 
@@ -115,7 +208,7 @@ export default function Login(props: any) {
           }}>
             <Animatable.Text animation='fadeIn' style={{
               color: colors.white,
-              fontFamily: fonts?.RubikBold,
+              fontFamily: fonts?.FuturaBold,
               textTransform: 'uppercase',
               fontSize: fontSizes?.title,
               marginBottom: 15,
@@ -125,7 +218,7 @@ export default function Login(props: any) {
             >Welcome Back</Animatable.Text>
             <Animatable.Text animation='fadeIn' style={{
               color: colors.light,
-              fontFamily: fonts?.ProductSansRegular,
+              fontFamily: fonts?.FuturaRegular,
               fontSize: fontSizes?.body,
               marginBottom: 4,
 
@@ -206,7 +299,7 @@ export default function Login(props: any) {
             }} onPress={() => props.navigation.navigate('ForgotPassword')}>
               <Text style={{
                 color: colors.light,
-                fontFamily: fonts?.ProductSansRegular,
+                fontFamily: fonts?.FuturaRegular,
                 fontSize: fontSizes?.small,
               }}>Forgot your password?</Text>
             </TouchableOpacity>
@@ -214,7 +307,9 @@ export default function Login(props: any) {
           <View style={{
             ...styles.socialContainer
           }}>
-            <Social />
+            <Social
+              googleAuth={handleGoogleAuth}
+              facebookAuth={handleFacebookAuth} />
           </View>
         </ScrollView>
       </BackgroundImage>

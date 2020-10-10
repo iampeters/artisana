@@ -9,7 +9,7 @@ export default function AddReview() {
   return (
     <View style={{ ...style.container }}>
       <Text style={{
-        fontFamily: fonts?.RubikBold
+        fontFamily: fonts?.FuturaBold
       }}>AddReview</Text>
     </View>
   )

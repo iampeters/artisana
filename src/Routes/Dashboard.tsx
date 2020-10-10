@@ -8,6 +8,7 @@ import Account from './Account';
 import { CustomThemeInterface } from '../Interfaces/interface';
 import { useTheme } from '@react-navigation/native';
 import MyArtisans from './MyArtisans';
+import Category from './Category';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -44,7 +45,7 @@ export default function Dashboard() {
       />
       <Tab.Screen
         name="Artisans"
-        component={Artisans}
+        component={Category}
         options={{
           tabBarLabel: 'Artisans',
           tabBarIcon: ({ color }) => (
@@ -87,7 +88,7 @@ export default function Dashboard() {
 //   return (
 //     <View style={{ ...style.container }}>
 //       <Text style={{
-//         fontFamily: fonts?.RubikBold
+//         fontFamily: fonts?.FuturaBold
 //       }}>Dashboard</Text>
 //     </View>
 //   )

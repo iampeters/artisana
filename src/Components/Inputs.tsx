@@ -57,7 +57,7 @@ export default function InputFieldWithIcon({
         disabled={disabled}
         blurOnSubmit={blurOnSubmit}
         onSubmitEditing={onSubmitEditing}
-        style={{ color: colors.light, fontFamily: fonts?.ProductSansRegular }}
+        style={{ color: colors.light, fontFamily: fonts?.FuturaRegular }}
       />
       {isPassword && (
         <Button transparent onPress={onIconPress} style={styles.inputRightIcon}>

@@ -114,7 +114,7 @@ export default function onboarding() {
     // <View style={{ ...styles.container, backgroundColor: colors.background }}>
     //   <Text style={{
     //     color: colors.text,
-    //     fontFamily: fonts?.RubikRegular,
+    //     fontFamily: fonts?.FuturaRegular,
     //     fontSize: 18
     //   }}
     //   >Onboarding</Text>
@@ -126,8 +126,8 @@ export default function onboarding() {
       skipToPage={2}
       DoneButtonComponent={Done}
       onDone={() => console.log('done')}
-      titleStyles={{ fontFamily: fonts?.RubikBold }}
-      subTitleStyles={{ fontFamily: fonts?.RubikRegular }}
+      titleStyles={{ fontFamily: fonts?.FuturaBold }}
+      subTitleStyles={{ fontFamily: fonts?.FuturaRegular }}
       pages={[
         {
           // <Image source={require('../../assets/user.jpg')} />

@@ -101,7 +101,7 @@ const App = () => {
       duration: 5000,
       buttonTextStyle: {
         color: colors.dark,
-        fontFamily: fonts?.ProductSansRegular,
+        fontFamily: fonts?.FuturaRegular,
       },
       buttonStyle: {
         borderRadius: 20,
@@ -111,7 +111,7 @@ const App = () => {
       // style: { backgroundColor: '#ff3d71' },
       textStyle: {
         color: '#fff',
-        fontFamily: fonts?.ProductSansRegular,
+        fontFamily: fonts?.FuturaRegular,
       },
       onClose: () =>
         dispatch({

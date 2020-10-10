@@ -30,21 +30,21 @@ export default function Card(props: CardProps) {
           flexDirection: 'row',
         }}>
 
-          <Fontisto name={props.iconName} color={colors.white} size={22} />
+          <Fontisto name={props.iconName} color={colors.primary} size={22} />
 
           <View style={{
             justifyContent: 'center',
             alignItems: 'flex-start',
           }}>
             <Text style={{
-              fontFamily: fonts?.ProductSansMedium,
+              fontFamily: fonts?.FuturaMedium,
               fontSize: fontSizes?.body,
               color: colors.white
             }}>{props.title}</Text>
             <Text style={{
-              fontFamily: fonts?.RubikBold,
+              fontFamily: fonts?.FuturaBold,
               fontSize: fontSizes?.cardTitle,
-              color: colors.white,
+              color: colors.primary,
               textAlign: 'center'
             }}>{props.cardValue}</Text>
           </View>

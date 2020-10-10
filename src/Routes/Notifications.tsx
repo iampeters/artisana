@@ -9,7 +9,7 @@ export default function Notifications() {
   return (
     <View style={{ ...style.container }}>
       <Text style={{
-        fontFamily: fonts?.RubikBold
+        fontFamily: fonts?.FuturaBold
       }}>Notifications</Text>
     </View>
   )

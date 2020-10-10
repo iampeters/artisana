@@ -101,7 +101,7 @@ export default function ForgotPassword(props: any) {
           }}>
             <Animatable.Text animation='fadeIn' style={{
               color: colors.white,
-              fontFamily: fonts?.RubikBold,
+              fontFamily: fonts?.FuturaBold,
               textTransform: 'uppercase',
               fontSize: fontSizes?.title,
               marginBottom: 15,
@@ -172,7 +172,7 @@ export default function ForgotPassword(props: any) {
             }} onPress={() => props.navigation.navigate('Login')}>
               <Text style={{
                 color: colors.light,
-                fontFamily: fonts?.ProductSansRegular,
+                fontFamily: fonts?.FuturaRegular,
                 fontSize: fontSizes?.small,
               }}>Remembered password? Sign In</Text>
             </TouchableOpacity>

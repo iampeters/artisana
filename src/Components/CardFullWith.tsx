@@ -44,7 +44,7 @@ export default function CardFullWith(props: CardProps) {
           flex: 5
         }}>
           <Text style={{
-            fontFamily: fonts?.RubikBold,
+            fontFamily: fonts?.FuturaBold,
             fontSize: fontSizes?.body,
             color: props.titleColor,
             // textTransform: 'uppercase',

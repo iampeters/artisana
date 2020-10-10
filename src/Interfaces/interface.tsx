@@ -55,9 +55,8 @@ export interface Reducers {
   login: any;
   alert: AlertProps;
   artisan: ResponseDetails;
-  file: ResponseDetails;
-  reviews: ResponseDetails
-  jobs: ResponseDetails
+  requests: ResponseDetails;
+  category: ResponseDetails;
 }
 
 interface AlertProps {
@@ -186,4 +185,9 @@ export interface PaginationConfig {
   pageSize?: number;
   whereCondition?: any;
   token?: string;
+}
+export interface Category {
+  name: string;
+  imageUrl: string;
+  _id: string;
 }

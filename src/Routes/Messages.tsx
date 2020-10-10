@@ -9,7 +9,7 @@ export default function Messages() {
   return (
     <View style={{ ...style.container }}>
       <Text style={{
-        fontFamily: fonts?.RubikBold
+        fontFamily: fonts?.FuturaBold
       }}>Profile</Text>
     </View>
   )

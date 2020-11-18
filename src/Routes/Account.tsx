@@ -186,7 +186,7 @@ export default function Account(props: any) {
           <TextCard
             backgroundColor={colors.light}
             title="Location"
-            subTitle={user.state ? (user.state + '' + user.country) : 'N/A'} />
+            subTitle={user.state ? (user.state + ', ' + user.country) : 'N/A'} />
 
           <TextCard backgroundColor={colors.light} title="Last Login"
             subTitle={Functions.getDate(user.lastLogin)} />

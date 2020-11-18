@@ -16,7 +16,7 @@ export default function DrawerNavigator() {
     <Drawer.Navigator drawerContent={(props) => <DrawerContent {...props} />}>
       <Drawer.Screen name='Dashboard' component={Dashboard} />
       <Drawer.Screen name='Profile' component={Profile} />
-      {/* <Drawer.Screen name='Artisans' component={Artisans} /> */}
+      <Drawer.Screen name='Artisans' component={Artisans} />
       {/* <Drawer.Screen name='MyArtisans' component={MyArtisans} /> */}
       <Drawer.Screen name='AddArtisan' component={AddArtisan} />
       <Drawer.Screen name='ChangePassword' component={ChangePassword} />

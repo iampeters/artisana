@@ -11,7 +11,7 @@ import InputFieldWithIcon from '../Components/Inputs';
 import CustomButtons from '../Components/Buttons';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
-import { Reducers } from '../interfaces/interface';
+import { Reducers } from '../Interfaces/interface';
 import { login, socialAuth } from '../Redux/Actions/userActions';
 import firebase, { FacebookAuth, GoogleAuth } from '../Firebase/FirebaseConfig';
 
@@ -146,7 +146,6 @@ export default function Login(props: any) {
       email: email,
       password: password,
     };
-
 
     setHidden(true);
     setSubmitted(true);

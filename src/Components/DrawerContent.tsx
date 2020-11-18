@@ -210,8 +210,8 @@ export default function DrawerContent(props: any) {
             <DrawerItem
               icon={() => (
                 <MaterialCommunityIcons
-                  name='view-dashboard'
-                  style={{ color: colors.text, fontSize: 22 }}
+                  name='home'
+                  style={{ color: colors.text, fontSize: 24 }}
                 />
               )}
               label='Home'

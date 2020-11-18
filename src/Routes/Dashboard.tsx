@@ -1,6 +1,6 @@
 import React from 'react';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import { Octicons as Icon, Ionicons, Fontisto, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Octicons as Icon, Ionicons, Fontisto, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import Home from './Home';
 import MyReviews from './MyReviews';
 import Artisans from './Artisans';
@@ -9,6 +9,7 @@ import { CustomThemeInterface } from '../Interfaces/interface';
 import { useTheme } from '@react-navigation/native';
 import MyArtisans from './MyArtisans';
 import Category from './Category';
+import Messages from './Messages';
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -25,7 +26,7 @@ export default function Dashboard() {
       barStyle={{
         backgroundColor: colors.background
       }}
-      sceneAnimationEnabled
+      // sceneAnimationEnabled
       shifting
       screenOptions={{
         // tabBarBadge: 6
@@ -38,18 +39,18 @@ export default function Dashboard() {
         options={{
           tabBarLabel: 'Home',
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="view-dashboard" color={color} size={26} />
+            <MaterialCommunityIcons name="home" color={color} size={24} />
           ),
           // tabBarBadge: true
         }}
       />
       <Tab.Screen
-        name="Artisans"
+        name="Category"
         component={Category}
         options={{
-          tabBarLabel: 'Artisans',
+          tabBarLabel: 'Category',
           tabBarIcon: ({ color }) => (
-            <Fontisto name="persons" color={color} size={22} />
+            <Fontisto name="persons" color={color} size={20} />
           ),
         }}
       />
@@ -59,7 +60,7 @@ export default function Dashboard() {
         options={{
           tabBarLabel: 'Reviews',
           tabBarIcon: ({ color }) => (
-            <Fontisto name="star" color={color} size={22} />
+            <Fontisto name="star" color={color} size={20} />
           ),
         }}
       />
@@ -69,7 +70,19 @@ export default function Dashboard() {
         options={{
           tabBarLabel: 'Account',
           tabBarIcon: ({ color }) => (
-            <Fontisto name="person" color={color} size={26} />
+            <Fontisto name="person" color={color} size={20} />
+          ),
+        }}
+      />
+
+      <Tab.Screen
+        name="Message"
+        component={Messages}
+        options={{
+          tabBarLabel: 'Message',
+          tabBarBadge: true,
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="inbox" color={color} size={24} />
           ),
         }}
       />

@@ -14,7 +14,7 @@ export default class AuthService {
 
   async createArtisan(data: Artisans, tokens: Tokens) {
     try {
-      let response = await fetch(this.artisans + 'create', {
+      let response = await fetch(this.artisans + 'onboardArtisan', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,6 +1,6 @@
 import API from '../API/Apis';
 import { TokenValidator } from './TokenValidator';
-import { Tokens, User } from '../interfaces/interface';
+import { Tokens, User } from '../Interfaces/interface';
 import AsyncStorage from '@react-native-community/async-storage';
 
 export default class AuthService {

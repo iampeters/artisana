@@ -1,23 +1,18 @@
-import ArtisanService from '../../Services/ArtisanService';
-import { Pagination, Artisans, ResponseDetails, Tokens } from '../../Interfaces/interface';
-import { Dispatch } from 'redux';
+import ConfigService from "../../Services/ConfigService";
+import { ResponseDetails, Tokens } from "../../interfaces/interface";
 
+export const fileUpload = (state: FormData, token: Tokens) => {
+  const api = new ConfigService().fileUpload(state, token);
 
-export const createArtisan = (state: Artisans, token: Tokens) => {
-  const api = new ArtisanService().createArtisan(state, token);
-
-  return (dispatch: Dispatch) => {
+  return (dispatch: any) => {
     api
       .then((res: ResponseDetails) => {
-        const result = res;
-        if (result.successful) {
+        if (res.successful) {
           dispatch({
-            type: 'ALERT',
-            payload: {
-              message: 'Artisan added successfully',
-              successful: true,
-            },
+            type: 'FILE_UPLOAD',
+            payload: res,
           });
+
         } else {
           dispatch({
             type: 'ALERT',
@@ -44,18 +39,18 @@ export const createArtisan = (state: Artisans, token: Tokens) => {
   };
 };
 
-export const getArtisans = (state: Pagination, tokens: Tokens) => {
-  const api = new ArtisanService().getArtisans(state, tokens);
+export const getArtisanDashboard = (token: Tokens) => {
+  const api = new ConfigService().getArtisanDashboard(token);
 
-  return (dispatch: Dispatch) => {
+  return (dispatch: any) => {
     api
       .then((res: ResponseDetails) => {
         if (res.successful) {
           dispatch({
-            type: 'GET_ARTISANS',
-            payload: res,
+            type: 'DASHBOARD',
+            payload: res.result,
           });
-         
+
         } else {
           dispatch({
             type: 'ALERT',
@@ -82,17 +77,19 @@ export const getArtisans = (state: Pagination, tokens: Tokens) => {
   };
 };
 
-export const getArtisanDetails = (id: string, tokens: Tokens) => {
-  const api = new ArtisanService().getArtisanDetails(id, tokens);
 
-  return (dispatch: Dispatch) => {
+export const getUserDashboard = (token: Tokens) => {
+  const api = new ConfigService().getUserDashboard(token);
+
+  return (dispatch: any) => {
     api
       .then((res: ResponseDetails) => {
         if (res.successful) {
           dispatch({
-            type: 'GET_ARTISAN',
-            payload: res,
+            type: 'DASHBOARD',
+            payload: res.result,
           });
+
         } else {
           dispatch({
             type: 'ALERT',

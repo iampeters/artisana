@@ -6,11 +6,12 @@ import Fab from '../Components/Fab';
 import { Container, Content } from 'native-base';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Icon, Avatar } from 'react-native-elements';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Card from '../Components/Card';
 import CardFullWith from '../Components/CardFullWith';
 import { SharedElement } from 'react-navigation-shared-element';
 import { StatusBar } from 'expo-status-bar';
+import { getUserDashboard } from '../Redux/Actions/configAction';
 
 
 function wait(timeout: number) {
@@ -25,12 +26,22 @@ export default function Home(props: any) {
   const user = useSelector((state: Reducers) => state.user);
   const alert = useSelector((state: Reducers) => state.alert);
   const theme = useSelector((state: Reducers) => state.theme);
+  const dashboard = useSelector((state: Reducers) => state.dashboard);
+  const token = useSelector((state: Reducers) => state.tokens);
+
+  const dispatch = useDispatch();
 
   const [minify, setMinify] = React.useState(true);
   const [refreshing, setRefreshing] = React.useState(false);
 
 
   let { width, height } = Dimensions.get("window");
+  let filter: any = {};
+  let paginationConfig = {
+    page: 1,
+    pageSize: 1,
+    whereCondition: JSON.stringify(filter)
+  }
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -46,6 +57,15 @@ export default function Home(props: any) {
       setMinify(true)
     }
   }
+
+  React.useEffect(() => {
+    filter.createdBy = user._id;
+    paginationConfig.whereCondition = JSON.stringify(filter);
+
+    dispatch(getUserDashboard(token));
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch,]);
 
   return (
     <Container style={{ ...style.container, backgroundColor: colors.background }}>
@@ -146,7 +166,7 @@ export default function Home(props: any) {
             backgroundColor={colors.dark}
             elevation={6}
             title="My Artisans"
-            cardValue={120}
+            cardValue={dashboard.artisans ? dashboard.artisans : 0}
             iconName="persons"
             // onPress={() => props.navigation.navigate('MyArtisans')}
           />
@@ -155,7 +175,7 @@ export default function Home(props: any) {
             backgroundColor={colors.dark}
             elevation={6}
             title="My Reviews"
-            cardValue={12}
+            cardValue={dashboard.reviews ? dashboard.reviews : 0}
             iconName="star"
             onPress={() => props.navigation.navigate('Reviews')}
           />
@@ -173,7 +193,7 @@ export default function Home(props: any) {
           }}>Get Started</Text>
         </View>
 
-        <CardFullWith
+        {/* <CardFullWith
           backgroundColor={colors.dark}
           elevation={2}
           title="Become a premium user for free now"
@@ -190,7 +210,7 @@ export default function Home(props: any) {
           iconColor={colors.primary}
           borderColor={colors.light}
           onPress={() => props.navigation.navigate('Profile')}
-        />
+        /> */}
 
         <CardFullWith
           backgroundColor={colors.dark}
@@ -207,10 +227,11 @@ export default function Home(props: any) {
           titleColor={colors.light}
           iconColor={colors.primary}
           borderColor={colors.light}
+          onPress={() => props.navigation.navigate('AddArtisan')}
         />
 
       </ScrollView>
-      <Fab onPress={() => props.navigation.navigate('AddArtisan')} iconName="plus" size={20} color={colors.dark} backgroundColor={colors.primary} label={minify ? "add Artisan" : ""} />
+      {/* <Fab onPress={() => props.navigation.navigate('AddArtisan')} iconName="plus" size={20} color={colors.dark} backgroundColor={colors.primary} label={minify ? "add Artisan" : ""} /> */}
     </Container>
   )
 }

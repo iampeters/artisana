@@ -1,48 +1,39 @@
 import React from 'react'
 import { View, Text, StyleSheet, RefreshControl, Dimensions, Platform } from 'react-native'
-import { CustomThemeInterface, Reducers, Artisans, Category } from '../Interfaces/interface';
+import { CustomThemeInterface, Reducers, Category } from '../Interfaces/interface';
 import { useTheme } from '@react-navigation/native';
-import Fab from '../Components/Fab';
-import { Container, Content, Image } from 'native-base';
-import { ScrollView } from 'react-native-gesture-handler';
-import { FontAwesome5 } from '@expo/vector-icons';
+import { Container } from 'native-base';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector, useDispatch } from 'react-redux';
 import { StatusBar } from 'expo-status-bar';
 import CustomHeader from '../Components/Header';
 import { Avatar, SearchBar } from 'react-native-elements';
-import { getArtisans } from '../Redux/Actions/artisanActions';
 import { getCategory } from '../Redux/Actions/categoryActions';
-
-
-function wait(timeout: number) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, timeout);
-  });
-}
+import Placeholder from '../Components/Placeholder';
 
 
 export default function CategoryComponent(props: any) {
   const { colors, fonts, fontSizes }: CustomThemeInterface = useTheme();
-  const user = useSelector((state: Reducers) => state.user);
   const alert = useSelector((state: Reducers) => state.alert);
   const loading = useSelector((state: Reducers) => state.loading);
-  const category = useSelector((state: Reducers) => state.category); const tokens = useSelector((state: Reducers) => state.tokens);
+  const category = useSelector((state: Reducers) => state.category);
+  const tokens = useSelector((state: Reducers) => state.tokens);
   const theme = useSelector((state: Reducers) => state.theme);
 
   const dispatch = useDispatch();
 
-  const [minify, setMinify] = React.useState(true);
-  const [refreshing, setRefreshing] = React.useState(loading);
+  const [, setMinify] = React.useState(true);
+  const [refreshing] = React.useState(loading);
 
   const [searchQuery, setSearchQuery] = React.useState('');
-  const [page, setPage] = React.useState(0)
-  const [pageSize, setPageSize] = React.useState(25)
+  const [page] = React.useState(0)
+  const [pageSize] = React.useState(25)
 
-  let { width, height } = Dimensions.get("window");
+  let { width } = Dimensions.get("window");
   let categoryList: any = category.items && category.items;
 
 
-  let filter: Artisans = {};
+  let filter: any = {};
   let paginationConfig = {
     page: page + 1,
     pageSize,
@@ -69,15 +60,37 @@ export default function CategoryComponent(props: any) {
   }
 
   React.useEffect(() => {
-    dispatch(getCategory(paginationConfig, tokens));
-
     dispatch({
       type: 'LOADING',
       payload: true
     })
 
+    if (searchQuery.length >= 2) {
+      filter.name = searchQuery.trim();
+      paginationConfig.whereCondition = JSON.stringify(filter)
+
+      dispatch({
+        type: 'LOADING',
+        payload: true
+      })
+
+      dispatch(getCategory(paginationConfig, tokens));
+    } else {
+
+      if (searchQuery.length === 0) {
+        delete filter.name;
+
+        dispatch({
+          type: 'LOADING',
+          payload: true
+        })
+
+        dispatch(getCategory(paginationConfig, tokens));
+      }
+    }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, page]);
+  }, [dispatch, page, searchQuery]);
 
 
   React.useEffect(() => {
@@ -103,9 +116,10 @@ export default function CategoryComponent(props: any) {
       <StatusBar style={theme === "light" ? "dark" : "light"} />
 
       <CustomHeader
-        title="Artisans"
+        title="Category"
         justifyContent="center"
-        onPress={() => props.navigation.goBack()} />
+      // onPress={() => props.navigation.goBack()} 
+      />
 
 
       <ScrollView
@@ -135,16 +149,18 @@ export default function CategoryComponent(props: any) {
 
         <View>
           <SearchBar
-            placeholder="Type Here..."
+            placeholder="Search Category..."
             onChangeText={(text: any) => setSearchQuery(text)}
             value={searchQuery}
             platform={Platform.OS === "ios" ? "ios" : "android"}
             containerStyle={{
-              backgroundColor: 'transparent',
-              marginBottom: 10
+              backgroundColor: Platform.OS === "android" ? colors.light : colors.transparent,
+              padding: 0,
+              marginBottom: 10,
             }}
           />
         </View>
+        {/* <Placeholder /> */}
 
         <View style={{
           flexDirection: "row",
@@ -158,23 +174,25 @@ export default function CategoryComponent(props: any) {
             <React.Fragment>
               {categoryList.length !== 0 && categoryList?.map((item: Category, index: number) => {
                 return (
-                  <View key={index} style={{
-                    width: 115,
-                    height: 115,
-                    borderRadius: 5,
-                    // backgroundColor: colors.light,
-                    marginBottom: 10,
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}>
-                    <Avatar source={{ uri: item.imageUrl }} size="large" />
-                    <Text style={{
-                      color: colors.dark,
-                      fontFamily: fonts?.FuturaMedium,
-                      marginTop: 5,
-                      fontSize: fontSizes?.small
-                    }}>{item.name}</Text>
-                  </View>
+                  <TouchableOpacity key={index} onPress={() => props.navigation.navigate(`Artisans`, { item })}>
+                    <View style={{
+                      width: 115,
+                      height: 115,
+                      borderRadius: 5,
+                      // backgroundColor: colors.light,
+                      marginBottom: 10,
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}>
+                      <Avatar source={{ uri: item.imageUrl }} size="large" />
+                      <Text style={{
+                        color: colors.dark,
+                        fontFamily: fonts?.FuturaMedium,
+                        marginTop: 5,
+                        fontSize: fontSizes?.small
+                      }}>{item.name}</Text>
+                    </View>
+                  </TouchableOpacity>
                 )
               })}
 
@@ -188,7 +206,9 @@ export default function CategoryComponent(props: any) {
                 </View>
               }
             </React.Fragment>
-          ) : (<></>)}
+          ) : (<>
+            <Text>Loading...</Text>
+          </>)}
 
         </View>
 

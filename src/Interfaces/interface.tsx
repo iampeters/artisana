@@ -15,8 +15,9 @@ export interface Routes {
 
 export interface Artisans {
   firstname?: string;
+  name?: string | any;
   lastname?: string;
-  rating?: number;
+  rating?: number | any;
   phoneNumber?: string;
   email?: string;
   specialization?: string;
@@ -30,6 +31,8 @@ export interface Artisans {
   businessName?: string;
   RCNumber?: string;
   NIN?: string;
+  categoryId?: any;
+  experience?: number | any;
 }
 
 export interface Reviews {
@@ -45,18 +48,35 @@ export interface Reviews {
 }
 
 export interface Reducers {
+  file: any;
   auth: any;
   theme: string;
   loading: boolean;
   menu: string;
   navBar: boolean;
   user: User;
+  dashboard: Dashboard;
   tokens: Tokens;
   login: any;
   alert: AlertProps;
   artisan: ResponseDetails;
   requests: ResponseDetails;
   category: ResponseDetails;
+  reviews: ResponseDetails
+  jobs: ResponseDetails;
+  chats: ResponseDetails;
+  activeChats: ResponseDetails;
+  messageDots: any;
+}
+
+export interface Dashboard {
+  allJobs?: number;
+  artisans?: number;
+  reviews?: number
+  ongoing?: number;
+  completed?: number;
+  newRequest?: number;
+  declinedRequest?: number;
 }
 
 interface AlertProps {
@@ -191,3 +211,19 @@ export interface Category {
   imageUrl: string;
   _id: string;
 }
+
+export interface StateProps {
+  name: string;
+  capital: string;
+  _id: any;
+}
+
+export interface CountryProps {
+  code: string;
+  label: string;
+  phone: string;
+}
+
+
+
+

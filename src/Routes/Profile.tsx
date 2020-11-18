@@ -42,8 +42,8 @@ export default function Profile(props: any) {
   const [country, setCountry]: any = React.useState(user.country);
   const [phoneNumber, setPhoneNumber]: any = React.useState(user.phoneNumber);
   const [email, setEmail]: any = React.useState(user.email);
-  const [isPhoneNumberValid, setPhoneNumberValid]: any = React.useState(null);
-  const [isEmailValid, setEmailValid]: any = React.useState(null);
+  const [isPhoneNumberValid, setPhoneNumberValid]: any = React.useState(user.phoneNumber? true: null);
+  const [isEmailValid, setEmailValid]: any = React.useState(user.email? true:null);
   const [submitted, setSubmitted] = React.useState(false);
 
   const RAND_NUM = Math.floor(Math.random() * 1234567890);
@@ -56,7 +56,7 @@ export default function Profile(props: any) {
     if (pic) {
       fd.append('imageUrl', pic)
       fd.append('code', `${RAND_NUM}`)
-      dispatch(fileUpload(fd))
+      dispatch(fileUpload(fd, tokens))
       dispatch({
         type: 'LOADING',
         payload: true

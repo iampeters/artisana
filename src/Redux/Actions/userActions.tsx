@@ -1,5 +1,5 @@
 import AuthService from '../../Services/AuthService';
-import { ResponseDetails, Tokens } from '../../interfaces/interface';
+import { ResponseDetails, Tokens } from '../../Interfaces/interface';
 import AsyncStorage from '@react-native-community/async-storage';
 
 export const userAction = (state: any) => {
@@ -203,10 +203,10 @@ export const signUp = (state: any) => {
 };
 
 
-export const getUserDetails = (id: any) => {
+export const getUserDetails = (id: any, tokens: Tokens) => {
   const authService = new AuthService();
 
-  const api = authService.getUser(id);
+  const api = authService.getUser(id, tokens);
 
   return (dispatch: any) => {
     api
@@ -374,6 +374,13 @@ export const updateAccount = (data: any, tokens: Tokens) => {
     api
       .then((res: ResponseDetails) => {
         if (res.successful) {
+
+          // set logged in user state
+          dispatch({
+            type: 'USER',
+            payload: res.result,
+          });
+
           dispatch({
             type: 'ALERT',
             payload: {

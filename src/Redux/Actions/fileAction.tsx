@@ -1,8 +1,8 @@
 import FileService from "../../Services/FileService";
-import { ResponseDetails } from "../../interfaces/interface";
+import { ResponseDetails, Tokens } from "../../interfaces/interface";
 
-export const fileUpload = (state: FormData) => {
-  const api = new FileService().fileUpload(state);
+export const fileUpload = (state: FormData, token: Tokens) => {
+  const api = new FileService().fileUpload(state, token);
 
   return (dispatch: any) => {
     api

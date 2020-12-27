@@ -2,7 +2,7 @@ import React from 'react'
 import { View, Text, StyleSheet, RefreshControl, Dimensions, Platform, Alert } from 'react-native'
 import { Category, CountryProps, CustomThemeInterface, Reducers, StateProps } from '../Interfaces/interface';
 import { useTheme } from '@react-navigation/native';
-import { ActionSheet, Container, Icon, Item, Picker } from 'native-base';
+import { ActionSheet, Container, Icon, Item } from 'native-base';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 import { StatusBar } from 'expo-status-bar';
@@ -15,6 +15,8 @@ import { Countries } from '../Helpers/Countries';
 import { createArtisan } from '../Redux/Actions/artisanActions';
 import * as ImagePicker from 'expo-image-picker';
 import { fileUpload } from '../Redux/Actions/fileAction';
+// import { Picker } from '@react-native-picker/picker';
+import {Picker } from '@react-native-community/picker';
 
 export default function AddArtisan(props: any) {
   const { colors, fonts, fontSizes }: CustomThemeInterface = useTheme();
@@ -49,6 +51,8 @@ export default function AddArtisan(props: any) {
   const [state, setState]: any = React.useState('');
   const [submitted, setSubmitted] = React.useState(false);
   const [isImage, setIsImage] = React.useState(false);
+  const [pickerOpacity, setPickerOpacity] = React.useState(0);
+  const [opacityOfOtherItems, setOpacityOfOtherItems] = React.useState(1);
 
   const RAND_NUM = Math.floor(Math.random() * 1234567890);
 
@@ -120,7 +124,7 @@ export default function AddArtisan(props: any) {
       country: country
     };
 
-    dispatch(createArtisan(artisan, tokens));    
+    dispatch(createArtisan(artisan, tokens));
   }
 
   const handleFileAction = (type: any) => {
@@ -141,7 +145,6 @@ export default function AddArtisan(props: any) {
   };
 
   const handleFile = () => {
-    // buttons
     const BUTTONS = [
       {
         text: 'Camera',
@@ -151,24 +154,11 @@ export default function AddArtisan(props: any) {
         text: 'File Explorer',
         icon: "ios-albums",
       },
-      // {
-      //   text: 'Delete',
-      //   icon: 'trash',
-      // },
-      // {
-      //   text: 'Cancel',
-      //   icon: 'close',
-      // },
     ];
-    // const DESTRUCTIVE_INDEX = 2;
-    // const CANCEL_INDEX = 3;
 
-    // setHighlightColor('');
     ActionSheet.show(
       {
         options: BUTTONS,
-        // cancelButtonIndex: CANCEL_INDEX,
-        // destructiveButtonIndex: DESTRUCTIVE_INDEX,
       },
       (buttonIndex) => {
         handleFileAction(BUTTONS[buttonIndex]);
@@ -323,10 +313,10 @@ export default function AddArtisan(props: any) {
       reset();
       subscribe();
 
-        dispatch({
-          type: 'GET_CATEGORY',
-          payload: {}
-        });
+      dispatch({
+        type: 'GET_CATEGORY',
+        payload: {}
+      });
 
       dispatch({
         type: 'FILE_UPLOAD',
@@ -334,6 +324,19 @@ export default function AddArtisan(props: any) {
       });
     });
   }, [dispatch]);
+
+  const toggle = () => {
+    if (Platform.OS === 'ios') {
+
+      if (pickerOpacity == 0) {
+        setPickerOpacity(1);
+        setOpacityOfOtherItems(0) // THIS WILL HIDE YOUR BUTTON!
+      } else {
+        setPickerOpacity(0);
+        setOpacityOfOtherItems(1);
+      }
+    }
+  }
 
 
   React.useEffect(() => {
@@ -368,8 +371,9 @@ export default function AddArtisan(props: any) {
       <ScrollView
         onScroll={handleState}
         onScrollToTop={() => setMinify(false)}
-        // onMomentumScrollEnd={handleState}
+        onMomentumScrollEnd={handleState}
         showsVerticalScrollIndicator={false}
+        scrollEventThrottle={16}
         scrollsToTop
 
         refreshControl={
@@ -508,23 +512,18 @@ export default function AddArtisan(props: any) {
             error={!isPhoneNumberValid && isPhoneNumberValid !== null}
           />
 
-          <Item picker style={{
+         { Platform.OS === "android" && <Item picker style={{
             backgroundColor: colors.light,
             borderBottomColor: colors.transparent,
             padding: 5
           }}>
             <Picker
               mode="dialog"
-              iosIcon={<Icon name="arrow-down" />}
-              style={{ width: undefined }}
-              placeholder="Select Category"
-              placeholderStyle={{ color: colors.dark }}
-              // placeholderStyle={{ color: "#bfc6ea" }}
-              placeholderIconColor={colors.dark}
+              style={{ width: '100%', color: colors.dark }}
               selectedValue={categoryId}
               onValueChange={(itemValue: any, itemPosition: number) => setCategoryId(itemValue)}
             >
-              <Picker.Item label="Select Category" color={colors.warn} />
+              <Picker.Item label="Select Category" value={""} color={colors.warn} />
               {categoryList.length !== 0 && categoryList.map((item: Category, index: number) => {
                 return (
                   <Picker.Item label={item.name} value={item._id} key={index} />
@@ -532,7 +531,31 @@ export default function AddArtisan(props: any) {
               })}
 
             </Picker>
-          </Item>
+          </Item>}
+
+          {Platform.OS === "ios" && <Item picker style={{
+            backgroundColor: colors.light,
+            borderBottomColor: colors.transparent,
+            padding: 5
+          }}>
+            <Picker
+
+              mode="dialog"
+              style={{ width: '100%'}}
+              // itemStyle={{ height: 50, borderColor: colors.transparent  }}
+              selectedValue={categoryId}
+              onValueChange={(itemValue: any, itemPosition: number) => setCategoryId(itemValue)}
+            >
+              <Picker.Item label="Select" value={""} color={colors.warn} />
+              {categoryList.length !== 0 && categoryList.map((item: Category, index: number) => {
+                return (
+                  <Picker.Item label={item.name} value={item._id} key={index} />
+                )
+              })}
+
+            </Picker>
+          </Item>}
+
 
           <View style={{
             marginTop: 40,
@@ -615,16 +638,11 @@ export default function AddArtisan(props: any) {
           }}>
             <Picker
               mode="dialog"
-              iosIcon={<Icon name="arrow-down" />}
-              style={{ width: undefined }}
-              placeholder="State"
-              placeholderStyle={{ color: colors.dark }}
-              // placeholderStyle={{ color: "#bfc6ea" }}
-              placeholderIconColor={colors.dark}
+              style={{ width: '100%' }}
               selectedValue={state}
               onValueChange={(itemValue: any, itemPosition: number) => setState(itemValue)}
             >
-              <Picker.Item label="Select State" color={colors.warn} />
+              <Picker.Item label="Select State" value="" color={colors.warn} />
               {States.length !== 0 && States.map((item: StateProps, index: number) => {
                 return (
                   <Picker.Item label={item.name} value={item.name} key={index} />
@@ -642,16 +660,11 @@ export default function AddArtisan(props: any) {
           }}>
             <Picker
               mode="dialog"
-              iosIcon={<Icon name="arrow-down" />}
-              style={{ width: undefined }}
-              placeholder="Country"
-              placeholderStyle={{ color: colors.dark }}
-              // placeholderStyle={{ color: "#bfc6ea" }}
-              placeholderIconColor={colors.dark}
+              style={{ width: '100%'}}
               selectedValue={country}
               onValueChange={(itemValue: any, itemPosition: number) => setCountry(itemValue)}
             >
-              <Picker.Item label="Select Country" color={colors.warn} />
+              <Picker.Item label="Select Country" value="" color={colors.warn} />
               {Countries.length !== 0 && Countries.map((item: CountryProps, index: number) => {
                 return (
                   <Picker.Item label={item.label} value={item.label} key={index} />
@@ -685,7 +698,6 @@ export default function AddArtisan(props: any) {
 
 
       </ScrollView>
-      {/* <Fab onPress={() => props.navigation.navigate('AddArtisan')} iconName="plus" size={20} color={colors.white} backgroundColor={colors.purple} label={minify ? "add Artisan" : ""} /> */}
     </Container>
   )
 }

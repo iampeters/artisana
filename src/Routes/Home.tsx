@@ -162,13 +162,22 @@ export default function Home(props: any) {
           alignItems: 'center',
         }}>
 
-          <Card
+          {/* <Card
             backgroundColor={colors.dark}
             elevation={6}
             title="My Artisans"
             cardValue={dashboard.artisans ? dashboard.artisans : 0}
             iconName="persons"
-            // onPress={() => props.navigation.navigate('MyArtisans')}
+            onPress={() => props.navigation.navigate('MyArtisans')}
+          /> */}
+
+          <Card
+            backgroundColor={colors.dark}
+            elevation={6}
+            title="My Jobs"
+            cardValue={dashboard.allJobs ? dashboard.allJobs : 0}
+            iconName="briefcase"
+            onPress={() => props.navigation.navigate('MyJobs')}
           />
 
           <Card

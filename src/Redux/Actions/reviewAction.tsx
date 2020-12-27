@@ -1,9 +1,9 @@
 import ReviewService from '../../Services/ReviewService';
-import { Pagination, Reviews, ResponseDetails } from '../../interfaces/interface';
+import { Pagination, Reviews, ResponseDetails, Tokens } from '../../interfaces/interface';
 import { Dispatch } from 'redux';
 
-export const createReviews = (state: Reviews) => {
-  const api = new ReviewService().createReviews(state);
+export const createReviews = (state: Reviews, token: Tokens) => {
+  const api = new ReviewService().createReviews(state, token);
 
   return (dispatch: Dispatch) => {
     api
@@ -43,8 +43,8 @@ export const createReviews = (state: Reviews) => {
   };
 };
 
-export const getReviews = (state: Pagination) => {
-  const api = new ReviewService().getReviews(state);
+export const getReviews = (state: Pagination, token: Tokens) => {
+  const api = new ReviewService().getReviews(state, token);
 
   return (dispatch: Dispatch) => {
     api
@@ -54,6 +54,7 @@ export const getReviews = (state: Pagination) => {
             type: 'GET_REVIEWS',
             payload: res,
           });
+          
         } else {
           dispatch({
             type: 'ALERT',
@@ -80,8 +81,8 @@ export const getReviews = (state: Pagination) => {
   };
 };
 
-export const getReviewDetails = (id: string) => {
-  const api = new ReviewService().getReviewDetails(id);
+export const getReviewDetails = (id: string, token: Tokens) => {
+  const api = new ReviewService().getReviewDetails(id, token);
 
   return (dispatch: Dispatch) => {
     api
@@ -117,8 +118,8 @@ export const getReviewDetails = (id: string) => {
   };
 };
 
-export const updateReview = (data: Reviews) => {
-  const api = new ReviewService().updateReview(data);
+export const updateReview = (data: Reviews, token: Tokens) => {
+  const api = new ReviewService().updateReview(data, token);
 
   return (dispatch: Dispatch) => {
     api
@@ -154,8 +155,8 @@ export const updateReview = (data: Reviews) => {
   };
 };
 
-export const deleteReview = (id: string) => {
-  const api = new ReviewService().deleteReview(id);
+export const deleteReview = (id: string, token: Tokens) => {
+  const api = new ReviewService().deleteReview(id, token);
 
   return (dispatch: Dispatch) => {
     api

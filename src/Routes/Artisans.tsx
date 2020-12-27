@@ -1,16 +1,16 @@
 import React from 'react'
 import { View, Text, StyleSheet, RefreshControl, Dimensions, Platform } from 'react-native'
 import { CustomThemeInterface, Reducers, Artisans, Category } from '../Interfaces/interface';
-import { useTheme } from '@react-navigation/native';
+import { useIsFocused, useNavigation, useTheme } from '@react-navigation/native';
 import Fab from '../Components/Fab';
-import { Container, Content } from 'native-base';
+import { Container, Icon } from 'native-base';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-import { FontAwesome5 } from '@expo/vector-icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { StatusBar } from 'expo-status-bar';
 import CustomHeader from '../Components/Header';
 import { Avatar, SearchBar } from 'react-native-elements';
 import { getArtisans } from '../Redux/Actions/artisanActions';
+import { MaterialIcons } from '@expo/vector-icons';
 
 
 export default function ArtisanList(props: any) {
@@ -23,9 +23,10 @@ export default function ArtisanList(props: any) {
   const theme = useSelector((state: Reducers) => state.theme);
 
   const dispatch = useDispatch();
+  const isFocused = useIsFocused();
 
   const [minify, setMinify] = React.useState(true);
-  const [refreshing, setRefreshing] = React.useState(loading? true: false);
+  const [refreshing, setRefreshing] = React.useState(loading ? true : false);
 
   const [searchQuery, setSearchQuery] = React.useState('');
   const [page, setPage] = React.useState(0)
@@ -34,9 +35,9 @@ export default function ArtisanList(props: any) {
   let { width, height } = Dimensions.get("window");
 
   let params: Category = props.route.params.item;
-  let artisanList: any = artisans.items && artisans.items;
+  let artisanList: any = artisans.items && artisans.items;  
 
-  let filter: Artisans = { categoryId: params._id };
+  let filter: Artisans = {categoryId: params._id};
   let paginationConfig = {
     page: page + 1,
     pageSize,
@@ -44,14 +45,14 @@ export default function ArtisanList(props: any) {
   }
 
   const onRefresh = React.useCallback(() => {
-   
+
     dispatch(getArtisans(paginationConfig, tokens));
     dispatch({
       type: 'LOADING',
       payload: true
     })
 
-  }, [refreshing]);
+  }, [refreshing]);  
 
   const handleState = (event: any) => {
     let scrollHeight = event.nativeEvent.contentOffset.y;
@@ -64,25 +65,24 @@ export default function ArtisanList(props: any) {
 
   React.useEffect(() => {
 
-    // dispatch({
-    //   type: 'GET_ARTISANS',
-    //   payload: {},
-    // });
-   
-    props.navigation.addListener('focus', () => {
+    if (isFocused) {
       dispatch({
         type: 'LOADING',
         payload: true
-      })
-      
+      });
+
       dispatch(getArtisans(paginationConfig, tokens));
-    });
+    }
 
-
-    // return subscription;
+    return () => {
+      dispatch({
+        type: 'GET_ARTISANS',
+        payload: {},
+      });
+    }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, page]);
+  }, [dispatch, isFocused]);
 
 
   React.useEffect(() => {
@@ -109,14 +109,14 @@ export default function ArtisanList(props: any) {
 
       <CustomHeader
         title={params.name}
-        justifyContent="center"
+        showLeftIcon
         onPress={() => props.navigation.goBack()} />
 
 
       <ScrollView
         onScroll={handleState}
         onScrollToTop={() => setMinify(false)}
-        // onMomentumScrollEnd={handleState}
+        onMomentumScrollEnd={handleState}
         showsVerticalScrollIndicator={false}
         pagingEnabled
         scrollsToTop
@@ -145,8 +145,9 @@ export default function ArtisanList(props: any) {
             value={searchQuery}
             platform={Platform.OS === "ios" ? "ios" : "android"}
             containerStyle={{
-              backgroundColor: 'transparent',
-
+              backgroundColor: Platform.OS === "android" ? colors.light : colors.transparent,
+              padding: 0,
+              marginBottom: 10,
             }}
           />
         </View>
@@ -156,30 +157,65 @@ export default function ArtisanList(props: any) {
           flexWrap: "wrap",
           justifyContent: "space-between",
           alignItems: "flex-start",
-          paddingHorizontal: 10
+          // paddingHorizontal: 10
         }}>
 
           {artisanList && !loading ? (
             <React.Fragment>
-              {artisanList.length !== 0 && artisanList?.map((item: Category, index: number) => {
+              {artisanList.length !== 0 && artisanList?.map((item: Artisans, index: number) => {
                 return (
-                  <TouchableOpacity key={index} >
+                  <TouchableOpacity key={index} onPress={() => props.navigation.navigate(`ArtisanDetails`, { item })}>
                     <View style={{
-                      width: 115,
-                      height: 115,
+                      width: width - 40,
+                      // height: 120,
                       borderRadius: 5,
-                      // backgroundColor: colors.light,
+                      backgroundColor: colors.light,
                       marginBottom: 10,
                       justifyContent: "center",
                       alignItems: "center",
+                      flexDirection: "row",
+                      padding: 10
                     }}>
-                      <Avatar source={{ uri: item.imageUrl }} size="large" />
-                      <Text style={{
-                        color: colors.dark,
-                        fontFamily: fonts?.FuturaMedium,
-                        marginTop: 5,
-                        fontSize: fontSizes?.small
-                      }}>{item.name}</Text>
+                      <View style={{
+                        // backgroundColor: colors.warn,
+                        flex: 1,
+                        // flexDirection: "row",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}>
+                        <Avatar source={{ uri: item.imageUrl }} size="medium" rounded />
+                        <Text style={{
+                          color: colors.dark,
+                          fontFamily: fonts?.FuturaMedium,
+                          marginTop: 5,
+                          fontSize: fontSizes?.small
+                        }}>{item.name}</Text>
+                        {item.rating > 0 && <MaterialIcons name="verified-user" size={20} color={colors.success} />}
+                      </View>
+
+                      <View style={{
+                        justifyContent: "center",
+                        alignItems: "center",
+                        // backgroundColor: colors.danger,
+                        flex: 1
+                      }}>
+                       
+                        <Text style={{
+                          color: colors.dark,
+                          fontFamily: fonts?.FuturaMedium,
+                          marginTop: 5,
+                          fontSize: fontSizes?.small
+                        }}>{item.rating}</Text>
+                        <Icon name="star" style={{
+                          color: colors.warn
+                        }} />
+                        {/* <Text style={{
+                          color: colors.dark,
+                          fontFamily: fonts?.FuturaMedium,
+                          marginTop: 5,
+                          fontSize: fontSizes?.small
+                        }}>Rating</Text> */}
+                      </View>
                     </View>
                   </TouchableOpacity>
                 )
@@ -196,7 +232,7 @@ export default function ArtisanList(props: any) {
               }
             </React.Fragment>
           ) : (<>
-            <Text>Loading... {loading? 'true': 'false'}</Text>
+            <Text>Loading...</Text>
           </>)}
 
         </View>

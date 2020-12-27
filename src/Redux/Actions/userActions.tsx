@@ -56,13 +56,13 @@ export const login = (state: any) => {
           });
 
           // send response to login screen
-          dispatch({
-            type: 'ALERT',
-            payload: {
-              successful: true,
-              message: 'Logged in successfully.',
-            },
-          });
+          // dispatch({
+          //   type: 'ALERT',
+          //   payload: {
+          //     successful: true,
+          //     message: 'Logged in successfully.',
+          //   },
+          // });
         } else {
           dispatch({
             type: 'ALERT',

@@ -243,6 +243,21 @@ export default function DrawerContent(props: any) {
 
             <DrawerItem
               icon={() => (
+                <MaterialCommunityIcons
+                  name='briefcase'
+                  style={{ color: colors.text, fontSize: 24 }}
+                />
+              )}
+              label='My Jobs'
+              onPress={() => {
+                props.navigation.navigate('MyJobs');
+              }}
+              activeTintColor={colors.active}
+              labelStyle={{ color: colors.text, fontSize: fontSizes?.body, fontFamily: fonts?.FuturaRegular }}
+            />
+
+            <DrawerItem
+              icon={() => (
                 <Fontisto
                   name='star'
                   style={{ color: colors.text, fontSize: 20 }}

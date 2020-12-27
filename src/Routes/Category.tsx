@@ -42,11 +42,11 @@ export default function CategoryComponent(props: any) {
 
   const onRefresh = React.useCallback(() => {
     // wait(2000).then(() => setRefreshing(false));
-    dispatch(getCategory(paginationConfig, tokens));
-    dispatch({
-      type: 'LOADING',
-      payload: true
-    })
+    // dispatch(getCategory(paginationConfig, tokens));
+    // dispatch({
+    //   type: 'LOADING',
+    //   payload: true
+    // })
 
   }, [refreshing]);
 
@@ -60,38 +60,53 @@ export default function CategoryComponent(props: any) {
   }
 
   React.useEffect(() => {
-    dispatch({
-      type: 'LOADING',
-      payload: true
-    })
-
-    if (searchQuery.length >= 2) {
-      filter.name = searchQuery.trim();
-      paginationConfig.whereCondition = JSON.stringify(filter)
-
+    
+    const unsubscribe = props.navigation.addListener('focus', () => {
+      
       dispatch({
         type: 'LOADING',
         payload: true
-      })
+      });
 
-      dispatch(getCategory(paginationConfig, tokens));
-    } else {
-
-      if (searchQuery.length === 0) {
-        delete filter.name;
+      if (searchQuery.length >= 2) {
+        filter.name = searchQuery.trim();
+        paginationConfig.whereCondition = JSON.stringify(filter)
 
         dispatch({
           type: 'LOADING',
           payload: true
-        })
+        });
 
         dispatch(getCategory(paginationConfig, tokens));
+      } else {
+
+        if (searchQuery.length === 0) {
+          delete filter.name;
+
+          dispatch({
+            type: 'LOADING',
+            payload: true
+          });
+
+          dispatch(getCategory(paginationConfig, tokens));
+        }
       }
-    }
+    });
+
+    const unmount = props.navigation.addListener('blur', () => {
+      dispatch({
+        type: 'GET_CATEGORY',
+        payload: {}
+      });
+
+      return () => {
+        unsubscribe;
+        unmount;
+      }
+    });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, page, searchQuery]);
-
 
   React.useEffect(() => {
     if (Object.entries(alert).length !== 0) {
@@ -167,7 +182,7 @@ export default function CategoryComponent(props: any) {
           flexWrap: "wrap",
           justifyContent: "space-between",
           alignItems: "flex-start",
-          paddingHorizontal: 10
+          // paddingHorizontal: 10
         }}>
 
           {categoryList ? (
@@ -176,10 +191,10 @@ export default function CategoryComponent(props: any) {
                 return (
                   <TouchableOpacity key={index} onPress={() => props.navigation.navigate(`Artisans`, { item })}>
                     <View style={{
-                      width: 115,
+                      width: width / 2.17,
                       height: 115,
                       borderRadius: 5,
-                      // backgroundColor: colors.light,
+                      backgroundColor: colors.light,
                       marginBottom: 10,
                       justifyContent: "center",
                       alignItems: "center",

@@ -162,7 +162,7 @@ export default function GetStarted({ navigation }: any) {
         />
 
         <CustomButtons
-          title="Sign Up"
+          title="Sign Up As User"
           type="solid"
           backgroundColor={colors.primary}
           fontFamily={fonts?.RubikMedium}

@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text, Dimensions, ImageBackground } from 'react-native'
-import { Fontisto } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { CustomThemeInterface } from '../Interfaces/interface';
 import { useTheme } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -30,7 +30,7 @@ export default function Card(props: CardProps) {
           flexDirection: 'row',
         }}>
 
-          <Fontisto name={props.iconName} color={colors.primary} size={22} />
+          <MaterialCommunityIcons name={props.iconName} color={colors.primary} size={22} />
 
           <View style={{
             justifyContent: 'center',

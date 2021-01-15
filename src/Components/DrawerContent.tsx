@@ -235,7 +235,7 @@ export default function DrawerContent(props: any) {
               )}
               label='Artisans'
               onPress={() => {
-                props.navigation.navigate('Artisans');
+                props.navigation.navigate('Category');
               }}
               activeTintColor={colors.active}
               labelStyle={{ color: colors.text, fontSize: fontSizes?.body, fontFamily: fonts?.FuturaRegular}}

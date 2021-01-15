@@ -25,11 +25,11 @@ const Light = {
     FuturaBold: "FuturaBold",
   },
   fontSizes: {
-    body: 18,
-    heading: 26,
-    title: 35,
+    body: 16,
+    heading: 24,
+    title: 33,
     small: 14,
-    cardTitle: 20,
+    cardTitle: 18,
     iconSize: 22,
   },
   colors: {

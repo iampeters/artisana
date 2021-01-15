@@ -286,9 +286,9 @@ export default function Profile(props: any) {
           <CustomButtons
             title="UPDATE PROFILE"
             type="solid"
-            backgroundColor={colors.appBar}
+            backgroundColor={colors.warn}
             fontFamily={fonts?.RubikMedium}
-            color={colors.white}
+            color={colors.dark}
             marginTop={15}
             onPress={handleSubmit}
             loading={submitted}

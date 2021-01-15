@@ -26,6 +26,63 @@ export const logout = () => {
   }
 };
 
+export const refreshToken = (token: Tokens) => {
+  const authService = new AuthService();
+
+  const api = authService.refreshToken(token);
+
+  return (dispatch: any) => {
+    api
+      .then((res: any) => {
+        const result = res;
+        if (result.token) {
+          // set auth
+          Storage();
+
+          // set authentication to true
+          dispatch({
+            type: 'AUTH_TOKEN',
+            payload: { auth_token: result.token, refresh_token: result.refresh_token },
+          });
+          // set logged in user state
+          dispatch({
+            type: 'USER',
+            payload: result.user,
+          });
+
+          dispatch({
+            type: 'IS_LOGGED_IN',
+            payload: { isLoggedIn: true },
+          });
+
+          // send response to login screen
+          dispatch({
+            type: 'ALERT',
+            payload: {
+              successful: true,
+              message: 'Refreshed successfully.',
+            },
+          });
+        } else {
+          dispatch({
+            type: 'ALERT',
+            payload: res,
+          });
+        }
+      })
+      .catch(() => {
+        // send err to application
+        dispatch({
+          type: 'ALERT',
+          payload: {
+            message: 'Network request failed',
+            successful: false,
+          },
+        });
+      });
+  };
+};
+
 export const login = (state: any) => {
   const authService = new AuthService();
 

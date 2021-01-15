@@ -25,11 +25,11 @@ const Dark = {
     FuturaBold: "FuturaBold",
   },
   fontSizes: {
-    body: 18,
-    heading: 26,
-    title: 35,
-    cardTitle: 20,
-    small: 16,
+    body: 16,
+    heading: 24,
+    title: 33,
+    small: 14,
+    cardTitle: 18,
     iconSize: 22,
   },
   colors: {

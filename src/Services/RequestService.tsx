@@ -110,4 +110,21 @@ export default class JobService {
     }
   }
 
+  async timeoutRequest(id: any, tokens: Tokens) {
+    try {
+      let response = await fetch(this.requests + `timeout/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${tokens.auth_token}`
+        },
+        body: JSON.stringify({})
+      });
+
+      return await response.json();
+    } catch (err) {
+      throw err;
+    }
+  }
+
 }

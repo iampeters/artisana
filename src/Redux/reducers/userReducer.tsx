@@ -59,3 +59,47 @@ export const dashboardReducer = (state: any = {}, action: any) => {
       return state;
   }
 };
+
+export const messageReducer = (state: any = {}, action: any) => {
+  switch (action.type) {
+    case 'GET_CHATS': {
+      return action.payload;
+    }
+
+    default:
+      return state;
+  }
+};
+
+export const activeChatsReducer = (state: any = {}, action: any) => {
+  switch (action.type) {
+    case 'GET_ACTIVE_CHATS': {
+      return action.payload;
+    }
+
+    default:
+      return state;
+  }
+};
+
+export const notificationReducer = (state: any = {}, action: any) => {
+  switch (action.type) {
+    case 'NOTIFICATIONS': {
+      return action.payload;
+    }
+
+    default:
+      return state;
+  }
+};
+
+
+export const chatUserReducer = (state: any = {}, action: any) => {
+  switch (action.type) {
+    case 'CHAT_USER': {
+      return action.payload;
+    }
+    default:
+      return state;
+  }
+};

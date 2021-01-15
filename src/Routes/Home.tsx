@@ -12,6 +12,7 @@ import CardFullWith from '../Components/CardFullWith';
 import { SharedElement } from 'react-navigation-shared-element';
 import { StatusBar } from 'expo-status-bar';
 import { getUserDashboard } from '../Redux/Actions/configAction';
+import { logout, refreshToken } from '../Redux/Actions/userActions';
 
 
 function wait(timeout: number) {
@@ -28,11 +29,12 @@ export default function Home(props: any) {
   const theme = useSelector((state: Reducers) => state.theme);
   const dashboard = useSelector((state: Reducers) => state.dashboard);
   const token = useSelector((state: Reducers) => state.tokens);
+  const loading = useSelector((state: Reducers) => state.loading);
 
   const dispatch = useDispatch();
 
   const [minify, setMinify] = React.useState(true);
-  const [refreshing, setRefreshing] = React.useState(false);
+  const [refreshing, setRefreshing] = React.useState(loading);
 
 
   let { width, height } = Dimensions.get("window");
@@ -44,9 +46,9 @@ export default function Home(props: any) {
   }
 
   const onRefresh = React.useCallback(() => {
-    setRefreshing(true);
+    dispatch({ type: "LOADING", payload: true });
 
-    wait(2000).then(() => setRefreshing(false));
+    dispatch(getUserDashboard(token));
   }, [refreshing]);
 
   const handleState = (event: any) => {
@@ -66,6 +68,35 @@ export default function Home(props: any) {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch,]);
+
+  React.useEffect(() => {
+
+    if (Object.entries(alert).length !== 0) {
+      if (!alert.successful) {
+
+        if (alert.message === "Session Expired! Login again to continue.") {
+
+          dispatch(refreshToken(token));
+          dispatch(logout());
+
+          props.navigation.navigate('Login');
+          dispatch({
+            type: 'ALERT',
+            payload: {}
+          })
+        } else {
+          if (alert.message === "Refreshed successfully.")
+            onRefresh();
+        }
+
+        dispatch({
+          type: 'ALERT',
+          payload: {}
+        })
+
+      }
+    }
+  }, [dispatch, alert]);
 
   return (
     <Container style={{ ...style.container, backgroundColor: colors.background }}>

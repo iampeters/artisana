@@ -97,7 +97,7 @@ const App = () => {
       text: message,
       buttonText: 'Dismiss',
       type: type,
-      position: 'bottom',
+      position: 'top',
       duration: 5000,
       buttonTextStyle: {
         color: colors.dark,
@@ -124,7 +124,9 @@ const App = () => {
   React.useEffect(() => {
     if (Object.entries(alert).length !== 0) {
       if (alert.successful) {
-        displayAlert("success", alert.message)
+        if (alert.message !== "Message sent") {
+          displayAlert("success", alert.message)
+        }
       } else {
         displayAlert("danger", alert.message)
       }

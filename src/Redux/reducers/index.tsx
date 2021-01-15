@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import { themeReducer } from './themeReducer';
 import { loaderReducer, menuReducer, navBarReducer } from './loaderReducer';
-import { authReducer, userReducer, tokenReducer, loginReducer, onboardingReducer, dashboardReducer } from './userReducer';
+import { authReducer, userReducer, tokenReducer, loginReducer, onboardingReducer, dashboardReducer, messageReducer, activeChatsReducer, notificationReducer, chatUserReducer } from './userReducer';
 import { artisanReducer } from './artisanReducer';
 import { alertReducer } from './alertReducer';
 import { fileReducer } from './fileReducer';
@@ -24,7 +24,11 @@ const rootReducer = combineReducers({
   category: categoryReducer,
   dashboard: dashboardReducer,
   jobs: jobReducer,
-  requests: requestReducer
+  requests: requestReducer,
+  chats: messageReducer,
+  activeChats: activeChatsReducer,
+  messageDots: notificationReducer,
+  chatUser: chatUserReducer,
 });
 
 export default rootReducer;

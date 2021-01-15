@@ -213,9 +213,9 @@ export default function ChangePassword(props: any) {
           <CustomButtons
             title="CHANGE PASSWORD"
             type="solid"
-            backgroundColor={colors.appBar}
+            backgroundColor={colors.warn}
             fontFamily={fonts?.RubikMedium}
-            color={colors.white}
+            color={colors.dark}
             marginTop={15}
             onPress={handleSubmit}
             loading={submitted}

@@ -225,7 +225,7 @@ export default function ArtisanDetails(props: any) {
                     </View>
                     { user._id !== item.userId._id && <View>
 
-                      <TouchableOpacity onPress={() => props.navigation.navigate('AddArtisan', { item: item.userId })}>
+                      <TouchableOpacity onPress={() => props.navigation.navigate('Messages', { item: item.userId })}>
                         <MaterialIcons name="email" size={25} color={colors.success} />
                       </TouchableOpacity>
 

@@ -1,17 +1,16 @@
 import React from 'react'
-import { View, Text, StyleSheet, RefreshControl, Dimensions, Platform, Alert } from 'react-native'
-import { Category, CountryProps, CustomThemeInterface, Reducers, StateProps } from '../Interfaces/interface';
-import { Avatar } from 'react-native-elements';
+import { View, Text, StyleSheet, RefreshControl, Dimensions } from 'react-native'
+import { CustomThemeInterface, Reducers } from '../Interfaces/interface';
 
-import { useIsFocused, useTheme } from '@react-navigation/native';
-import { ActionSheet, Container, Icon, Item } from 'native-base';
-import { ScrollView, TouchableHighlight, TouchableOpacity } from 'react-native-gesture-handler';
+import { useIsFocused, useNavigation, useTheme } from '@react-navigation/native';
+import { Container } from 'native-base';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 import { StatusBar } from 'expo-status-bar';
 import CustomHeader from '../Components/Header';
 import { getJobs } from '../Redux/Actions/jobActions';
 import { getDate } from '../Helpers/Functions';
-import { Ionicons, Fontisto, MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Fab from '../Components/Fab';
 
 
@@ -23,19 +22,18 @@ export default function MyJobs(props: any) {
   const theme = useSelector((state: Reducers) => state.theme);
   const loading = useSelector((state: Reducers) => state.loading);
   const [minify, setMinify] = React.useState(true);
-  const [refreshing, setRefreshing] = React.useState(loading);
-  const file = useSelector((state: Reducers) => state.file);
+  const [refreshing] = React.useState(loading);
   const tokens = useSelector((state: Reducers) => state.tokens);
   const jobs = useSelector((state: Reducers) => state.jobs);
 
   const dispatch = useDispatch();
-  const Theme = useTheme();
+  const navigation = useNavigation();
   let list: any[] = jobs.items ? jobs.items : [];
 
 
   const isFocused = useIsFocused();
 
-  let { width, height } = Dimensions.get("window");
+  let { width } = Dimensions.get("window");
   let filter: any = { userId: user._id };
   let paginationConfig = {
     page: 1,
@@ -158,7 +156,7 @@ export default function MyJobs(props: any) {
                       width: "100%",
                       paddingVertical: 5,
                       marginBottom: 10,
-                    }} >
+                    }} onPress={() => navigation.navigate("JobDetails", {id: item._id}) }>
                     <View style={{
                       flexDirection: "row",
                       width: "100%",
@@ -200,7 +198,9 @@ export default function MyJobs(props: any) {
                           paddingHorizontal: 15,
                           paddingVertical: 10,
                           borderRadius: 25,
-                          fontSize: 12
+                          fontSize: 12,
+                          minWidth: 105,
+                          textAlign: 'center'
                         }}>{item.status}</Text>}
 
                         {item.status === "NEW" && <Text style={{
@@ -209,7 +209,9 @@ export default function MyJobs(props: any) {
                           paddingHorizontal: 15,
                           paddingVertical: 10,
                           borderRadius: 25,
-                          fontSize: 12
+                          fontSize: 12,
+                          minWidth: 105,
+                          textAlign: 'center'
                         }}>{item.status}</Text>}
 
                         {item.status === "COMPLETED" && <Text style={{
@@ -218,7 +220,9 @@ export default function MyJobs(props: any) {
                           paddingHorizontal: 15,
                           paddingVertical: 10,
                           borderRadius: 25,
-                          fontSize: 12
+                          fontSize: 12,
+                          minWidth: 105,
+                          textAlign: 'center'
                         }}>{item.status}</Text>}
 
                         {item.status === "ASSIGNED" && <Text style={{
@@ -227,7 +231,9 @@ export default function MyJobs(props: any) {
                           paddingHorizontal: 15,
                           paddingVertical: 10,
                           borderRadius: 25,
-                          fontSize: 12
+                          fontSize: 12,
+                          minWidth: 105,
+                          textAlign: 'center'
                         }}>{item.status}</Text>}
 
                       </View>

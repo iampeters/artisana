@@ -268,13 +268,13 @@ export default function AddJobs
             marginTop={15}
             onPress={handleSubmit}
             loading={submitted}
-            // disabled={
-            //   description === '' ? true : false || !phoneNumberValid ||
-            //     title === '' ? true : false ||
-            //       state === '' ? true : false ||
-            //         lga === '' ? true : false ||
-            //         submitted
-            // }
+            disabled={
+              description === '' ? true : false || !phoneNumberValid ||
+                title === '' ? true : false ||
+                  state === '' ? true : false ||
+                    lga === '' ? true : false ||
+                    submitted
+            }
           />
         </View>
 

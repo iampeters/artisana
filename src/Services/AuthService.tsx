@@ -11,6 +11,7 @@ export default class AuthService {
   users = API.users;
   identity = API.identity;
   authToken: Tokens | any;
+  refresh_token = API.identity + 'refresh';
 
   constructor() {
     // this.authToken = TokenValidator();
@@ -147,6 +148,22 @@ export default class AuthService {
       throw err;
     }
   }
-  
+
+  async refreshToken(tokens: Tokens) {
+    try {
+      let response = await fetch(this.refresh_token, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${tokens.refresh_token}`
+        },
+        body: JSON.stringify({ auth_token: tokens.auth_token }),
+      });
+
+      return await response.json();
+    } catch (err) {
+      throw err;
+    }
+  }
 
 }

@@ -677,9 +677,9 @@ export default function AddArtisan(props: any) {
           <CustomButtons
             title="ADD ARTISAN"
             type="solid"
-            backgroundColor={colors.appBar}
+            backgroundColor={colors.warn}
             fontFamily={fonts?.RubikMedium}
-            color={colors.white}
+            color={colors.dark}
             marginTop={15}
             onPress={handleSubmit}
             loading={submitted}

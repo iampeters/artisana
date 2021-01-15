@@ -170,6 +170,17 @@ export default function GetStarted({ navigation }: any) {
           marginTop={15}
           onPress={() => navigation.navigate('Register')}
         />
+{/* 
+        <CustomButtons
+          title="Sign Up As Artisan"
+          type="solid"
+          backgroundColor={colors.black}
+          fontFamily={fonts?.RubikMedium}
+          color={colors.white}
+          marginTop={15}
+          onPress={() => navigation.navigate('Register')}
+        /> */}
+
         <Social
           googleAuth={handleGoogleAuth}
           facebookAuth={handleFacebookAuth} />

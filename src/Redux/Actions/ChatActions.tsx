@@ -1,16 +1,18 @@
-import RequestService from "../../Services/RequestService";
-import { Pagination, ResponseDetails, Tokens } from "../../interfaces/interface";
 import { Dispatch } from "redux";
+import { Pagination, ResponseDetails, Tokens } from "../../Interfaces/interface";
+import AuthService from "../../Services/AuthService";
+import ChatService from "../../Services/ChatService";
+import NotificationService from "../../Services/NotificationService";
 
-export const getRequests = (state: Pagination, tokens: Tokens) => {
-  const api = new RequestService().getRequests(state, tokens);
+export const getActiveChats = (state: Pagination, token: Tokens) => {
+  const api = new ChatService().getActiveChats(state, token);
 
   return (dispatch: Dispatch) => {
     api
       .then((res: ResponseDetails) => {
         if (res.successful) {
           dispatch({
-            type: 'GET_REQUESTS',
+            type: 'GET_ACTIVE_CHATS',
             payload: res,
           });
         } else {
@@ -39,15 +41,97 @@ export const getRequests = (state: Pagination, tokens: Tokens) => {
   };
 };
 
-export const getRequestDetails = (id: any, tokens: Tokens) => {
-  const api = new RequestService().getRequestDetails(id, tokens);
+export const getChats = (state: Pagination, userId: string, token: Tokens) => {
+  const api = new ChatService().getChats(state, userId, token);
 
   return (dispatch: Dispatch) => {
     api
       .then((res: ResponseDetails) => {
         if (res.successful) {
+
           dispatch({
-            type: 'GET_REQUESTS_DETAILS',
+            type: 'GET_CHATS',
+            payload: res,
+          });
+        } else {
+          dispatch({
+            type: 'ALERT',
+            payload: res,
+          });
+        }
+      })
+      .catch(() => {
+        // send err to application
+        dispatch({
+          type: 'ALERT',
+          payload: {
+            message: 'Network request failed',
+            successful: false,
+          },
+        });
+      }).finally(() => {
+        dispatch({
+          type: 'LOADING',
+          payload: false,
+        });
+
+      });
+  };
+};
+
+export const sendMessage = (data: any, token: Tokens) => {
+  const api = new ChatService().createChat(data, token);
+
+  return (dispatch: Dispatch) => {
+    api
+      .then((res: any) => {
+        
+        if (res.successful) {
+          dispatch({
+            type: 'ALERT',
+            payload: {
+              message: 'Message sent',
+              successful: true,
+            },
+          });
+        } else {
+          dispatch({
+            type: 'ALERT',
+            payload: res,
+          });
+        }
+      })
+      .catch(() => {
+        // send err to application
+        dispatch({
+          type: 'ALERT',
+          payload: {
+            message: 'Network request failed',
+            successful: false,
+          },
+        });
+      }).finally(() => {
+        dispatch({
+          type: 'LOADING',
+          payload: false,
+        });
+
+      });
+  };
+};
+
+
+export const getChatUserDetails = (id: any, token: Tokens) => {
+  const api = new AuthService().getUser(id, token);
+
+  return (dispatch: any) => {
+    api
+      .then((res: ResponseDetails) => {
+        if (res.successful) {
+
+          // set logged in user state
+          dispatch({
+            type: 'CHAT_USER',
             payload: res.result,
           });
         } else {
@@ -76,19 +160,17 @@ export const getRequestDetails = (id: any, tokens: Tokens) => {
   };
 };
 
-export const assignRequest = (state: any, tokens: Tokens) => {
-  const api = new RequestService().assignRequest(state, tokens);
+
+export const markAsRead = (state: any, token: Tokens) => {
+  const api = new NotificationService().markAsRead(state, token);
 
   return (dispatch: Dispatch) => {
     api
       .then((res: ResponseDetails) => {
         if (res.successful) {
           dispatch({
-            type: 'ALERT',
-            payload: {
-              message: 'Job assigned successfully',
-              successful: true,
-            },
+            type: 'MARK_AS_READ',
+            payload: res.result,
           });
         } else {
           dispatch({
@@ -114,165 +196,4 @@ export const assignRequest = (state: any, tokens: Tokens) => {
 
       });
   };
-};
-
-export const cancelRequest = (state: any, tokens: Tokens) => {
-  const api = new RequestService().cancelRequest(state, tokens);
-
-  return (dispatch: Dispatch) => {
-    api
-      .then((res: ResponseDetails) => {
-        if (res.successful) {
-          dispatch({
-            type: 'ALERT',
-            payload: {
-              message: 'Job request cancelled successfully',
-              successful: true,
-            },
-          });
-        } else {
-          dispatch({
-            type: 'ALERT',
-            payload: res,
-          });
-        }
-      })
-      .catch(() => {
-        // send err to application
-        dispatch({
-          type: 'ALERT',
-          payload: {
-            message: 'Network request failed',
-            successful: false,
-          },
-        });
-      }).finally(() => {
-        dispatch({
-          type: 'LOADING',
-          payload: false,
-        });
-
-      });
-  };
-};
-
-export const acceptRequest = (state: any, tokens: Tokens) => {
-  const api = new RequestService().acceptRequest(state, tokens);
-
-  return (dispatch: Dispatch) => {
-    api
-      .then((res: ResponseDetails) => {
-        if (res.successful) {
-          dispatch({
-            type: 'ALERT',
-            payload: {
-              message: 'Job request accepted successfully',
-              successful: true,
-            },
-          });
-        } else {
-          dispatch({
-            type: 'ALERT',
-            payload: res,
-          });
-        }
-      })
-      .catch(() => {
-        // send err to application
-        dispatch({
-          type: 'ALERT',
-          payload: {
-            message: 'Network request failed',
-            successful: false,
-          },
-        });
-      }).finally(() => {
-        dispatch({
-          type: 'LOADING',
-          payload: false,
-        });
-
-      });
-  };
-};
-
-export const rejectRequest = (state: any, tokens: Tokens) => {
-  const api = new RequestService().rejectRequest(state, tokens);
-
-  return (dispatch: Dispatch) => {
-    api
-      .then((res: ResponseDetails) => {
-        if (res.successful) {
-          dispatch({
-            type: 'ALERT',
-            payload: {
-              message: 'Job request rejected successfully',
-              successful: true,
-            },
-          });
-        } else {
-          dispatch({
-            type: 'ALERT',
-            payload: res,
-          });
-        }
-      })
-      .catch(() => {
-        // send err to application
-        dispatch({
-          type: 'ALERT',
-          payload: {
-            message: 'Network request failed',
-            successful: false,
-          },
-        });
-      }).finally(() => {
-        dispatch({
-          type: 'LOADING',
-          payload: false,
-        });
-
-      });
-  };
-};
-
-
-export const timeoutRequest = (state: any, tokens: Tokens) => {
-  const api = new RequestService().timeoutRequest(state, tokens);
-
-  return (dispatch: Dispatch) => {
-    api
-      .then((res: ResponseDetails) => {
-        if (res.successful) {
-          dispatch({
-            type: 'ALERT',
-            payload: {
-              message: 'Job request timed out',
-              successful: true,
-            },
-          });
-        } else {
-          dispatch({
-            type: 'ALERT',
-            payload: res,
-          });
-        }
-      })
-      .catch(() => {
-        // send err to application
-        dispatch({
-          type: 'ALERT',
-          payload: {
-            message: 'Network request failed',
-            successful: false,
-          },
-        });
-      }).finally(() => {
-        dispatch({
-          type: 'LOADING',
-          payload: false,
-        });
-
-      });
-  };
-};
+}

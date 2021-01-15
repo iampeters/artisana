@@ -12,6 +12,9 @@ import ArtisanDetails from '../Routes/ArtisanDetails';
 import AddReview from '../Routes/AddReview';
 import MyJobs from '../Routes/MyJobs';
 import AddJobs from '../Routes/AddJobs';
+import JobDetails from '../Routes/JobDetails';
+import AssignJob from '../Routes/AssignJob';
+import MessageDetails from '../Routes/MessageDetails';
 
 const Drawer = createDrawerNavigator();
 
@@ -23,7 +26,10 @@ export default function DrawerNavigator() {
       <Drawer.Screen name='Artisans' component={Artisans} />
       <Drawer.Screen name='MyJobs' component={MyJobs} />
       <Drawer.Screen name='AddJobs' component={AddJobs} />
+      <Drawer.Screen name='JobDetails' component={JobDetails} />
+      <Drawer.Screen name='AssignJob' component={AssignJob} />
       <Drawer.Screen name='ArtisanDetails' component={ArtisanDetails} />
+      <Drawer.Screen name='MessageDetails' component={MessageDetails} />
       <Drawer.Screen name='AddArtisan' component={AddArtisan} />
       <Drawer.Screen name='AddReview' component={AddReview} />
       <Drawer.Screen name='ChangePassword' component={ChangePassword} />

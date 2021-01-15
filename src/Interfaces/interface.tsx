@@ -67,6 +67,7 @@ export interface Reducers {
   chats: ResponseDetails;
   activeChats: ResponseDetails;
   messageDots: any;
+  chatUser: User;
 }
 
 export interface Dashboard {
@@ -90,6 +91,24 @@ export interface ThemeReducer {
   light?: boolean;
 }
 
+export interface JobProps {
+  title: string;
+  description?: string;
+  categoryId?: any;
+  createdOn?: string;
+  phoneNumber?: string;
+  budget?: number;
+  artisanId?: any;
+  status?: "NEW" | "ASSIGNED" | "PENDING" | "ACCEPTED" | "COMPLETED" | "TIMEOUT"
+  _id: string;
+  requestId: string;
+  duration: any;
+  address?: string;
+  lga?: string;
+  country?: string;
+  state?: string;
+}
+
 export interface Tokens {
   auth_token: string;
   refresh_token: string
@@ -100,6 +119,7 @@ export interface User {
   lastname?: string;
   lastLogin?: string;
   createdOn?: string;
+  name?: string;
   _id?: string;
   email?: string;
   phoneNumber?: string;
@@ -111,6 +131,7 @@ export interface User {
 
 export interface Pagination {
   page?: any | number;
+  id?: string;
   pageSize?: any | number;
   whereCondition?: any;
   total?: any | number;
@@ -224,6 +245,9 @@ export interface CountryProps {
   phone: string;
 }
 
-
-
-
+export interface Bubbles {
+  text?: string;
+  timestamp?: string;
+  status?: string;
+  onTouchEnd?: any;
+}

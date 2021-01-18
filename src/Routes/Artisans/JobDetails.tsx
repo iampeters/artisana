@@ -4,14 +4,14 @@ import { Container } from 'native-base';
 import React from 'react'
 import { View, Text, StyleSheet, ScrollView, RefreshControl, Dimensions, ActivityIndicator } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux';
-import CustomButtons from '../Components/Buttons';
-import CustomHeader from '../Components/Header';
-import Functions from '../Helpers/Functions';
-import { CustomThemeInterface, JobProps, Reducers } from '../Interfaces/interface';
-import { getJobDetails } from '../Redux/Actions/jobActions';
-import { timeoutRequest } from '../Redux/Actions/requestActions';
+import CustomButtons from '../../Components/Buttons';
+import CustomHeader from '../../Components/Header';
+import Functions from '../../Helpers/Functions';
+import { CustomThemeInterface, JobProps, Reducers } from '../../Interfaces/interface';
+import { getJobDetails } from '../../Redux/Actions/jobActions';
+import { timeoutRequest } from '../../Redux/Actions/requestActions';
 
-export default function JobDetails(props: any) {
+export default function ArtisanJobDetails(props: any) {
   const { colors, fonts, fontSizes }: CustomThemeInterface = useTheme();
   const alert = useSelector((state: Reducers) => state.alert);
   const loading = useSelector((state: Reducers) => state.loading);
@@ -48,8 +48,8 @@ export default function JobDetails(props: any) {
 
     if (isFocused) {
       console.log(jobs);
-      
-      
+
+
       dispatch({
         type: 'LOADING',
         payload: true
@@ -258,10 +258,10 @@ export default function JobDetails(props: any) {
                   fontFamily: fonts?.FuturaMedium,
                   fontSize: fontSizes?.small,
                   color: colors.dark
-                }}>{Functions.getDate(jobs.createdOn)}</Text>
+                }}>{jobs.createdOn ? Functions.getDate(jobs.createdOn) : "-"}</Text>
               </View>
 
-              <View style={{
+              {/* <View style={{
                 borderColor: colors.border,
                 borderWidth: 1,
                 padding: 15,
@@ -280,8 +280,8 @@ export default function JobDetails(props: any) {
                   fontSize: fontSizes?.small,
                   color: colors.dark
                 }}>{jobs.phoneNumber}</Text>
-              </View>
-
+              </View> */}
+              {/* 
               <View style={{
                 borderColor: colors.border,
                 borderWidth: 1,
@@ -301,7 +301,7 @@ export default function JobDetails(props: any) {
                   fontSize: fontSizes?.small,
                   color: colors.dark
                 }}>{jobs.address}</Text>
-              </View>
+              </View> */}
 
 
               <View style={{
@@ -348,11 +348,11 @@ export default function JobDetails(props: any) {
                 }}>{jobs.state}</Text>
               </View>
 
-              <View style={{
+              {/* <View style={{
                 marginBottom: 15,
                 marginTop: 15
               }} >
-               {jobs.status === "NEW" && <CustomButtons
+                {jobs.status === "NEW" && <CustomButtons
                   title="Assign Job"
                   type="solid"
                   backgroundColor={colors.warn}
@@ -362,7 +362,7 @@ export default function JobDetails(props: any) {
                   onPress={() => navigation.navigate("AssignJob", { job: jobs })}
                 />}
 
-                {/* {jobs.status === "COMPLETED" && <CustomButtons
+                {jobs.status === "COMPLETED" && <CustomButtons
                   title="Review Artisan"
                   type="solid"
                   backgroundColor={colors.warn}
@@ -370,15 +370,14 @@ export default function JobDetails(props: any) {
                   color={colors.dark}
                   marginTop={15}
                   onPress={() => navigation.navigate("AddReview", { job: jobs })}
-                />} */}
-              </View>
+                />}
+              </View> */}
 
             </React.Fragment>
 
           ) : (
             <View style={{
               height: 400,
-              flex: 1,
               justifyContent: "center",
               alignItems: "center"
             }}>

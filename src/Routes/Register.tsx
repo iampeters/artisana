@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, StyleSheet, Platform, Dimensions } from 'react-native'
 import { CustomThemeInterface } from '../Interfaces/interface';
-import { useTheme, StackActions } from '@react-navigation/native';
+import { useTheme, StackActions, useNavigation } from '@react-navigation/native';
 import BackgroundImage from '../Components/ImageBackground';
 import { Container, Input } from 'native-base';
 import { Icon } from 'react-native-elements';
@@ -22,8 +22,12 @@ export default function Register(props: any) {
   const { colors, fonts, fontSizes }: CustomThemeInterface = useTheme();
 
   const dispatch = useDispatch();
+  const navigation = useNavigation();
+
   const alert = useSelector((state: Reducers) => state.alert);
+  const user = useSelector((state: Reducers) => state.user);
   const auth = useSelector((state: Reducers) => state.auth);
+
 
   const [email, setEmail]: any = React.useState();
   const [password, setPassword]: any = React.useState();
@@ -230,11 +234,17 @@ export default function Register(props: any) {
   }, [dispatch, alert]);
 
   React.useEffect(() => {
-    if (Object.entries(auth).length !== 0) {
-      props.navigation.dispatch(StackActions.replace('Auth'));
+    if (Object.entries(auth).length !== 0 && Object.entries(user).length !== 0) {
+
+      if (user.userType === 2) {
+        navigation.dispatch(StackActions.replace('ArtisanAuth')); // artisan login
+
+      } else {
+        navigation.dispatch(StackActions.replace('Auth')); //  user login 
+      }
     }
 
-  }, [auth]);
+  }, [auth, user]);
 
   return (
     <Container style={{ height }}>

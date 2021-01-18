@@ -15,6 +15,7 @@ import AddArtisan from '../Routes/AddArtisan';
 import Account from '../Routes/Account';
 import Profile from '../Routes/Profile';
 import ChangePassword from '../Routes/ChangePassword';
+import ArtisanDrawerNavigator from './ArtisanDrawerNavigator';
 // import Signin from '../pages/Signin/Signin';
 // import Signup from '../pages/Signup/Signup';
 // import SplashScreen from '../pages/splashScreen/SplashScreen';
@@ -54,6 +55,7 @@ export default function StackNavigator() {
       <Stack.Screen name='Register' component={Register} />
       <Stack.Screen name='ForgotPassword' component={ForgotPassword} />
       <Stack.Screen name='Auth' component={DrawerNavigator} />
+      <Stack.Screen name='ArtisanAuth' component={ArtisanDrawerNavigator} />
       {/* <Stack.Screen
         name='Account'
         component={Account}

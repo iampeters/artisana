@@ -206,7 +206,7 @@ export const rejectRequest = (state: any, tokens: Tokens) => {
           dispatch({
             type: 'ALERT',
             payload: {
-              message: 'Job request rejected successfully',
+              message: 'Job request declined',
               successful: true,
             },
           });

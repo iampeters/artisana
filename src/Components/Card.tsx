@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text, Dimensions, ImageBackground } from 'react-native'
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { CustomThemeInterface } from '../Interfaces/interface';
 import { useTheme } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
@@ -16,6 +16,7 @@ export default function Card(props: CardProps) {
       <View style={{
         backgroundColor: props.backgroundColor,
         borderRadius: 10,
+        marginBottom: 10
         // borderTopRightRadius: 10,
         // borderTopLeftRadius: 10,
         // borderBottomRightRadius: 10,
@@ -30,21 +31,22 @@ export default function Card(props: CardProps) {
           flexDirection: 'row',
         }}>
 
-          <MaterialCommunityIcons name={props.iconName} color={colors.primary} size={22} />
+          <MaterialCommunityIcons name={props.iconName} color={props.color? props.color: colors.primary} size={30} />
 
           <View style={{
             justifyContent: 'center',
-            alignItems: 'flex-start',
+            alignItems: 'center',
           }}>
             <Text style={{
-              fontFamily: fonts?.FuturaMedium,
+              fontFamily: fonts?.FuturaBold,
               fontSize: fontSizes?.body,
-              color: colors.white
+              color: colors.white,
+              marginBottom: 5
             }}>{props.title}</Text>
             <Text style={{
               fontFamily: fonts?.FuturaBold,
               fontSize: fontSizes?.cardTitle,
-              color: colors.primary,
+              color: props.color ? props.color : colors.primary,
               textAlign: 'center'
             }}>{props.cardValue}</Text>
           </View>
@@ -63,4 +65,5 @@ interface CardProps {
   onPress?: () => void;
   title: string;
   cardValue: number;
+  color?: string;
 }

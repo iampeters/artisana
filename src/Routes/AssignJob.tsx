@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet, ScrollView, RefreshControl, Dimensions, Alert } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, RefreshControl, Dimensions, Alert, ActivityIndicator } from 'react-native'
 import { Artisans, Category, CustomThemeInterface, Reducers, StateProps } from '../Interfaces/interface';
 import { useIsFocused, useNavigation, useTheme } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -295,7 +295,13 @@ export default function AssignJob
               }
             </React.Fragment>
           ) : (<>
-            <Text>Loading...</Text>
+              <View style={{
+                height: 400,
+                justifyContent: "center",
+                alignItems: "center"
+              }}>
+                <ActivityIndicator size='large' color={colors.dark} />
+              </View>
           </>)}
 
         </View>

@@ -96,30 +96,50 @@ export const login = (state: any) => {
           // set auth
           Storage();
 
-          // set authentication to true
-          dispatch({
-            type: 'AUTH_TOKEN',
-            payload: { auth_token: result.token, refresh_token: result.refresh_token },
-          });
-          // set logged in user state
-          dispatch({
-            type: 'USER',
-            payload: result.user,
-          });
+          if (result.user.userType === 2 && !result.user.hasOnboarded) {
+            dispatch({
+              type: 'AUTH_TOKEN',
+              payload: { auth_token: result.token, refresh_token: result.refresh_token },
+            });
+            // set logged in user state
+            dispatch({
+              type: 'USER',
+              payload: result.user,
+            });
+            // send response to login screen
+            dispatch({
+              type: 'ALERT',
+              payload: {
+                successful: true,
+                message: 'unverified',
+              },
+            });
+          } else {
+            // set authentication to true
+            dispatch({
+              type: 'AUTH_TOKEN',
+              payload: { auth_token: result.token, refresh_token: result.refresh_token },
+            });
+            // set logged in user state
+            dispatch({
+              type: 'USER',
+              payload: result.user,
+            });
 
-          dispatch({
-            type: 'IS_LOGGED_IN',
-            payload: { isLoggedIn: true },
-          });
+            dispatch({
+              type: 'IS_LOGGED_IN',
+              payload: { isLoggedIn: true },
+            });
 
-          // send response to login screen
-          // dispatch({
-          //   type: 'ALERT',
-          //   payload: {
-          //     successful: true,
-          //     message: 'Logged in successfully.',
-          //   },
-          // });
+            // send response to login screen
+            // dispatch({
+            //   type: 'ALERT',
+            //   payload: {
+            //     successful: true,
+            //     message: 'Logged in successfully.',
+            //   },
+            // });
+          }
         } else {
           dispatch({
             type: 'ALERT',
@@ -151,30 +171,51 @@ export const socialAuth = (state: any) => {
           // set auth
           Storage();
 
-          // set authentication to true
-          dispatch({
-            type: 'AUTH_TOKEN',
-            payload: { auth_token: result.token, refresh_token: result.refresh_token },
-          });
-          // set logged in user state
-          dispatch({
-            type: 'USER',
-            payload: result.user,
-          });
+          if (result.user.userType === 2 && !result.user.hasOnboarded) {
+            dispatch({
+              type: 'AUTH_TOKEN',
+              payload: { auth_token: result.token, refresh_token: result.refresh_token },
+            });
+            // set logged in user state
+            dispatch({
+              type: 'USER',
+              payload: result.user,
+            });
+            // send response to login screen
+            dispatch({
+              type: 'ALERT',
+              payload: {
+                successful: true,
+                message: 'unverified',
+              },
+            });
+          } else {
+            // set authentication to true
+            dispatch({
+              type: 'AUTH_TOKEN',
+              payload: { auth_token: result.token, refresh_token: result.refresh_token },
+            });
+            // set logged in user state
+            dispatch({
+              type: 'USER',
+              payload: result.user,
+            });
 
-          dispatch({
-            type: 'IS_LOGGED_IN',
-            payload: { isLoggedIn: true },
-          });
+            dispatch({
+              type: 'IS_LOGGED_IN',
+              payload: { isLoggedIn: true },
+            });
 
-          // send response to login screen
-          dispatch({
-            type: 'ALERT',
-            payload: {
-              successful: true,
-              message: 'Logged in successfully.',
-            },
-          });
+            // send response to login screen
+            // dispatch({
+            //   type: 'ALERT',
+            //   payload: {
+            //     successful: true,
+            //     message: 'Logged in successfully.',
+            //   },
+            // });
+          }
+
         } else {
           dispatch({
             type: 'ALERT',
@@ -216,29 +257,50 @@ export const signUp = (state: any) => {
           Storage();
 
           // set authentication to true
-          dispatch({
-            type: 'AUTH_TOKEN',
-            payload: { auth_token: result.token, refresh_token: result.refresh_token },
-          });
+          if (result.user.userType === 2 && !result.user.hasOnboarded) {
+            dispatch({
+              type: 'AUTH_TOKEN',
+              payload: { auth_token: result.token, refresh_token: result.refresh_token },
+            });
+            // set logged in user state
+            dispatch({
+              type: 'USER',
+              payload: result.user,
+            });
+            // send response to login screen
+            dispatch({
+              type: 'ALERT',
+              payload: {
+                successful: true,
+                message: 'unverified',
+              },
+            });
+          } else {
+            // set authentication to true
+            dispatch({
+              type: 'AUTH_TOKEN',
+              payload: { auth_token: result.token, refresh_token: result.refresh_token },
+            });
+            // set logged in user state
+            dispatch({
+              type: 'USER',
+              payload: result.user,
+            });
 
-          dispatch({
-            type: 'IS_LOGGED_IN',
-            payload: { isLoggedIn: true },
-          });
+            dispatch({
+              type: 'IS_LOGGED_IN',
+              payload: { isLoggedIn: true },
+            });
 
-          // set logged in user state
-          dispatch({
-            type: 'USER',
-            payload: result.user,
-          });
-          // send response to login screen
-          dispatch({
-            type: 'ALERT',
-            payload: {
-              successful: true,
-              message: 'Logged in successfully.',
-            },
-          });
+            // send response to login screen
+            // dispatch({
+            //   type: 'ALERT',
+            //   payload: {
+            //     successful: true,
+            //     message: 'Logged in successfully.',
+            //   },
+            // });
+          }
         } else {
           dispatch({
             type: 'ALERT',

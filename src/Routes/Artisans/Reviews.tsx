@@ -1,39 +1,40 @@
 import React from 'react'
-import { View, Text, StyleSheet, RefreshControl, Dimensions, Platform, ActivityIndicator } from 'react-native'
-import { CustomThemeInterface, Reducers, Category } from '../Interfaces/interface';
-import { useTheme } from '@react-navigation/native';
+import { View, Text, StyleSheet, RefreshControl, Dimensions, ActivityIndicator } from 'react-native'
+import { CustomThemeInterface, Reducers, Reviews } from '../../Interfaces/interface';
+import { useIsFocused, useTheme } from '@react-navigation/native';
 import { Container } from 'native-base';
-import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
-import { useSelector, useDispatch } from 'react-redux';
+import { ScrollView } from 'react-native-gesture-handler';
+import { useDispatch, useSelector } from 'react-redux';
 import { StatusBar } from 'expo-status-bar';
-import CustomHeader from '../Components/Header';
-import { Avatar, SearchBar } from 'react-native-elements';
-import { getCategory } from '../Redux/Actions/categoryActions';
-import Placeholder from '../Components/Placeholder';
+import CustomHeader from '../../Components/Header';
+import { Avatar } from 'react-native-elements';
+import { getReviews } from '../../Redux/Actions/reviewAction';
 
-
-export default function CategoryComponent(props: any) {
+export default function ArtisanReviews(props: any) {
   const { colors, fonts, fontSizes }: CustomThemeInterface = useTheme();
+  const user = useSelector((state: Reducers) => state.user);
   const alert = useSelector((state: Reducers) => state.alert);
-  const loading = useSelector((state: Reducers) => state.loading);
-  const category = useSelector((state: Reducers) => state.category);
-  const tokens = useSelector((state: Reducers) => state.tokens);
   const theme = useSelector((state: Reducers) => state.theme);
-
-  const dispatch = useDispatch();
+  const loading = useSelector((state: Reducers) => state.loading);
+  const tokens = useSelector((state: Reducers) => state.tokens);
 
   const [, setMinify] = React.useState(true);
-  const [refreshing] = React.useState(loading);
+  const [refreshing] = React.useState(loading ? true : false);
+  const reviews = useSelector((state: Reducers) => state.reviews);
+  const dispatch = useDispatch();
 
-  const [searchQuery, setSearchQuery] = React.useState('');
   const [page] = React.useState(0)
   const [pageSize] = React.useState(25)
 
+  let reviewList: any = reviews.items && reviews.items;
+
+  const isFocused = useIsFocused();
+
+
   let { width } = Dimensions.get("window");
-  let categoryList: any = category.items && category.items;
 
 
-  let filter: any = {};
+  let filter: any = { artisanId: user._id };
   let paginationConfig = {
     page: page + 1,
     pageSize,
@@ -41,13 +42,12 @@ export default function CategoryComponent(props: any) {
   }
 
   const onRefresh = React.useCallback(() => {
-    // wait(2000).then(() => setRefreshing(false));
-    // dispatch(getCategory(paginationConfig, tokens));
-    // dispatch({
-    //   type: 'LOADING',
-    //   payload: true
-    // })
+    dispatch(getReviews(paginationConfig, tokens));
 
+    dispatch({
+      type: 'LOADING',
+      payload: true
+    });
   }, [refreshing]);
 
   const handleState = (event: any) => {
@@ -59,54 +59,34 @@ export default function CategoryComponent(props: any) {
     }
   }
 
+
   React.useEffect(() => {
-    
-    const unsubscribe = props.navigation.addListener('focus', () => {
-      
+
+    if (isFocused) {
       dispatch({
         type: 'LOADING',
         payload: true
       });
 
-      if (searchQuery.length >= 2) {
-        filter.name = searchQuery.trim();
-        paginationConfig.whereCondition = JSON.stringify(filter)
+      dispatch(getReviews(paginationConfig, tokens));
 
-        dispatch({
-          type: 'LOADING',
-          payload: true
-        });
-
-        dispatch(getCategory(paginationConfig, tokens));
-      } else {
-
-        if (searchQuery.length === 0) {
-          delete filter.name;
-
-          dispatch({
-            type: 'LOADING',
-            payload: true
-          });
-
-          dispatch(getCategory(paginationConfig, tokens));
-        }
-      }
-    });
-
-    const unmount = props.navigation.addListener('blur', () => {
+    } else {
       dispatch({
-        type: 'GET_CATEGORY',
-        payload: {}
+        type: 'GET_REVIEWS',
+        payload: {},
       });
+    }
 
-      return () => {
-        unsubscribe;
-        unmount;
-      }
-    });
+    return () => {
+      dispatch({
+        type: 'GET_REVIEWS',
+        payload: {},
+      });
+    }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, page, searchQuery]);
+  }, [dispatch, isFocused]);
+
 
   React.useEffect(() => {
     if (Object.entries(alert).length !== 0) {
@@ -130,19 +110,13 @@ export default function CategoryComponent(props: any) {
     <Container style={{ ...style.container, backgroundColor: colors.background }}>
       <StatusBar style={theme === "light" ? "dark" : "light"} />
 
-      <CustomHeader
-        title="Category"
-        justifyContent="center"
-      // onPress={() => props.navigation.goBack()} 
-      />
-
+      <CustomHeader title="Reviews" />
 
       <ScrollView
         onScroll={handleState}
         onScrollToTop={() => setMinify(false)}
         // onMomentumScrollEnd={handleState}
         showsVerticalScrollIndicator={false}
-        pagingEnabled
         scrollsToTop
 
         refreshControl={
@@ -158,24 +132,11 @@ export default function CategoryComponent(props: any) {
         }
         contentContainerStyle={{
           width,
-          paddingBottom: 20,
-          paddingHorizontal: 10,
+          // height,
+
+          padding: 20,
         }}>
 
-        <View>
-          <SearchBar
-            placeholder="Search Category..."
-            onChangeText={(text: any) => setSearchQuery(text)}
-            value={searchQuery}
-            platform={Platform.OS === "ios" ? "ios" : "android"}
-            containerStyle={{
-              backgroundColor: Platform.OS === "android" ? colors.light : colors.transparent,
-              padding: 0,
-              marginBottom: 10,
-            }}
-          />
-        </View>
-        {/* <Placeholder /> */}
 
         <View style={{
           flexDirection: "row",
@@ -185,45 +146,58 @@ export default function CategoryComponent(props: any) {
           // paddingHorizontal: 10
         }}>
 
-          {categoryList ? (
+          {reviewList && !loading ? (
             <React.Fragment>
-              {categoryList.length !== 0 && categoryList?.map((item: Category, index: number) => {
+
+              {reviewList.length !== 0 && reviewList?.map((item: Reviews, index: number) => {
                 return (
-                  <TouchableOpacity key={index} onPress={() => props.navigation.navigate(`Artisans`, { item })}>
+                  <View style={{
+                    flexDirection: "row",
+                    width: "100%",
+                    paddingVertical: 5,
+                    marginBottom: 10
+                  }} key={index}>
                     <View style={{
-                      width: width / 2.17,
-                      height: 115,
-                      borderRadius: 5,
-                      backgroundColor: colors.light,
-                      marginBottom: 10,
-                      justifyContent: "center",
-                      alignItems: "center",
+                      flexDirection: "row",
                     }}>
-                      <Avatar source={{ uri: item.imageUrl }} size="large" />
+                      <Avatar source={{ uri: item.userId.imageUrl }} size="small" rounded />
+
+                    </View>
+
+                    <View style={{
+                      marginLeft: 20,
+                      flex: 1
+                    }}>
                       <Text style={{
                         color: colors.dark,
                         fontFamily: fonts?.FuturaMedium,
-                        marginTop: 5,
+                        fontSize: fontSizes?.body
+                      }}>{item.title}</Text>
+                      <Text style={{
+                        color: colors.dark,
+                        fontFamily: fonts?.FuturaRegular,
                         fontSize: fontSizes?.small
-                      }}>{item.name}</Text>
+                      }}>{item.userId.firstname} {item.userId.lastname} - {item.description}</Text>
                     </View>
-                  </TouchableOpacity>
+                  </View>
                 )
               })}
 
-              {categoryList.length === 0 &&
+
+              {reviewList.length === 0 &&
                 <View style={{
                   flex: 1,
                   justifyContent: "center",
                   alignItems: "center"
                 }}>
-                  <Text>No category</Text>
+                  <Text>No Result</Text>
                 </View>
               }
             </React.Fragment>
           ) : (<>
               <View style={{
                 height: 400,
+                flex: 1,
                 justifyContent: "center",
                 alignItems: "center"
               }}>

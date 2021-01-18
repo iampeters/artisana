@@ -1,21 +1,20 @@
 import React from 'react'
 import { View, Text, StyleSheet, RefreshControl, Dimensions, ActivityIndicator } from 'react-native'
-import { CustomThemeInterface, Reducers } from '../Interfaces/interface';
+import { CustomThemeInterface, Reducers } from '../../Interfaces/interface';
 
 import { useIsFocused, useNavigation, useTheme } from '@react-navigation/native';
 import { Container } from 'native-base';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 import { StatusBar } from 'expo-status-bar';
-import CustomHeader from '../Components/Header';
-import { getJobs } from '../Redux/Actions/jobActions';
-import { getDate } from '../Helpers/Functions';
+import CustomHeader from '../../Components/Header';
+import { getDate } from '../../Helpers/Functions';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import Fab from '../Components/Fab';
+import { getRequests } from '../../Redux/Actions/requestActions';
 
 
 
-export default function MyJobs(props: any) {
+export default function Requests(props: any) {
   const { colors, fonts, fontSizes }: CustomThemeInterface = useTheme();
   const user = useSelector((state: Reducers) => state.user);
   const alert = useSelector((state: Reducers) => state.alert);
@@ -24,17 +23,17 @@ export default function MyJobs(props: any) {
   const [minify, setMinify] = React.useState(true);
   const [refreshing] = React.useState(loading);
   const tokens = useSelector((state: Reducers) => state.tokens);
-  const jobs = useSelector((state: Reducers) => state.jobs);
+  const requests = useSelector((state: Reducers) => state.requests);
 
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  let list: any[] = jobs.items ? jobs.items : [];
+  let list: any = requests.items && requests.items;
 
 
   const isFocused = useIsFocused();
 
   let { width } = Dimensions.get("window");
-  let filter: any = { userId: user._id };
+  let filter: any = { artisanId: user._id };
   let paginationConfig = {
     page: 1,
     pageSize: 0,
@@ -42,7 +41,7 @@ export default function MyJobs(props: any) {
   }
 
   const onRefresh = React.useCallback(() => {
-    dispatch(getJobs(paginationConfig, tokens));
+    dispatch(getRequests(paginationConfig, tokens));
     dispatch({
       type: 'LOADING',
       payload: true
@@ -66,18 +65,18 @@ export default function MyJobs(props: any) {
         payload: true
       });
 
-      dispatch(getJobs(paginationConfig, tokens));
+      dispatch(getRequests(paginationConfig, tokens));
 
     } else {
       dispatch({
-        type: 'GET_JOBS',
+        type: 'GET_REQUESTS',
         payload: {},
       });
     }
 
     return () => {
       dispatch({
-        type: 'GET_JOBS',
+        type: 'GET_REQUESTS',
         payload: {},
       });
     }
@@ -109,7 +108,10 @@ export default function MyJobs(props: any) {
     <Container style={{ ...style.container, backgroundColor: colors.background }}>
       <StatusBar style={theme === "light" ? "dark" : "light"} />
 
-      <CustomHeader title="My Jobs" showLeftIcon onPress={() => props.navigation.goBack()} />
+      <CustomHeader
+        title="Requests"
+        // justifyContent="center"
+      />
 
       <ScrollView
         onScroll={handleState}
@@ -156,7 +158,7 @@ export default function MyJobs(props: any) {
                       width: "100%",
                       paddingVertical: 5,
                       marginBottom: 10,
-                    }} onPress={() => navigation.navigate("JobDetails", {id: item._id}) }>
+                    }} onPress={() => navigation.navigate("RequestDetails", { id: item._id })}>
                     <View style={{
                       flexDirection: "row",
                       width: "100%",
@@ -182,7 +184,7 @@ export default function MyJobs(props: any) {
                           color: colors.dark,
                           fontFamily: fonts?.FuturaMedium,
                           fontSize: fontSizes?.body
-                        }}>{item.title}</Text>
+                        }}>{item.jobId.title}</Text>
                         <Text style={{
                           color: colors.dark,
                           fontFamily: fonts?.FuturaRegular,
@@ -203,30 +205,56 @@ export default function MyJobs(props: any) {
                           textAlign: 'center'
                         }}>{item.status}</Text>}
 
+                        {item.status === "TIMEOUT" && <Text style={{
+                          color: colors.white,
+                          backgroundColor: colors.danger,
+                          paddingHorizontal: 15,
+                          paddingVertical: 10,
+                          fontWeight: "bold",
+                          borderRadius: 25,
+                          fontSize: 12,
+                          minWidth: 105,
+                          textAlign: 'center'
+                        }}>{item.status}</Text>}
+
+                        {item.status === "DECLINED" && <Text style={{
+                          color: colors.white,
+                          backgroundColor: colors.danger,
+                          paddingHorizontal: 15,
+                          paddingVertical: 10,
+                          borderRadius: 25,
+                          fontWeight: "bold",
+                          fontSize: 12,
+                          minWidth: 105,
+                          textAlign: 'center'
+                        }}>{item.status}</Text>}
+
                         {item.status === "NEW" && <Text style={{
                           color: colors.dark,
                           backgroundColor: colors.warn,
                           paddingHorizontal: 15,
                           paddingVertical: 10,
                           borderRadius: 25,
+                          fontWeight: "bold",
                           fontSize: 12,
                           minWidth: 105,
                           textAlign: 'center'
                         }}>{item.status}</Text>}
 
-                        {item.status === "COMPLETED" && <Text style={{
-                          color: colors.dark,
+                        {item.status === "ACCEPTED" && <Text style={{
+                          color: colors.white,
                           backgroundColor: colors.success,
                           paddingHorizontal: 15,
                           paddingVertical: 10,
                           borderRadius: 25,
                           fontSize: 12,
                           minWidth: 105,
+                          fontWeight: "bold",
                           textAlign: 'center'
                         }}>{item.status}</Text>}
 
                         {item.status === "ASSIGNED" && <Text style={{
-                          color: colors.dark,
+                          color: colors.white,
                           backgroundColor: colors.success,
                           paddingHorizontal: 15,
                           paddingVertical: 10,
@@ -255,8 +283,8 @@ export default function MyJobs(props: any) {
             </React.Fragment>
           ) : (<>
               <View style={{
-                height: 400,
                 flex: 1,
+                height: 400,
                 justifyContent: "center",
                 alignItems: "center"
               }}>
@@ -267,8 +295,6 @@ export default function MyJobs(props: any) {
         </View>
 
       </ScrollView>
-
-      <Fab onPress={() => props.navigation.navigate('AddJobs')} iconName="plus" size={20} color={colors.dark} backgroundColor={colors.primary} label={minify ? "add job" : ""} />
     </Container>
   )
 }

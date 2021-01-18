@@ -61,6 +61,8 @@ export interface Reducers {
   alert: AlertProps;
   artisan: ResponseDetails;
   requests: ResponseDetails;
+  requestDetails: any;
+  jobDetails: any;
   category: ResponseDetails;
   reviews: ResponseDetails
   jobs: ResponseDetails;
@@ -115,18 +117,27 @@ export interface Tokens {
 }
 
 export interface User {
-  firstname?: string;
-  lastname?: string;
+  guarantorPhoneNumber: any;
+  guarantor: any;
+  experience: any;
+  firstname?: string | any;
+  lastname?: string | any;
+  name?: string | any;
   lastLogin?: string;
   createdOn?: string;
-  name?: string;
+  businessName?: string | any;
+  RCNumber?: string;
+  rating?: number | any;
   _id?: string;
-  email?: string;
-  phoneNumber?: string;
-  address?: string;
+  email?: string | any;
+  phoneNumber?: string | any;
+  address?: string | any;
   imageUrl?: string;
-  state?: string;
-  country?: string;
+  state?: string | any;
+  categoryId?: string | any;
+  userType?: number;
+  country?: string | any;
+  isEmailVerified?: boolean;
 }
 
 export interface Pagination {

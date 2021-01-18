@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet, RefreshControl, Dimensions, Platform } from 'react-native'
+import { View, Text, StyleSheet, RefreshControl, Dimensions, Platform, ActivityIndicator } from 'react-native'
 import { CustomThemeInterface, Reducers, Artisans, Category } from '../Interfaces/interface';
 import { useIsFocused, useNavigation, useTheme } from '@react-navigation/native';
 import Fab from '../Components/Fab';
@@ -232,7 +232,13 @@ export default function ArtisanList(props: any) {
               }
             </React.Fragment>
           ) : (<>
-            <Text>Loading...</Text>
+              <View style={{
+                height: 400,
+                justifyContent: "center",
+                alignItems: "center"
+              }}>
+                <ActivityIndicator size='large' color={colors.dark} />
+              </View>
           </>)}
 
         </View>

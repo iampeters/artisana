@@ -1,26 +1,24 @@
 import React from 'react';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import { Octicons as Icon, Ionicons, Fontisto, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import { Fontisto, MaterialCommunityIcons } from '@expo/vector-icons';
 import Home from './Home';
 import MyReviews from './MyReviews';
-import Artisans from './Artisans';
 import Account from './Account';
 import { CustomThemeInterface } from '../Interfaces/interface';
 import { useTheme } from '@react-navigation/native';
-import MyArtisans from './MyArtisans';
 import Category from './Category';
 import Messages from './Messages';
 
 const Tab = createMaterialBottomTabNavigator();
 
 export default function Dashboard() {
-  const { colors, fonts, fontSizes }: CustomThemeInterface = useTheme();
+  const { colors }: CustomThemeInterface = useTheme();
 
 
   return (
     <Tab.Navigator
       initialRouteName="Home"
-      activeColor={colors.active}
+      activeColor={colors.dark}
       backBehavior="history"
       // labeled={false}
       barStyle={{

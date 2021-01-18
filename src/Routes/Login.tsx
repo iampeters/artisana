@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, StyleSheet, Platform, Dimensions } from 'react-native'
 import { CustomThemeInterface } from '../Interfaces/interface';
-import { useTheme, StackActions } from '@react-navigation/native';
+import { useTheme, StackActions, useNavigation } from '@react-navigation/native';
 import BackgroundImage from '../Components/ImageBackground';
 import { Container } from 'native-base';
 import { Icon } from 'react-native-elements';
@@ -23,10 +23,11 @@ let { width, height } = Dimensions.get("window");
 export default function Login(props: any) {
   const { colors, fonts, fontSizes }: CustomThemeInterface = useTheme();
   const dispatch = useDispatch();
+  const navigation  = useNavigation();
 
   const alert = useSelector((state: Reducers) => state.alert);
   const auth = useSelector((state: Reducers) => state.auth);
-
+  const user = useSelector((state: Reducers) => state.user);
 
   const [email, setEmail] = React.useState();
   const [password, setPassword] = React.useState();
@@ -172,11 +173,17 @@ export default function Login(props: any) {
   }, [dispatch, alert]);
 
   React.useEffect(() => {
-    if (Object.entries(auth).length !== 0) {
-      props.navigation.dispatch(StackActions.replace('Auth'));
+    if (Object.entries(auth).length !== 0 && Object.entries(user).length !== 0) {
+
+      if (user.userType === 2) {
+        navigation.dispatch(StackActions.replace('ArtisanAuth')); // artisan login
+
+      } else {
+        navigation.dispatch(StackActions.replace('Auth')); //  user login 
+      }
     }
 
-  }, [auth]);
+  }, [auth, user]);
 
 
   return (

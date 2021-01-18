@@ -15,9 +15,9 @@ import { logout } from '../Redux/Actions/userActions';
 import Spinner from 'react-native-loading-spinner-overlay';
 import { Reducers } from '../interfaces/interface';
 import { CustomThemeInterface } from '../Interfaces/interface';
-import { Fontisto, MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
+import { MaterialIcons, MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
 
-export default function DrawerContent(props: any) {
+export default function ArtisanDrawerContent(props: any) {
   const dispatch = useDispatch();
   const theme = useSelector((state: any) => state.theme);
   const [, setDarkMode] = useState(false);
@@ -119,79 +119,41 @@ export default function DrawerContent(props: any) {
                   >
                     {user.firstname} {user.lastname}
                   </Text>
+                  {/* <Text
+                    style={
+                      {
+                        ...styles.title,
+                        color: colors.text,
+                        fontFamily: fonts?.ProductSansRegular,
+                        fontSize: fontSizes?.small,
+                        // marginTop: 10
+                      }
+                    }
+
+                  >
+                    {user.categoryId}
+                  </Text> */}
                 </View>
               </TouchableOpacity>
             </View>
 
-            {/* <View style={styles.row}>
-              <View style={styles.section}>
-                <Paragraph
-                  style={[
-                    styles.paragraph,
-                    styles.caption,
-                    {
-                      color: colors.primary,
-                      fontFamily: fonts?.ProductSansBold,
-                    },
-                  ]}
-                >
-                  80
-                </Paragraph>
-                <Caption
-                  style={[
-                    styles.caption,
-                    {
-                      color: colors.text,
-                      fontFamily: fonts?.FuturaRegular
-                    },
-                  ]}
-                >
-                  Following
-                </Caption>
-              </View>
-              <View style={styles.section}>
-                <Paragraph
-                  style={[
-                    styles.paragraph,
-                    styles.caption,
-                    {
-                      color: colors.primary,
-                      fontFamily: fonts?.ProductSansBold,
-                    },
-                  ]}
-                >
-                  100
-                </Paragraph>
-                <Caption
-                  style={[
-                    styles.caption,
-                    {
-                      color: colors.text,
-                      fontFamily: fonts?.FuturaRegular
-                    },
-                  ]}
-                >
-                  Followers
-                </Caption>
-              </View>
-            </View> */}
           </View>
 
           {/* screens */}
           <Drawer.Section style={styles.drawerSection}>
             <DrawerItem
               icon={() => (
-                <MaterialCommunityIcons
+                <MaterialIcons
                   name='home'
                   style={{ color: colors.text, fontSize: 24 }}
                 />
               )}
-              label='Home'
+              label='Dashboard'
               onPress={() => {
                 props.navigation.navigate('Home');
               }}
               activeTintColor={colors.active}
-              labelStyle={{ color: colors.text, fontSize: fontSizes?.body, fontFamily: fonts?.FuturaRegular}}
+              labelStyle={{ color: colors.text, fontSize: fontSizes?.body, fontFamily: fonts?.FuturaRegular }}
             // style={{
             //   justifyContent: 'space-evenly',
             //   alignItems: 'flex-start'
@@ -200,29 +162,14 @@ export default function DrawerContent(props: any) {
 
             <DrawerItem
               icon={() => (
-                <Fontisto
-                  name='persons'
-                  style={{ color: colors.text, fontSize: 20 }}
-                />
-              )}
-              label='Artisans'
-              onPress={() => {
-                props.navigation.navigate('Category');
-              }}
-              activeTintColor={colors.active}
-              labelStyle={{ color: colors.text, fontSize: fontSizes?.body, fontFamily: fonts?.FuturaRegular}}
-            />
-
-            <DrawerItem
-              icon={() => (
-                <MaterialCommunityIcons
-                  name='briefcase'
+                <MaterialIcons
+                  name='list'
                   style={{ color: colors.text, fontSize: 24 }}
                 />
               )}
-              label='My Jobs'
+              label='Requests'
               onPress={() => {
-                props.navigation.navigate('MyJobs');
+                props.navigation.navigate('Requests');
               }}
               activeTintColor={colors.active}
               labelStyle={{ color: colors.text, fontSize: fontSizes?.body, fontFamily: fonts?.FuturaRegular }}
@@ -230,24 +177,69 @@ export default function DrawerContent(props: any) {
 
             <DrawerItem
               icon={() => (
-                <Fontisto
-                  name='star'
-                  style={{ color: colors.text, fontSize: 20 }}
+                <MaterialIcons
+                  name='assignment'
+                  style={{ color: colors.text, fontSize: 24 }}
                 />
               )}
-              label='My Reviews'
+              label='Active Jobs'
               onPress={() => {
-                props.navigation.navigate('Reviews');
+                props.navigation.navigate('ActiveJobs');
               }}
               activeTintColor={colors.active}
-              labelStyle={{ color: colors.text, fontSize: fontSizes?.body, fontFamily: fonts?.FuturaRegular}}
+              labelStyle={{ color: colors.text, fontSize: fontSizes?.body, fontFamily: fonts?.FuturaRegular }}
             />
 
             <DrawerItem
               icon={() => (
-                <Fontisto
+                <MaterialIcons
+                  name='done-all'
+                  style={{ color: colors.text, fontSize: 24 }}
+                />
+              )}
+              label='Completed Jobs'
+              onPress={() => {
+                props.navigation.navigate('CompletedJobs');
+              }}
+              activeTintColor={colors.active}
+              labelStyle={{ color: colors.text, fontSize: fontSizes?.body, fontFamily: fonts?.FuturaRegular }}
+            />
+
+            <DrawerItem
+              icon={() => (
+                <MaterialIcons
+                  name='thumb-down'
+                  style={{ color: colors.text, fontSize: 24 }}
+                />
+              )}
+              label='Declined Jobs'
+              onPress={() => {
+                props.navigation.navigate('DeclinedJobs');
+              }}
+              activeTintColor={colors.active}
+              labelStyle={{ color: colors.text, fontSize: fontSizes?.body, fontFamily: fonts?.FuturaRegular }}
+            />
+
+            <DrawerItem
+              icon={() => (
+                <MaterialIcons
+                  name='star'
+                  style={{ color: colors.text, fontSize: 24 }}
+                />
+              )}
+              label='Reviews'
+              onPress={() => {
+                props.navigation.navigate('Reviews');
+              }}
+              activeTintColor={colors.active}
+              labelStyle={{ color: colors.text, fontSize: fontSizes?.body, fontFamily: fonts?.FuturaRegular }}
+            />
+
+            <DrawerItem
+              icon={() => (
+                <MaterialIcons
                   name='person'
-                  style={{ color: colors.text, fontSize: 22, }}
+                  style={{ color: colors.text, fontSize: 24, }}
                 />
               )}
               label='Account'

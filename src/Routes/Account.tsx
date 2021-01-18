@@ -110,12 +110,12 @@ export default function Account(props: any) {
 
   return (
     <Container style={{ ...style.container, backgroundColor: colors.background }}>
-      <Spinner
+      {/* <Spinner
         visible={spinner}
         textContent={'Goodbye...'}
         color={colors.text}
         animation='fade'
-      />
+      /> */}
 
       <CustomHeader title="Account" justifyContent="center" onPress={() => props.navigation.goBack()} />
 
@@ -169,6 +169,12 @@ export default function Account(props: any) {
               color: colors.gray,
               fontSize: 14
             }}>{user.email}</Text>
+
+            {user.userType === 2 && <Text style={{
+              fontFamily: fonts?.FuturaMedium,
+              color: colors.gray,
+              fontSize: 14
+            }}>{user.address}</Text>}
           </View>
         </View>
 
@@ -179,8 +185,17 @@ export default function Account(props: any) {
           flexWrap: "wrap",
           marginBottom: 20,
         }}>
-          {/* <TextCard backgroundColor={colors.light} title="First Name" subTitle={user.firstname} /> */}
-          {/* <TextCard backgroundColor={colors.light} title="Last Name" subTitle={user.lastname} /> */}
+          {user.userType === 2 &&
+            <React.Fragment>
+              <TextCard backgroundColor={colors.light} title="Business Name" subTitle={user.businessName ? user.businessName : "N/A"} />
+              <TextCard backgroundColor={colors.light} title="RC Number" subTitle={user.RCNumber ? user.RCNumber : "N/A"} />
+              <TextCard backgroundColor={colors.light} title="Category" subTitle={user.categoryId ? user.categoryId.name : "-"} />
+              <TextCard backgroundColor={colors.light} title="Experience" subTitle={user.experience > 1 ? user.experience + " yrs" : user.experience + ' yr'} />
+              <TextCard backgroundColor={colors.light} title="Guarantor" subTitle={user.guarantor ? user.guarantor : user.guarantor} />
+              <TextCard backgroundColor={colors.light} title="Guarantor Phone" subTitle={user.guarantorPhoneNumber ? user.guarantorPhoneNumber : "N/A"} />
+            </React.Fragment>
+          }
+
           {/* <TextCard backgroundColor={colors.light} title="Email Address" subTitle={user.email} /> */}
           <TextCard backgroundColor={colors.light} title="Phone Number" subTitle={user.phoneNumber} />
           <TextCard

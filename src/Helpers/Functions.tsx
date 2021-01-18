@@ -19,7 +19,7 @@ export function modulus(first: number, second: number) {
 }
 
 export function getDate(createdOn: any) {
-  let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   let day = new Date(createdOn).getDate();
   let month = months[new Date(createdOn).getMonth()];
   let year = new Date(createdOn).getFullYear();
@@ -27,7 +27,7 @@ export function getDate(createdOn: any) {
 }
 
 export function getDateTime(createdOn: any) {
-  let months = ["January", "February", "March", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  let months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   let day: any = new Date(createdOn).getDate();
   day = day < 10 ? '0' + day : day;
   let month = months[new Date(createdOn).getMonth()];

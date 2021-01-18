@@ -7,7 +7,7 @@ import { alertReducer } from './alertReducer';
 import { fileReducer } from './fileReducer';
 import { reviewReducer } from './reviewReducer';
 import { categoryReducer } from './categoryReducer';
-import { jobReducer, requestReducer } from './jobReducer';
+import { jobDetailsReducer, jobReducer, requestDetailsReducer, requestReducer } from './jobReducer';
 
 const rootReducer = combineReducers({
   theme: themeReducer,
@@ -16,7 +16,6 @@ const rootReducer = combineReducers({
   user: userReducer,
   tokens: tokenReducer,
   onboarding: onboardingReducer,
-  // login: loginReducer,
   artisan: artisanReducer,
   alert: alertReducer,
   file: fileReducer,
@@ -24,7 +23,9 @@ const rootReducer = combineReducers({
   category: categoryReducer,
   dashboard: dashboardReducer,
   jobs: jobReducer,
+  jobDetails: jobDetailsReducer,
   requests: requestReducer,
+  requestDetails: requestDetailsReducer,
   chats: messageReducer,
   activeChats: activeChatsReducer,
   messageDots: notificationReducer,

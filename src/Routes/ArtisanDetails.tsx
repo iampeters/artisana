@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, StyleSheet, Dimensions, ScrollView, RefreshControl } from 'react-native'
+import { View, Text, StyleSheet, Dimensions, ScrollView, RefreshControl, ActivityIndicator } from 'react-native'
 import { Artisans, CustomThemeInterface, Reducers, Reviews } from '../Interfaces/interface';
 import { useIsFocused, useNavigation, useTheme } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -246,7 +246,13 @@ export default function ArtisanDetails(props: any) {
               }
             </React.Fragment>
           ) : (<>
-            <Text>Loading...</Text>
+              <View style={{
+                height: 400,
+                justifyContent: "center",
+                alignItems: "center"
+              }}>
+                <ActivityIndicator size='large' color={colors.dark} />
+              </View>
           </>)}
 
         </View>

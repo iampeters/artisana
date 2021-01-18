@@ -21,6 +21,11 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "description": "Initial deployment",
+    "githubUrl": "https://github.com/iampeters/artisana.git",
+    "android": {
+      "package": "com.iampeters.artisana"
     }
   }
 }

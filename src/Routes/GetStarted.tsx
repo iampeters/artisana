@@ -19,6 +19,7 @@ let { width } = Dimensions.get("window");
 export default function GetStarted({ navigation }: any) {
   const { colors, fontSizes, fonts }: CustomThemeInterface = useTheme();
   const auth = useSelector((state: Reducers) => state.auth);
+  const user = useSelector((state: Reducers) => state.user);
 
   const dispatch = useDispatch();
 
@@ -115,11 +116,17 @@ export default function GetStarted({ navigation }: any) {
   };
 
   React.useEffect(() => {
-    if (Object.entries(auth).length !== 0) {
-      navigation.dispatch(StackActions.replace('Auth'));
+    if (Object.entries(auth).length !== 0 && Object.entries(user).length !== 0) {
+
+      if (user.userType === 2) {
+        navigation.dispatch(StackActions.replace('ArtisanAuth')); // artisan login
+        // navigation.dispatch(StackActions.replace('Auth'));
+      } else {
+        navigation.dispatch(StackActions.replace('Auth')); //  user login 
+      }
     }
 
-  }, [auth]);
+  }, [auth, user]);
 
 
   return (
@@ -170,7 +177,7 @@ export default function GetStarted({ navigation }: any) {
           marginTop={15}
           onPress={() => navigation.navigate('Register')}
         />
-{/* 
+        {/* 
         <CustomButtons
           title="Sign Up As Artisan"
           type="solid"

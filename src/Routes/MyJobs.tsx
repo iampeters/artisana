@@ -28,7 +28,7 @@ export default function MyJobs(props: any) {
 
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  let list: any[] = jobs.items ? jobs.items : [];
+  let list: any = jobs.items && jobs.items;
 
 
   const isFocused = useIsFocused();
@@ -156,7 +156,7 @@ export default function MyJobs(props: any) {
                       width: "100%",
                       paddingVertical: 5,
                       marginBottom: 10,
-                    }} onPress={() => navigation.navigate("JobDetails", {id: item._id}) }>
+                    }} onPress={() => navigation.navigate("JobDetails", { id: item._id })}>
                     <View style={{
                       flexDirection: "row",
                       width: "100%",
@@ -254,14 +254,14 @@ export default function MyJobs(props: any) {
               }
             </React.Fragment>
           ) : (<>
-              <View style={{
-                height: 400,
-                flex: 1,
-                justifyContent: "center",
-                alignItems: "center"
-              }}>
-                <ActivityIndicator size='large' color={colors.dark} />
-              </View>
+            <View style={{
+              height: 400,
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center"
+            }}>
+              <ActivityIndicator size='large' color={colors.dark} />
+            </View>
           </>)}
 
         </View>

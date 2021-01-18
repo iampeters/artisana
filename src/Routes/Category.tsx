@@ -224,6 +224,7 @@ export default function CategoryComponent(props: any) {
           ) : (<>
               <View style={{
                 height: 400,
+                flex: 1,
                 justifyContent: "center",
                 alignItems: "center"
               }}>

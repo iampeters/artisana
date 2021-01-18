@@ -4,15 +4,17 @@ import { Fontisto, MaterialCommunityIcons } from '@expo/vector-icons';
 import Home from './Home';
 import MyReviews from './MyReviews';
 import Account from './Account';
-import { CustomThemeInterface } from '../Interfaces/interface';
+import { CustomThemeInterface, Reducers } from '../Interfaces/interface';
 import { useTheme } from '@react-navigation/native';
 import Category from './Category';
 import Messages from './Messages';
+import { useSelector } from 'react-redux';
 
 const Tab = createMaterialBottomTabNavigator();
 
 export default function Dashboard() {
   const { colors }: CustomThemeInterface = useTheme();
+  const messageDots = useSelector((state: Reducers) => state.messageDots);
 
 
   return (
@@ -24,10 +26,11 @@ export default function Dashboard() {
       barStyle={{
         backgroundColor: colors.background
       }}
-      // sceneAnimationEnabled
+      sceneAnimationEnabled
       shifting
       screenOptions={{
-        // tabBarBadge: 6
+
+        // tabBarBadge: 0
       }}
     >
       <Tab.Screen
@@ -78,7 +81,7 @@ export default function Dashboard() {
         component={Messages}
         options={{
           tabBarLabel: 'Message',
-          tabBarBadge: true,
+          tabBarBadge: messageDots.count? messageDots.count: null,
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="inbox" color={color} size={24} />
           ),

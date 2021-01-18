@@ -12,7 +12,6 @@ import { FlatList, TouchableOpacity, TouchableWithoutFeedback } from 'react-nati
 import RightBubble from '../Components/RightBubble';
 import LeftBubble from '../Components/LeftBubble';
 import { getDateTime } from '../Helpers/Functions';
-import { color } from 'react-native-redash';
 
 export default function MessageDetails(props: any) {
   const { colors, fonts, fontSizes }: CustomThemeInterface = useTheme();
@@ -22,7 +21,7 @@ export default function MessageDetails(props: any) {
   const chatUser = useSelector((state: Reducers) => state.chatUser);
   const chats = useSelector((state: Reducers) => state.chats);
   const tokens = useSelector((state: Reducers) => state.tokens);
-  const spinner = useSelector((state: Reducers) => state.loading);
+  const loading = useSelector((state: Reducers) => state.loading);
 
   const dispatch = useDispatch();
   const navigation = useNavigation();
@@ -30,13 +29,12 @@ export default function MessageDetails(props: any) {
 
   const [message, setMessage] = React.useState('');
   const [refreshing, setRefreshing] = React.useState(false);
-  const [loading, setLoader] = React.useState(spinner);
   const [page, setPage] = React.useState(1)
   const [pageSize, setPageSize] = React.useState(50)
 
   let interval: any;
   let params: any | any = props.route.params;
-  let chatList: any = chats.items ? chats.items : [];
+  let chatList: any = chats.items && chats.items;
 
   let { width, height } = Dimensions.get("window");
   let filter: any = {};
@@ -74,19 +72,21 @@ export default function MessageDetails(props: any) {
 
   const handleSubmit = () => {
     if (message.length !== 0) {
+
+      dispatch({
+        type: 'LOADING',
+        payload: true
+      });
+
       let data = {
         receiver: params.userId,
         message
       }
 
       dispatch(sendMessage(data, tokens));
-      setLoader(true);
     }
   };
 
-  React.useEffect(() => {
-    setLoader(loading);
-  }, [loading])
 
   React.useEffect(() => {
     if (isFocused) {
@@ -159,12 +159,11 @@ export default function MessageDetails(props: any) {
           payload: {}
         });
 
-        setLoader(false);
       } else {
         if (alert.message === "Message sent") {
           setMessage("");
+          
           setRefreshing(false);
-          setLoader(false);
         }
       }
     }
@@ -219,21 +218,7 @@ export default function MessageDetails(props: any) {
 
       {/* Body */}
 
-      {loading && <View style={{
-        position: "absolute",
-        backgroundColor: "rgba(0,0,0, .67)",
-        left: 0,
-        right: 0,
-        top: 0,
-        bottom: 0,
-        alignItems: 'center',
-        justifyContent: 'center',
-        zIndex: 2000
-      }}>
-        <ActivityIndicator size='large' color="#fff" />
-      </View>}
-
-      <FlatList
+      {chatList && !loading ? (<FlatList
         style={style.chatContainer}
         data={chatList}
         renderItem={({ item }) => renderRow(item)}
@@ -254,7 +239,16 @@ export default function MessageDetails(props: any) {
         }
         // ref={ref => (listRef = ref)}
         keyExtractor={(chat, index) => index.toString()}
-      />
+      />) : (
+          <View style={{
+            height: 200,
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center"
+          }}>
+            <ActivityIndicator size='large' color={colors.dark} />
+          </View>
+        )}
 
 
       {/* footer */}

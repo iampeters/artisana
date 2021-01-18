@@ -30,6 +30,7 @@ const rootReducer = combineReducers({
   activeChats: activeChatsReducer,
   messageDots: notificationReducer,
   chatUser: chatUserReducer,
+  
 });
 
 export default rootReducer;

@@ -2,8 +2,7 @@ import React from 'react'
 import { View, Text, StyleSheet, RefreshControl, Dimensions, Platform } from 'react-native'
 import { CustomThemeInterface, Reducers } from '../Interfaces/interface';
 import { useTheme } from '@react-navigation/native';
-import Fab from '../Components/Fab';
-import { Container, Content } from 'native-base';
+import { Container } from 'native-base';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Icon, Avatar } from 'react-native-elements';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,15 +10,10 @@ import Card from '../Components/Card';
 import CardFullWith from '../Components/CardFullWith';
 import { SharedElement } from 'react-navigation-shared-element';
 import { StatusBar } from 'expo-status-bar';
-import { getUserDashboard } from '../Redux/Actions/configAction';
+import { getNotifications, getUserDashboard } from '../Redux/Actions/configAction';
 import { logout, refreshToken } from '../Redux/Actions/userActions';
 
 
-function wait(timeout: number) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, timeout);
-  });
-}
 
 
 export default function Home(props: any) {
@@ -33,17 +27,30 @@ export default function Home(props: any) {
 
   const dispatch = useDispatch();
 
-  const [minify, setMinify] = React.useState(true);
-  const [refreshing, setRefreshing] = React.useState(loading);
+  const [, setMinify] = React.useState(true);
+  const [refreshing] = React.useState(loading);
 
 
-  let { width, height } = Dimensions.get("window");
+  let { width } = Dimensions.get("window");
   let filter: any = {};
   let paginationConfig = {
     page: 1,
     pageSize: 1,
     whereCondition: JSON.stringify(filter)
   }
+
+  let interval: any;
+
+  React.useEffect(() => {
+    interval = setInterval(() => {
+      dispatch(getNotifications(user._id, token));
+
+    }, 10000)
+
+    return () => {
+      clearInterval(interval._id);
+    }
+  })
 
   const onRefresh = React.useCallback(() => {
     dispatch({ type: "LOADING", payload: true });

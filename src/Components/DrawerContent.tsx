@@ -8,11 +8,9 @@ import {
 import { View } from 'native-base';
 import { StyleSheet, Alert, Platform } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { setTheme } from '../Redux/Actions/themeActions';
 import { useTheme, StackActions } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { logout } from '../Redux/Actions/userActions';
-import Spinner from 'react-native-loading-spinner-overlay';
 import { Reducers } from '../interfaces/interface';
 import { CustomThemeInterface } from '../Interfaces/interface';
 import { Fontisto, MaterialCommunityIcons, FontAwesome5 } from '@expo/vector-icons';
@@ -25,8 +23,6 @@ export default function DrawerContent(props: any) {
   const auth = useSelector((state: Reducers) => state.auth);
   const user = useSelector((state: Reducers) => state.user);
 
-  const [spinner, setSpinner] = useState(false);
-
   useEffect(() => {
     if (theme === 'dark' || 'blue') {
       setDarkMode(true);
@@ -37,13 +33,11 @@ export default function DrawerContent(props: any) {
 
   useEffect(() => {
     if (!auth.isLoggedIn) {
-      setSpinner(false);
       props.navigation.dispatch(StackActions.replace('GetStarted'));
     }
   }, [auth]);
 
   const logOut = () => {
-    setSpinner(true);
     // setTimeout(() => {
     dispatch(logout());
     // }, 2000);

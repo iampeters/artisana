@@ -116,40 +116,42 @@ export const getUserDashboard = (token: Tokens) => {
       });
   };
 };
-export const getNotifications = (id: any, token: Tokens) => {
+export const getNotifications = (id: any, token: Tokens, userType: any) => {
   const api = new NotificationService().getNotifications(id, token);
 
-  return (dispatch: any) => {
-    api
-      .then((res: ResponseDetails) => {        
-        if (res.successful) {
-          dispatch({
-            type: 'NOTIFICATIONS',
-            payload: res.result,
-          });
+  if (userType === 1) {
+    return (dispatch: any) => {
+      api
+        .then((res: ResponseDetails) => {
+          if (res.successful) {
+            dispatch({
+              type: 'NOTIFICATIONS',
+              payload: res.result,
+            });
 
-        } else {
+          } else {
+            dispatch({
+              type: 'ALERT',
+              payload: res,
+            });
+          }
+        })
+        .catch(() => {
+          // send err to application
           dispatch({
             type: 'ALERT',
-            payload: res,
+            payload: {
+              message: 'Network request failed',
+              successful: false,
+            },
           });
-        }
-      })
-      .catch(() => {
-        // send err to application
-        dispatch({
-          type: 'ALERT',
-          payload: {
-            message: 'Network request failed',
-            successful: false,
-          },
-        });
-      }).finally(() => {
-        dispatch({
-          type: 'LOADING',
-          payload: false,
-        });
+        }).finally(() => {
+          dispatch({
+            type: 'LOADING',
+            payload: false,
+          });
 
-      });
-  };
+        });
+    };
+  }
 };

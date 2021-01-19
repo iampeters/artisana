@@ -400,21 +400,23 @@ export default function RequestDetails(props: any) {
                 marginTop: 15
               }} >
                 {jobs.status === "NEW" && <CustomButtons
-                  title={(submitted && type === 1) ? "Accepting..." : "Accept"}
+                  title={"Accept"}
                   disabled={submitted}
                   type="solid"
                   backgroundColor={colors.success}
                   fontFamily={fonts?.RubikMedium}
                   color={colors.white}
+                  loading={submitted}
                   marginTop={15}
                   onPress={() => handleConfirm(1)}
                 />}
 
                 {jobs.status === "NEW" && <CustomButtons
-                  title={(submitted && type === 2) ? "Declining..." : "Decline"}
+                  title={"Decline"}
                   type="solid"
                   disabled={submitted}
                   backgroundColor={colors.danger}
+                  loading={submitted}
                   fontFamily={fonts?.RubikMedium}
                   color={colors.white}
                   marginTop={15}

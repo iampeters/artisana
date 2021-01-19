@@ -65,6 +65,107 @@ export default class AuthService {
     }
   }
 
+  async onboardArtisan(data: Artisans) {
+    try {
+      let response = await fetch(this.artisans + 'create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      return await response.json();
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async updateArtisan(data: Artisans, tokens: Tokens) {
+    try {
+      let response = await fetch(this.artisans + `update/${data._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${tokens.auth_token}`
+        },
+        body: JSON.stringify(data),
+      });
+
+      return await response.json();
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async updateBusiness(data: Artisans, tokens: Tokens) {
+    try {
+      let response = await fetch(this.artisans + `update/businessInformation/${data._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${tokens.auth_token}`
+        },
+        body: JSON.stringify(data),
+      });
+
+      return await response.json();
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async updateNextOfKin(data: Artisans, tokens: Tokens) {
+    try {
+      let response = await fetch(this.artisans + `update/nextOfKin/${data._id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${tokens.auth_token}`
+        },
+        body: JSON.stringify(data),
+      });
+
+      return await response.json();
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async verifyEmail(data: any) {
+    try {
+      let response = await fetch(this.artisans + 'verify-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      return await response.json();
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  async confirmEmail(data: any) {
+    try {
+      let response = await fetch(this.artisans + 'email-confirmation', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${data.token}`
+        },
+        body: JSON.stringify(data),
+      });
+
+      return await response.json();
+    } catch (err) {
+      throw err;
+    }
+  }
+
+
 
 
 };

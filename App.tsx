@@ -124,8 +124,16 @@ const App = () => {
   React.useEffect(() => {
     if (Object.entries(alert).length !== 0) {
       if (alert.successful) {
-        if (alert.message !== "Message sent") {
-          displayAlert("success", alert.message)
+
+        switch (alert.message) {
+          case "Message sent":
+            break;
+
+          case "unverified":
+            break;
+
+          default:
+            displayAlert("success", alert.message);
         }
       } else {
         displayAlert("danger", alert.message)

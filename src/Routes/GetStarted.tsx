@@ -164,29 +164,29 @@ export default function GetStarted({ navigation }: any) {
           type="solid"
           backgroundColor={colors.white}
           fontFamily={fonts?.RubikMedium}
-          color={colors.black}
+          color={colors.dark}
           onPress={() => navigation.navigate('Login')}
         />
 
         <CustomButtons
-          title="Sign Up As User"
+          title="Register As User"
           type="solid"
           backgroundColor={colors.primary}
           fontFamily={fonts?.RubikMedium}
-          color={colors.black}
+          color={colors.dark}
           marginTop={15}
           onPress={() => navigation.navigate('Register')}
         />
-        {/* 
+        
         <CustomButtons
-          title="Sign Up As Artisan"
+          title="Register As Artisan"
           type="solid"
-          backgroundColor={colors.black}
+          backgroundColor={colors.primary}
           fontFamily={fonts?.RubikMedium}
-          color={colors.white}
+          color={colors.dark}
           marginTop={15}
-          onPress={() => navigation.navigate('Register')}
-        /> */}
+          onPress={() => navigation.navigate('ArtisanRegister')}
+        />
 
         <Social
           googleAuth={handleGoogleAuth}

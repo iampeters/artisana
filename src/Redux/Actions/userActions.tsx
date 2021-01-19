@@ -114,6 +114,11 @@ export const login = (state: any) => {
                 message: 'unverified',
               },
             });
+
+            // dispatch({
+            //   type: 'IS_LOGGED_IN',
+            //   payload: { isLoggedIn: true },
+            // });
           } else {
             // set authentication to true
             dispatch({

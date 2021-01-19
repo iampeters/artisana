@@ -43,7 +43,7 @@ export default function Home(props: any) {
 
   React.useEffect(() => {
     interval = setInterval(() => {
-      dispatch(getNotifications(user._id, token));
+      dispatch(getNotifications(user._id, token, user.userType));
 
     }, 10000)
 

@@ -157,6 +157,7 @@ export interface ResponseDetails {
   result?: any,
   items?: Array<any>;
   total?: any | number;
+  message?: string;
 }
 
 export interface Search {

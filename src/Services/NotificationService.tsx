@@ -24,6 +24,7 @@ export default class NotificationService {
       return await response.json();
     } catch (err) {
       throw err;
+
     }
   }
 

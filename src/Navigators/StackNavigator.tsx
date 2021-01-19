@@ -16,6 +16,11 @@ import Account from '../Routes/Account';
 import Profile from '../Routes/Profile';
 import ChangePassword from '../Routes/ChangePassword';
 import ArtisanDrawerNavigator from './ArtisanDrawerNavigator';
+import ArtisanRegister from '../Routes/Artisans/Register';
+import EmailConfirmation from '../Routes/Artisans/EmailConfirmation';
+import PersonalInformation from '../Routes/Artisans/PersonalInformation';
+import NOK from '../Routes/Artisans/NOK';
+import BusinessInformation from '../Routes/Artisans/BusinessInformation';
 // import Signin from '../pages/Signin/Signin';
 // import Signup from '../pages/Signup/Signup';
 // import SplashScreen from '../pages/splashScreen/SplashScreen';
@@ -53,6 +58,11 @@ export default function StackNavigator() {
       <Stack.Screen name='GetStarted' component={GetStarted} />
       <Stack.Screen name='Login' component={Login} />
       <Stack.Screen name='Register' component={Register} />
+      <Stack.Screen name='ArtisanRegister' component={ArtisanRegister} />
+      <Stack.Screen name='EmailConfirmation' component={EmailConfirmation} />
+      <Stack.Screen name='PersonalInformation' component={PersonalInformation} />
+      <Stack.Screen name='BusinessInformation' component={BusinessInformation} />
+      <Stack.Screen name='NOK' component={NOK} />
       <Stack.Screen name='ForgotPassword' component={ForgotPassword} />
       <Stack.Screen name='Auth' component={DrawerNavigator} />
       <Stack.Screen name='ArtisanAuth' component={ArtisanDrawerNavigator} />

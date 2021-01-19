@@ -395,8 +395,6 @@ export const updateAccount = (data: any, tokens: Tokens) => {
   return (dispatch: any) => {
     api
       .then((res: ResponseDetails) => {
-
-        console.log("=============>", res);
         
         if (res.successful) {
           dispatch({

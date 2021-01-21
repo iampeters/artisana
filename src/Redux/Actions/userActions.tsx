@@ -23,6 +23,8 @@ export const logout = () => {
       type: 'USER',
       payload: {},
     });
+
+    AsyncStorage.clear();
   }
 };
 

@@ -47,8 +47,6 @@ export default function ArtisanJobDetails(props: any) {
   React.useEffect(() => {
 
     if (isFocused) {
-      console.log(jobs);
-
 
       dispatch({
         type: 'LOADING',

@@ -12,6 +12,7 @@ export default class NotificationService {
   }
 
   async getNotifications(userId: string, tokens: Tokens) {
+    
     try {
       let response = await fetch(this.notify + `getNotifications/${userId}`, {
         method: 'GET',

@@ -60,10 +60,7 @@ export default function AddReview(props: any) {
         rating,
         artisanId: params._id,
         userId: user._id
-      };
-
-      console.log(review);
-      
+      };      
 
       dispatch(createReviews(review, tokens));
     } else {

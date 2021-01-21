@@ -132,11 +132,24 @@ const App = () => {
           case "unverified":
             break;
 
+          case "clear":
+            break;
+
           default:
             displayAlert("success", alert.message);
         }
       } else {
-        displayAlert("danger", alert.message)
+
+        switch (alert.message) {
+          case "clear":
+            break;
+
+          case "Oops! Something went wrong.":
+            break;
+
+          default:
+            displayAlert("danger", alert.message)
+        }
       }
     }
   }, [alert]);

@@ -13,9 +13,6 @@ import { StatusBar } from 'expo-status-bar';
 import { getNotifications, getUserDashboard } from '../Redux/Actions/configAction';
 import { logout, refreshToken } from '../Redux/Actions/userActions';
 
-
-
-
 export default function Home(props: any) {
   const { colors, fonts, fontSizes }: CustomThemeInterface = useTheme();
   const user = useSelector((state: Reducers) => state.user);
@@ -43,9 +40,9 @@ export default function Home(props: any) {
 
   React.useEffect(() => {
     interval = setInterval(() => {
-      dispatch(getNotifications(user._id, token, user.userType));
+      dispatch(getNotifications(user._id, token, user.userType, interval));
 
-    }, 10000)
+    }, 10000);
 
     return () => {
       clearInterval(interval._id);
@@ -80,6 +77,11 @@ export default function Home(props: any) {
 
     if (Object.entries(alert).length !== 0) {
       if (!alert.successful) {
+        
+        if (alert.message === "clear") {
+          clearInterval(interval._id);
+        }
+
 
         if (alert.message === "Session Expired! Login again to continue.") {
 

@@ -116,10 +116,14 @@ export const getUserDashboard = (token: Tokens) => {
       });
   };
 };
-export const getNotifications = (id: any, token: Tokens, userType: any) => {
-  const api = new NotificationService().getNotifications(id, token);
+export const getNotifications = (id: any, token: Tokens, userType: any, interval: any) => {
+
+  interval = interval;
 
   if (userType === 1) {
+
+    const api = new NotificationService().getNotifications(id, token);
+
     return (dispatch: any) => {
       api
         .then((res: ResponseDetails) => {
@@ -153,5 +157,17 @@ export const getNotifications = (id: any, token: Tokens, userType: any) => {
 
         });
     };
+  } else {
+    clearInterval(interval._id)
+
+    return (dispatch: any) => {
+      dispatch({
+        type: "ALERT",
+        payload: {
+          message: "clear",
+          successful: false
+        }
+      })
+    }
   }
 };

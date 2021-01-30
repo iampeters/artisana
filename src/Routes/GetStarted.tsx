@@ -11,6 +11,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Reducers } from '../interfaces/interface';
 import firebase, { FacebookAuth, GoogleAuth } from '../Firebase/FirebaseConfig';
 import { socialAuth } from '../Redux/Actions/userActions';
+import * as GoogleSignIn from 'expo-google-sign-in';
+
 
 let img = require('../../assets/tailor.jpg');
 
@@ -21,7 +23,37 @@ export default function GetStarted({ navigation }: any) {
   const auth = useSelector((state: Reducers) => state.auth);
   const user = useSelector((state: Reducers) => state.user);
 
+  const [userDetails, setUser]: any = React.useState('');
+
   const dispatch = useDispatch();
+
+const initAsync = async () => {
+  await GoogleSignIn.initAsync({
+    // You may ommit the clientId when the firebase `googleServicesFile` is configured
+    // clientId: '<YOUR_IOS_CLIENT_ID>',
+  });
+}
+
+const syncUserWithStateAsync = async () => {
+  const user = await GoogleSignIn.signInSilentlyAsync();
+  setUser(user);
+  console.log(`==============`, user);
+  
+
+  syncUserWithStateAsync();
+};
+
+const signInAsync = async () => {
+  try {
+    await GoogleSignIn.askForPlayServicesAsync();
+    const { type, user } = await GoogleSignIn.signInAsync();
+    if (type === 'success') {
+      syncUserWithStateAsync();
+    }
+  } catch ({ message }) {
+    alert('login: Error:' + message);
+  }
+};
 
 
   const handleGoogleAuth = () => {
@@ -189,7 +221,7 @@ export default function GetStarted({ navigation }: any) {
         />
 
         <Social
-          googleAuth={handleGoogleAuth}
+          googleAuth={signInAsync}
           facebookAuth={handleFacebookAuth} />
       </View>
     </BackgroundImage>

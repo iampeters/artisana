@@ -39,7 +39,7 @@ export default function Social(props: SocialAuth) {
           />
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={props.facebookAuth}>
+        {/* <TouchableOpacity onPress={props.facebookAuth}>
           <SocialIcon
             // title='Sign In With Facebook'
             // button
@@ -51,7 +51,7 @@ export default function Social(props: SocialAuth) {
           //   marginTop: 15
           // }}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     </React.Fragment>
   )

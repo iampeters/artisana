@@ -274,7 +274,7 @@ export default function ArtisanRegister(props: any) {
             type="font-awesome-5"
             color='#fff'
             size={fontSizes?.iconSize}
-            onPress={() => props.navigation.goBack()} />
+            onPress={() => props.navigation.navigate("GetStarted")} />
         </View>
 
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{

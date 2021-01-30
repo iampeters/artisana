@@ -9,10 +9,10 @@ import Social from '../Components/Social';
 import CustomButtons from '../Components/Buttons';
 import { useDispatch, useSelector } from 'react-redux';
 import { Reducers } from '../interfaces/interface';
-import firebase, { FacebookAuth, GoogleAuth } from '../Firebase/FirebaseConfig';
 import { socialAuth } from '../Redux/Actions/userActions';
-import * as GoogleSignIn from 'expo-google-sign-in';
-
+import * as Google from "expo-google-app-auth";
+import * as Facebook from 'expo-facebook';
+import { ActivityIndicator } from 'react-native-paper';
 
 let img = require('../../assets/tailor.jpg');
 
@@ -22,147 +22,124 @@ export default function GetStarted({ navigation }: any) {
   const { colors, fontSizes, fonts }: CustomThemeInterface = useTheme();
   const auth = useSelector((state: Reducers) => state.auth);
   const user = useSelector((state: Reducers) => state.user);
+  const alert = useSelector((state: Reducers) => state.alert);
 
-  const [userDetails, setUser]: any = React.useState('');
+  const [loading, setLoader] = React.useState(false);
 
   const dispatch = useDispatch();
 
-const initAsync = async () => {
-  await GoogleSignIn.initAsync({
-    // You may ommit the clientId when the firebase `googleServicesFile` is configured
-    // clientId: '<YOUR_IOS_CLIENT_ID>',
-  });
-}
+  const { height } = Dimensions.get("window")
 
-const syncUserWithStateAsync = async () => {
-  const user = await GoogleSignIn.signInSilentlyAsync();
-  setUser(user);
-  console.log(`==============`, user);
-  
+  const signInWithGoogle = async () => {
+    setLoader(true);
+    try {
+      const result = await Google.logInAsync({
+        // iosClientId: IOS_CLIENT_ID,
+        clientId: '103249686034-hbb2tpa2vglihsa21gpvh90sjsu6cni8.apps.googleusercontent.com',
+        scopes: ["profile", "email"],
+        // redirectUrl: 'https://auth.artisana.ng/__/auth/handler',
+        // redirectUrl: 'https://artisana-cce6a.firebaseapp.com/__/auth/handler',
 
-  syncUserWithStateAsync();
-};
+      });
 
-const signInAsync = async () => {
-  try {
-    await GoogleSignIn.askForPlayServicesAsync();
-    const { type, user } = await GoogleSignIn.signInAsync();
-    if (type === 'success') {
-      syncUserWithStateAsync();
+      if (result.type === "success") {
+        console.log("LoginScreen.js.js 21 | ", result.user.givenName);
+        let data = result.user;
+
+        const user = {
+          firstname: data.givenName,
+          lastname: data.familyName,
+          email: data.email,
+          // phoneNumber: result.user.phoneNumber,
+          imageUrl: data.photoUrl
+        }
+
+        dispatch(socialAuth(user));
+        setLoader(false);
+        // this.props.navigation.navigate("Profile", {
+        //   username: result.user.givenName
+        // }); //after Google login redirect to Profile
+        return result.accessToken;
+      } else {
+        return { cancelled: true };
+      }
+    } catch (e) {
+      console.log('LoginScreen.js.js 30 | Error with login', e);
+      return { error: true };
     }
-  } catch ({ message }) {
-    alert('login: Error:' + message);
+  };
+
+  const facebookLogIn = async () => {
+    try {
+      await Facebook.initializeAsync({
+        appId: '689247371682611',
+      });
+      const {
+        type,
+        token,
+        expirationDate,
+        permissions,
+        declinedPermissions, }: any = await Facebook.logInWithReadPermissionsAsync({
+          permissions: ['public_profile'],
+        });
+
+      if (type === 'success') {
+        // Get the user's name using Facebook's Graph API
+        const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`);
+        let data = await response.json();
+
+        console.log(`======Facebook======`, data);
+
+      } else {
+        // type === 'cancel'
+      }
+    } catch ({ message }) {
+      console.log(`Facebook Login Error: ${message}`);
+    }
   }
-};
-
-
-  const handleGoogleAuth = () => {
-    // open spinner
-    // dispatch({
-    //   type: 'LOADING',
-    //   payload: true
-    // });
-    firebase.auth().signInWithPopup(GoogleAuth)
-      .then(function (result: any) {
-        const name = result.user.displayName.split(' ');
-        const user = {
-          firstname: name[0],
-          lastname: name[1],
-          email: result.user.email,
-          phoneNumber: result.user.phoneNumber,
-          imageUrl: result.user.photoURL
-        }
-
-        dispatch(socialAuth(user));
-
-      }).catch(function (error) {
-        // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // The email of the user's account used.
-        const email = error.email;
-        // The firebase.auth.AuthCredential type that was used.
-        const credential = error.credential;
-
-        console.log(errorCode, errorMessage);
-
-        dispatch({
-          type: 'ALERT',
-          payload: {
-            message: 'Network request failed',
-            successful: false,
-          },
-        });
-
-        // dispatch({
-        //   type: 'LOADING',
-        //   payload: false
-        // });
-      });
-  };
-
-  const handleFacebookAuth = () => {
-    // open spinner
-    dispatch({
-      type: 'LOADING',
-      payload: true
-    });
-    firebase.auth().signInWithPopup(FacebookAuth)
-      .then(function (result: any) {
-        const name = result.user.displayName.split(' ');
-        const user = {
-          firstname: name[0],
-          lastname: name[1],
-          email: result.user.email,
-          phoneNumber: result.user.phoneNumber,
-          imageUrl: result.user.photoURL
-        }
-
-        dispatch(socialAuth(user));
-
-      }).catch(function (error) {
-        // close spinner
-
-        // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // The email of the user's account used.
-        const email = error.email;
-        // The firebase.auth.AuthCredential type that was used.
-        const credential = error.credential;
-
-        console.log(errorCode, errorMessage);
-        dispatch({
-          type: 'ALERT',
-          payload: {
-            message: 'Network request failed',
-            successful: false,
-          },
-        });
-
-        dispatch({
-          type: 'LOADING',
-          payload: false
-        });
-      });
-  };
 
   React.useEffect(() => {
-    if (Object.entries(auth).length !== 0 && Object.entries(user).length !== 0) {
 
-      if (user.userType === 2) {
-        navigation.dispatch(StackActions.replace('ArtisanAuth')); // artisan login
-        // navigation.dispatch(StackActions.replace('Auth'));
-      } else {
-        navigation.dispatch(StackActions.replace('Auth')); //  user login 
+    if (alert.message === "unverified") {
+      navigation.dispatch(StackActions.replace('PersonalInformation'));
+    }
+    else {
+      if (Object.entries(auth).length !== 0 && Object.entries(user).length !== 0) {
+
+        if (user.userType === 2) {
+
+          if (user)
+            navigation.dispatch(StackActions.replace('ArtisanAuth')); // artisan login
+
+        } else {
+          navigation.dispatch(StackActions.replace('Auth')); //  user login 
+        }
       }
     }
 
-  }, [auth, user]);
+  }, [auth, user, alert]);
+
 
 
   return (
     <BackgroundImage img={img} justifyContent="flex-end">
+
+      {loading &&
+        <View style={{
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          height: height,
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+          zIndex: 2000,
+          backgroundColor: "rgba(0,0,0, 0.5)",
+
+        }}>
+          <ActivityIndicator color={colors.primary} size="large" />
+        </View>}
 
       <Animatable.Text animation='fadeIn' style={{
         color: colors.white,
@@ -191,13 +168,14 @@ const signInAsync = async () => {
       >Sign up, add and review artisans</Animatable.Text>
 
       <View style={{ ...styles.buttonContainer }}>
+
         <CustomButtons
           title="Login"
           type="solid"
           backgroundColor={colors.white}
           fontFamily={fonts?.RubikMedium}
           color={colors.dark}
-          onPress={() => navigation.navigate('Login')}
+          onPress={() => navigation.dispatch(StackActions.replace('Login'))}
         />
 
         <CustomButtons
@@ -207,9 +185,9 @@ const signInAsync = async () => {
           fontFamily={fonts?.RubikMedium}
           color={colors.dark}
           marginTop={15}
-          onPress={() => navigation.navigate('Register')}
+          onPress={() => navigation.dispatch(StackActions.replace('Register'))}
         />
-        
+
         <CustomButtons
           title="Register As Artisan"
           type="solid"
@@ -217,12 +195,13 @@ const signInAsync = async () => {
           fontFamily={fonts?.RubikMedium}
           color={colors.dark}
           marginTop={15}
-          onPress={() => navigation.navigate('ArtisanRegister')}
+          onPress={() => navigation.dispatch(StackActions.replace('ArtisanRegister'))}
         />
 
         <Social
-          googleAuth={signInAsync}
-          facebookAuth={handleFacebookAuth} />
+          googleAuth={signInWithGoogle}
+          facebookAuth={facebookLogIn}
+        />
       </View>
     </BackgroundImage>
   )

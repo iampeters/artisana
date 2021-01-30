@@ -13,8 +13,8 @@ import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 import { Reducers } from '../interfaces/interface';
 import { login, signUp, socialAuth } from '../Redux/Actions/userActions';
-import firebase, { FacebookAuth, GoogleAuth } from '../Firebase/FirebaseConfig';
-
+import * as Google from "expo-google-app-auth";
+import * as Facebook from 'expo-facebook';
 let img = require('../../assets/Silas-Adekunle.jpg');
 let { width, height } = Dimensions.get("window");
 
@@ -42,6 +42,7 @@ export default function Register(props: any) {
   const [phoneNumber, setPhoneNumber]: any = React.useState();
   const [isPhoneNumberValid, setPhoneNumberValid]: any = React.useState(null);
   const [isEmailValid, setEmailValid]: any = React.useState(null);
+  const [loading, setLoader] = React.useState(false);
 
   const validateEmail = (text: any) => {
     // email pattern
@@ -120,97 +121,73 @@ export default function Register(props: any) {
     dispatch(signUp(user));
   };
 
+  const signInWithGoogle = async () => {
+    setLoader(true);
+    try {
+      const result = await Google.logInAsync({
+        // iosClientId: IOS_CLIENT_ID,
+        clientId: '103249686034-hbb2tpa2vglihsa21gpvh90sjsu6cni8.apps.googleusercontent.com',
+        scopes: ["profile", "email"],
+        // redirectUrl: 'https://auth.artisana.ng/__/auth/handler',
+        // redirectUrl: 'https://artisana-cce6a.firebaseapp.com/__/auth/handler',
 
-  const handleGoogleAuth = () => {
-    // open spinner
-    // dispatch({
-    //   type: 'LOADING',
-    //   payload: true
-    // });
-    firebase.auth().signInWithPopup(GoogleAuth)
-      .then(function (result: any) {
-        const name = result.user.displayName.split(' ');
+      });
+
+      if (result.type === "success") {
+        console.log("LoginScreen.js.js 21 | ", result.user.givenName);
+        let data = result.user;
+
         const user = {
-          firstname: name[0],
-          lastname: name[1],
-          email: result.user.email,
-          phoneNumber: result.user.phoneNumber,
-          imageUrl: result.user.photoURL
+          firstname: data.givenName,
+          lastname: data.familyName,
+          email: data.email,
+          // phoneNumber: result.user.phoneNumber,
+          imageUrl: data.photoUrl
         }
 
         dispatch(socialAuth(user));
-
-      }).catch(function (error) {
-        // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // The email of the user's account used.
-        const email = error.email;
-        // The firebase.auth.AuthCredential type that was used.
-        const credential = error.credential;
-
-        console.log(errorCode, errorMessage);
-
-        dispatch({
-          type: 'ALERT',
-          payload: {
-            message: 'Network request failed',
-            successful: false,
-          },
-        });
-
-        // dispatch({
-        //   type: 'LOADING',
-        //   payload: false
-        // });
-      });
+        setLoader(false);
+        // this.props.navigation.navigate("Profile", {
+        //   username: result.user.givenName
+        // }); //after Google login redirect to Profile
+        return result.accessToken;
+      } else {
+        return { cancelled: true };
+      }
+    } catch (e) {
+      console.log('LoginScreen.js.js 30 | Error with login', e);
+      return { error: true };
+    }
   };
 
-  const handleFacebookAuth = () => {
-    // open spinner
-    dispatch({
-      type: 'LOADING',
-      payload: true
-    });
-    firebase.auth().signInWithPopup(FacebookAuth)
-      .then(function (result: any) {
-        const name = result.user.displayName.split(' ');
-        const user = {
-          firstname: name[0],
-          lastname: name[1],
-          email: result.user.email,
-          phoneNumber: result.user.phoneNumber,
-          imageUrl: result.user.photoURL
-        }
-
-        dispatch(socialAuth(user));
-
-      }).catch(function (error) {
-        // close spinner
-
-        // Handle Errors here.
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // The email of the user's account used.
-        const email = error.email;
-        // The firebase.auth.AuthCredential type that was used.
-        const credential = error.credential;
-
-        console.log(errorCode, errorMessage);
-        dispatch({
-          type: 'ALERT',
-          payload: {
-            message: 'Network request failed',
-            successful: false,
-          },
-        });
-
-        dispatch({
-          type: 'LOADING',
-          payload: false
-        });
+  const facebookLogIn = async () => {
+    try {
+      await Facebook.initializeAsync({
+        appId: '689247371682611',
       });
-  };
+      const {
+        type,
+        token,
+        expirationDate,
+        permissions,
+        declinedPermissions, }: any = await Facebook.logInWithReadPermissionsAsync({
+          permissions: ['public_profile'],
+        });
+
+      if (type === 'success') {
+        // Get the user's name using Facebook's Graph API
+        const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`);
+        let data = await response.json();
+
+        console.log(`======Facebook======`, data);
+
+      } else {
+        // type === 'cancel'
+      }
+    } catch ({ message }) {
+      console.log(`Facebook Login Error: ${message}`);
+    }
+  }
 
 
   React.useEffect(() => {
@@ -264,7 +241,7 @@ export default function Register(props: any) {
             type="font-awesome-5"
             color='#fff'
             size={fontSizes?.iconSize}
-            onPress={() => props.navigation.goBack()} />
+            onPress={() => props.navigation.navigate("GetStarted")} />
         </View>
 
         <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{
@@ -471,8 +448,9 @@ export default function Register(props: any) {
             ...styles.socialContainer
           }}>
             <Social
-              googleAuth={handleGoogleAuth}
-              facebookAuth={handleFacebookAuth} />
+               googleAuth={signInWithGoogle}
+               facebookAuth={facebookLogIn}
+              />
           </View>
         </ScrollView>
       </BackgroundImage>

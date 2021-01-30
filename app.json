@@ -25,7 +25,8 @@
     "description": "Initial deployment",
     "githubUrl": "https://github.com/iampeters/artisana.git",
     "android": {
-      "package": "com.iampeters.artisana"
+      "package": "com.iampeters.artisana",
+      "googleServicesFile": "./google-services.json"
     }
   }
 }

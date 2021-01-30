@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "103249686034",
+    "firebase_url": "https://artisana-cce6a.firebaseio.com",
+    "project_id": "artisana-cce6a",
+    "storage_bucket": "artisana-cce6a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:103249686034:android:a7c3bce7e709d2b480f2cb",
+        "android_client_info": {
+          "package_name": "com.iampeters.artisana"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "103249686034-hbb2tpa2vglihsa21gpvh90sjsu6cni8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.iampeters.artisana",
+            "certificate_hash": "51b2ed53529dcb91cf290cf74df5d3be5e5e65c3"
+          }
+        },
+        {
+          "client_id": "103249686034-sh7mm3gfuepv6o9vsha6cj93fj12t6vl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDspVSZwMDXUiL_ZuefZwbEdRUEhvdBCTE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "103249686034-sh7mm3gfuepv6o9vsha6cj93fj12t6vl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

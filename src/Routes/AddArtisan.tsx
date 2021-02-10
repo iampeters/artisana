@@ -15,7 +15,6 @@ import { Countries } from '../Helpers/Countries';
 import { createArtisan } from '../Redux/Actions/artisanActions';
 import * as ImagePicker from 'expo-image-picker';
 import { fileUpload } from '../Redux/Actions/fileAction';
-// import { Picker } from '@react-native-picker/picker';
 import {Picker } from '@react-native-community/picker';
 
 export default function AddArtisan(props: any) {

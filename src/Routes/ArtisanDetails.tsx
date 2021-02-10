@@ -71,7 +71,7 @@ export default function ArtisanDetails(props: any) {
         payload: true
       });
 
-       dispatch(getArtisanDetails(params._id, tokens))
+      dispatch(getArtisanDetails(params._id, tokens))
       dispatch(getReviews(paginationConfig, tokens));
     }
 
@@ -225,7 +225,7 @@ export default function ArtisanDetails(props: any) {
                     </View>
                     { user._id !== item.userId._id && <View>
 
-                      <TouchableOpacity onPress={() => props.navigation.navigate('Messages', { item: item.userId })}>
+                      <TouchableOpacity onPress={() => props.navigation.navigate('MessageDetails', { userId: item.userId })}>
                         <MaterialIcons name="email" size={25} color={colors.success} />
                       </TouchableOpacity>
 
@@ -246,13 +246,13 @@ export default function ArtisanDetails(props: any) {
               }
             </React.Fragment>
           ) : (<>
-              <View style={{
-                height: 400,
-                justifyContent: "center",
-                alignItems: "center"
-              }}>
-                <ActivityIndicator size='large' color={colors.dark} />
-              </View>
+            <View style={{
+              height: 400,
+              justifyContent: "center",
+              alignItems: "center"
+            }}>
+              <ActivityIndicator size='large' color={colors.dark} />
+            </View>
           </>)}
 
         </View>

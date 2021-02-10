@@ -1,19 +1,20 @@
 import React from 'react'
-import { View, Text, StyleSheet, RefreshControl, Dimensions, Platform } from 'react-native'
+import { View, Text, StyleSheet, RefreshControl, Dimensions, Platform, Alert } from 'react-native'
 import { CustomThemeInterface, Reducers } from '../Interfaces/interface';
 import { useTheme } from '@react-navigation/native';
 import Fab from '../Components/Fab';
-import { Container, Content } from 'native-base';
-import { ScrollView } from 'react-native-gesture-handler';
+import { ActionSheet, Container, Content } from 'native-base';
+import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { StatusBar } from 'expo-status-bar';
 import CustomHeader from '../Components/Header';
-import { fileUpload } from '../Redux/Actions/fileAction';
 import { updateAccount } from '../Redux/Actions/userActions';
-import { TextInput } from 'react-native-paper';
+import { Avatar, TextInput } from 'react-native-paper';
 import CustomButtons from '../Components/Buttons';
-
+import * as ImagePicker from 'expo-image-picker';
+import { fileUpload } from '../Redux/Actions/fileAction';
+import { Picker } from '@react-native-community/picker';
 
 function wait(timeout: number) {
   return new Promise((resolve) => {
@@ -42,28 +43,29 @@ export default function Profile(props: any) {
   const [country, setCountry]: any = React.useState(user.country);
   const [phoneNumber, setPhoneNumber]: any = React.useState(user.phoneNumber);
   const [email, setEmail]: any = React.useState(user.email);
-  const [isPhoneNumberValid, setPhoneNumberValid]: any = React.useState(user.phoneNumber? true: null);
-  const [isEmailValid, setEmailValid]: any = React.useState(user.email? true:null);
+  const [isPhoneNumberValid, setPhoneNumberValid]: any = React.useState(user.phoneNumber ? true : null);
+  const [isEmailValid, setEmailValid]: any = React.useState(user.email ? true : null);
   const [submitted, setSubmitted] = React.useState(false);
-
+  const [isImage, setIsImage] = React.useState(false);
+  const [pickerOpacity, setPickerOpacity] = React.useState(0);
   const RAND_NUM = Math.floor(Math.random() * 1234567890);
 
   let { width, height } = Dimensions.get("window");
 
-  const handleFile = (e: any) => {
-    let pic = e.currentTarget.files[0];
-    let fd = new FormData();
-    if (pic) {
-      fd.append('imageUrl', pic)
-      fd.append('code', `${RAND_NUM}`)
-      dispatch(fileUpload(fd, tokens))
-      dispatch({
-        type: 'LOADING',
-        payload: true
-      })
+  // const handleFile = (e: any) => {
+  //   let pic = e.currentTarget.files[0];
+  //   let fd = new FormData();
+  //   if (pic) {
+  //     fd.append('imageUrl', pic)
+  //     fd.append('code', `${RAND_NUM}`)
+  //     dispatch(fileUpload(fd, tokens))
+  //     dispatch({
+  //       type: 'LOADING',
+  //       payload: true
+  //     })
 
-    }
-  }
+  //   }
+  // }
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -79,6 +81,125 @@ export default function Profile(props: any) {
       setMinify(true)
     }
   }
+
+  const handleFileAction = (type: any) => {
+    if (type) {
+      switch (type.text) {
+        case 'Camera': {
+          pickImageCamera();
+          break;
+        }
+        case 'File Explorer': {
+          pickImageFile()
+          break;
+        }
+        default:
+          return;
+      }
+    }
+  };
+
+  const handleFile = () => {
+    const BUTTONS = [
+      {
+        text: 'Camera',
+        icon: "ios-camera",
+      },
+      {
+        text: 'File Explorer',
+        icon: "ios-albums",
+      },
+    ];
+
+    ActionSheet.show(
+      {
+        options: BUTTONS,
+      },
+      (buttonIndex) => {
+        handleFileAction(BUTTONS[buttonIndex]);
+      }
+    );
+  };
+
+  const pickImageFile = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      base64: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.cancelled) {
+
+      // ImagePicker saves the taken photo to disk and returns a local URI to it
+      let localUri = result.uri;
+      let filename: any = localUri.split('/').pop();
+
+      // Infer the type of the image
+      let match = /\.(\w+)$/.exec(filename);
+      let type = match ? `image/${match[1]}` : `image`;
+
+      let fd: any = new FormData();
+      fd.append('imageUrl', { uri: localUri, name: filename, type })
+      fd.append('code', `${RAND_NUM}`)
+
+      dispatch(fileUpload(fd, tokens))
+      dispatch({
+        type: 'LOADING',
+        payload: true
+      });
+    }
+  };
+
+  const pickImageCamera = async () => {
+    let result = await ImagePicker.launchCameraAsync({
+      // mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      base64: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.cancelled) {
+
+      // ImagePicker saves the taken photo to disk and returns a local URI to it
+      let localUri = result.uri;
+      let filename: any = localUri.split('/').pop();
+
+      // Infer the type of the image
+      let match = /\.(\w+)$/.exec(filename);
+      let type = match ? `image/${match[1]}` : `image`;
+
+      let fd: any = new FormData();
+      fd.append('imageUrl', { uri: localUri, name: filename, type })
+      fd.append('code', `${RAND_NUM}`)
+
+      dispatch(fileUpload(fd, tokens))
+      dispatch({
+        type: 'LOADING',
+        payload: true
+      })
+    }
+  };
+
+  React.useEffect(() => {
+    if (file && file.successful) {
+      setImageUrl(file.result);
+      setIsImage(true);
+    }
+  }, [file]);
+
+  React.useEffect(() => {
+    (async () => {
+      if (Platform.OS !== 'web') {
+        const { status } = await ImagePicker.requestCameraRollPermissionsAsync();
+        if (status !== 'granted') {
+          Alert.alert('Sorry, we need camera roll permissions to make this work!');
+        }
+      }
+    })();
+  }, []);
 
   const handleSubmit = (e: any) => {
     setSubmitted(true);
@@ -98,7 +219,7 @@ export default function Profile(props: any) {
       state: state,
       country: country
     };
-    
+
     dispatch(updateAccount(data, tokens));
   }
 
@@ -179,6 +300,26 @@ export default function Profile(props: any) {
         }}>
 
         <View>
+          <TouchableOpacity
+            onPress={handleFile}
+            style={{
+              marginBottom: 25
+            }}
+          >
+            <React.Fragment>
+              <Avatar.Image
+                source={{ uri: imageUrl }}
+                size={80}
+                style={{
+                  backgroundColor: colors.transparent
+                }}
+              />
+
+              <Text>Change Image</Text>
+            </React.Fragment>
+
+          </TouchableOpacity>
+
           <TextInput
             mode="flat" allowFontScaling
             label="First Name"

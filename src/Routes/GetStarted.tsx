@@ -37,7 +37,7 @@ export default function GetStarted({ navigation }: any) {
         // iosClientId: IOS_CLIENT_ID,
         clientId: '103249686034-hbb2tpa2vglihsa21gpvh90sjsu6cni8.apps.googleusercontent.com',
         scopes: ["profile", "email"],
-        // redirectUrl: 'https://auth.artisana.ng/__/auth/handler',
+        redirectUrl: 'https://auth.artisana.ng/__/auth/handler',
         // redirectUrl: 'https://artisana-cce6a.firebaseapp.com/__/auth/handler',
 
       });
@@ -80,7 +80,7 @@ export default function GetStarted({ navigation }: any) {
         expirationDate,
         permissions,
         declinedPermissions, }: any = await Facebook.logInWithReadPermissionsAsync({
-          permissions: ['public_profile'],
+          permissions: ['public_profile', 'email'],
         });
 
       if (type === 'success') {
